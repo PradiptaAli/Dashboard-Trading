@@ -48,12 +48,12 @@ const CircularGauge: React.FC<CircularGaugeProps> = ({
   const strokeDashoffset = circumference - (percent / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center justify-between p-3.5 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.07] hover:border-white/[0.14] transition-all group">
+    <div className="flex flex-col items-center justify-between p-3.5 rounded-2xl liquid-glass-card group">
       <div className="relative flex items-center justify-center my-1">
         <svg height={radius * 2} width={radius * 2} className="rotate-[-90deg]">
           {/* Subtle track */}
           <circle
-            stroke="rgba(255, 255, 255, 0.07)"
+            stroke="rgba(255, 255, 255, 0.08)"
             fill="transparent"
             strokeWidth={stroke}
             r={normalizedRadius}
@@ -125,7 +125,7 @@ const TickerCard: React.FC<TickerCardProps> = ({
   }, [points]);
 
   return (
-    <div className="flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.015] border border-white/[0.06] hover:border-white/[0.12] transition-all group">
+    <div className="flex items-center justify-between p-3.5 rounded-2xl liquid-glass-card group">
       <div>
         <div className="flex items-center gap-1.5">
           <span className="text-xs font-bold text-white font-mono tracking-tight">{symbol}</span>
@@ -241,26 +241,27 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
 
   return (
     <div className="space-y-6 max-w-[1500px]">
-      {/* 1. TOP HERO: Portfolio & Net Equity Header (Umber Style) */}
-      <section className="p-6 rounded-2xl bg-gradient-to-r from-[#0E1320] via-[#111726] to-[#0D121D] border border-white/[0.08] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.7)] relative overflow-hidden">
+      {/* 1. TOP HERO: Portfolio & Net Equity Header (Liquid Glass) */}
+      <section className="p-6 rounded-2xl liquid-glass-card relative overflow-hidden shadow-2xl">
         {/* Subtle Ambient Backlight Glow */}
-        <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
 
         <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           {/* Equity Callout */}
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
                 Total Portfolio Capital
               </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
             </div>
             <div className="mt-1 flex flex-wrap items-baseline gap-4">
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono tabular-nums">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono tabular-nums drop-shadow-sm">
                 ${stats.accountBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h1>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.05] border border-white/[0.08] shadow-sm">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl liquid-glass-pill">
                 {stats.totalPnl >= 0 ? (
                   <ArrowUpRight className="h-4 w-4 text-emerald-400" />
                 ) : (
@@ -268,26 +269,26 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 )}
                 <span
                   className={`font-mono font-bold text-xs tabular-nums ${
-                    stats.totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                    stats.totalPnl >= 0 ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]' : 'text-rose-400'
                   }`}
                 >
                   {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(2)}
                 </span>
-                <span className={`text-[11px] font-mono font-medium ${stats.totalPnl >= 0 ? 'text-emerald-400/90' : 'text-rose-400/90'}`}>
+                <span className={`text-[11px] font-mono font-semibold ${stats.totalPnl >= 0 ? 'text-emerald-400/90' : 'text-rose-400/90'}`}>
                   ({stats.totalPnl >= 0 ? '+' : ''}{netPnlPercent.toFixed(2)}%)
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Today's P&L</div>
+          {/* Quick Metrics Bar (Liquid Glass Pills) */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 text-xs font-mono">
+            <div className="p-3.5 rounded-xl liquid-glass-pill">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Today's P&L</div>
               <div
                 className={`text-sm font-bold tabular-nums mt-1 ${
                   stats.todayPnl > 0
-                    ? 'text-emerald-400'
+                    ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
                     : stats.todayPnl < 0
                     ? 'text-rose-400'
                     : 'text-slate-300'
@@ -297,12 +298,12 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Monthly P&L</div>
+            <div className="p-3.5 rounded-xl liquid-glass-pill">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Monthly P&L</div>
               <div
                 className={`text-sm font-bold tabular-nums mt-1 ${
                   stats.monthlyPnl > 0
-                    ? 'text-emerald-400'
+                    ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
                     : stats.monthlyPnl < 0
                     ? 'text-rose-400'
                     : 'text-slate-300'
@@ -312,16 +313,16 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Initial Base</div>
-              <div className="text-sm font-bold tabular-nums text-slate-200 mt-1">
+            <div className="p-3.5 rounded-xl liquid-glass-pill">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Initial Base</div>
+              <div className="text-sm font-bold tabular-nums text-slate-100 mt-1">
                 ${stats.initialBalance.toLocaleString()}
               </div>
             </div>
 
-            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Executions</div>
-              <div className="text-sm font-bold tabular-nums text-slate-200 mt-1">
+            <div className="p-3.5 rounded-xl liquid-glass-pill">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold">Executions</div>
+              <div className="text-sm font-bold tabular-nums text-slate-100 mt-1">
                 {stats.totalTrades} Logged
               </div>
             </div>
@@ -348,10 +349,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
             return (
               <div
                 key={day.dateStr}
-                className={`p-3 rounded-xl border transition-all ${
+                className={`p-3 rounded-xl transition-all ${
                   day.isToday
-                    ? 'bg-emerald-500/[0.06] border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]'
-                    : 'bg-white/[0.02] border-white/[0.05] hover:border-white/[0.1]'
+                    ? 'liquid-glass-pill border-emerald-500/40 shadow-[0_0_16px_rgba(0,245,160,0.2)]'
+                    : 'liquid-glass-pill hover:border-white/20'
                 }`}
               >
                 <div className="flex items-center justify-between text-xs font-mono">
@@ -362,7 +363,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   <div
                     className={`font-mono text-xs font-bold tabular-nums ${
                       isProfit
-                        ? 'text-emerald-400'
+                        ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
                         : isLoss
                         ? 'text-rose-400'
                         : 'text-slate-400'
@@ -386,10 +387,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
       </section>
 
-      {/* 3. CIRCULAR GAUGES & TICKER SPARKLINES (Umber Style - Image 2) */}
+      {/* 3. CIRCULAR GAUGES & TICKER SPARKLINES (Liquid Glass Containers) */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         {/* Left: 4 Circular Dials (6 cols) */}
-        <div className="lg:col-span-6 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-lg">
+        <div className="lg:col-span-6 p-5 rounded-2xl liquid-glass-card shadow-xl">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
             <div className="flex items-center gap-2">
               <Zap className="h-4 w-4 text-emerald-400" />
@@ -441,7 +442,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
 
         {/* Right: Traded Asset Ticker Sparklines (6 cols) */}
-        <div className="lg:col-span-6 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-lg">
+        <div className="lg:col-span-6 p-5 rounded-2xl liquid-glass-card shadow-xl">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
             <div className="flex items-center gap-2">
               <Target className="h-4 w-4 text-emerald-400" />
@@ -474,7 +475,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       </section>
 
       {/* 4. PRIMARY EQUITY PERFORMANCE CURVE */}
-      <section className="p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-xl">
+      <section className="p-5 rounded-2xl liquid-glass-card shadow-xl">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-xs">
           <div className="flex items-center gap-2">
             <div className="h-3 w-1 bg-emerald-400 rounded-full" />
@@ -490,7 +491,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       </section>
 
       {/* 5. SUMMARY METRICS ROW */}
-      <section className="p-4 rounded-2xl bg-[#0D111A] border border-white/[0.07]">
+      <section className="p-4 rounded-2xl liquid-glass-card shadow-xl">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs font-mono divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
           <div className="pt-2 sm:pt-0 sm:pr-4">
             <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Win Rate</span>
@@ -547,7 +548,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       {/* 6. RECENT EXECUTIONS & PERFORMANCE EXTREMES (Two-Column) */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left: Recent Executions (8 cols) */}
-        <div className="lg:col-span-8 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-xl">
+        <div className="lg:col-span-8 p-5 rounded-2xl liquid-glass-card shadow-xl">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
             <div>
               <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
@@ -649,7 +650,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
         </div>
 
         {/* Right: Extremes & Records (4 cols) */}
-        <div className="lg:col-span-4 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-xl">
+        <div className="lg:col-span-4 p-5 rounded-2xl liquid-glass-card shadow-xl">
           <div className="pb-3 border-b border-white/[0.06] mb-3">
             <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
               Performance Extremes

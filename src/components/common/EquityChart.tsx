@@ -101,15 +101,15 @@ export const EquityChart: React.FC<EquityChartProps> = ({
 
   return (
     <div className="relative select-none" ref={containerRef}>
-      {/* Chart Controls: Clean minimal segmented bars */}
+      {/* Chart Controls: Clean minimal segmented bars (Liquid Glass) */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
         {/* Metric Switcher */}
-        <div className="flex items-center gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.05] text-xs">
+        <div className="flex items-center gap-1 rounded-xl liquid-glass-pill p-1 text-xs">
           <button
             onClick={() => setMetric('equity')}
             className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'equity'
-                ? 'bg-white/[0.1] text-white font-bold shadow-sm border border-white/[0.08]'
+                ? 'bg-white/[0.12] text-white font-bold shadow-md border border-white/[0.12]'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -119,7 +119,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
             onClick={() => setMetric('pnl')}
             className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'pnl'
-                ? 'bg-white/[0.1] text-white font-bold shadow-sm border border-white/[0.08]'
+                ? 'bg-white/[0.12] text-white font-bold shadow-md border border-white/[0.12]'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -129,7 +129,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
             onClick={() => setMetric('r')}
             className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'r'
-                ? 'bg-white/[0.1] text-white font-bold shadow-sm border border-white/[0.08]'
+                ? 'bg-white/[0.12] text-white font-bold shadow-md border border-white/[0.12]'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -138,14 +138,14 @@ export const EquityChart: React.FC<EquityChartProps> = ({
         </div>
 
         {/* Timeframe Filter */}
-        <div className="flex items-center gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.05] text-xs">
+        <div className="flex items-center gap-1 rounded-xl liquid-glass-pill p-1 text-xs">
           {(['7D', '30D', '3M', '6M', '1Y', 'ALL'] as const).map(tf => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
               className={`px-2.5 py-1 text-[11px] rounded-lg transition-all font-mono font-medium ${
                 timeframe === tf
-                  ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.15)]'
+                  ? 'bg-emerald-500/25 text-emerald-300 font-bold border border-emerald-500/40 shadow-[0_0_12px_rgba(0,245,160,0.25)]'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
