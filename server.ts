@@ -37,7 +37,7 @@ async function startServer() {
     const key = (apiKey || '').toString().trim();
     if (!key) return res.status(400).json({ success: false, message: 'API Key kosong.' });
 
-    const testModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+    const testModels = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash'];
     let lastMsg = '';
 
     for (const model of testModels) {
@@ -99,7 +99,7 @@ Extract all numerical and structural trade execution data with maximum precision
 14. "brokerOrExchange": Platform name (e.g. Binance, Bybit, MetaTrader 5, OKX, Bitget, etc.).
 15. "summary": A concise factual 1-sentence recap of the trade (e.g., "Long BTCUSDT opened at 64,250 and closed at 65,800 realizing +$45.50 (+24.1% ROI)").`;
 
-      const candidateModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+      const candidateModels = ['gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-2.0-flash', 'gemini-1.5-flash'];
       let lastError: any = null;
       let responseText = '';
 
