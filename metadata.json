@@ -1,0 +1,6 @@
+{
+  "name": "TradeOS — Terminal Trading Journal & Intelligence",
+  "description": "Professional web-based personal trading terminal, execution journal, risk center, and behavioral analytics workstation for active traders.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
