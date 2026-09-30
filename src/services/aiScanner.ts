@@ -135,32 +135,36 @@ export function hasApiKey(): boolean {
 }
 
 export async function testGeminiApiKey(apiKey: string): Promise<{ success: boolean; message: string }> {
-  try {
-    const key = apiKey.trim();
-    if (!key) {
-      return { success: false, message: 'API Key kosong.' };
-    }
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(key)}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: 'Respond with OK if you are functional.' }] }],
-        }),
+  const key = apiKey.trim();
+  if (!key) return { success: false, message: 'API Key kosong.' };
+
+  // Try models in order — free tier new users may not have access to newer models
+  const testModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+  let lastMsg = '';
+
+  for (const model of testModels) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(key)}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: 'Reply with OK.' }] }],
+          }),
+        }
+      );
+      if (res.ok) {
+        return { success: true, message: `Koneksi ke Gemini (${model}) Berhasil! ✅` };
       }
-    );
-    if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      return {
-        success: false,
-        message: err.error?.message || `HTTP ${res.status}: Verifikasi API Key gagal.`,
-      };
+      lastMsg = err.error?.message || `HTTP ${res.status}`;
+    } catch (e: any) {
+      lastMsg = e.message || 'Network error';
     }
-    return { success: true, message: 'Koneksi ke Gemini 2.5 Flash Vision Berhasil!' };
-  } catch (e: any) {
-    return { success: false, message: e.message || 'Gagal menghubungi server Google Gemini.' };
   }
+
+  return { success: false, message: lastMsg || 'Gagal menghubungi server Google Gemini.' };
 }
 
 export async function fileToBase64(file: File | Blob): Promise<string> {
