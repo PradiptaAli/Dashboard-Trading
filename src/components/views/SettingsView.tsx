@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Trade, TradingPlan } from '../../types/trade';
 import { StorageService } from '../../services/storage';
 import { ConfirmModal } from '../common/ConfirmModal';
-import { Download, Upload, RotateCcw, Check, Trash2, Sparkles } from 'lucide-react';
+import { Download, Upload, RotateCcw, Check, Trash2, Sparkles, Key, Eye, EyeOff, ExternalLink, RefreshCw, Loader2 } from 'lucide-react';
+import { getStoredApiKey, setStoredApiKey, hasApiKey, testGeminiApiKey } from '../../services/aiScanner';
 
 interface SettingsViewProps {
   trades: Trade[];
@@ -31,6 +32,44 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   const [showClearModal, setShowClearModal] = useState(false);
   const [showLoadDemoModal, setShowLoadDemoModal] = useState(false);
   const [showResetAllModal, setShowResetAllModal] = useState(false);
+
+  // Gemini AI Key settings
+  const [geminiKeyInput, setGeminiKeyInput] = useState(getStoredApiKey());
+  const [showGeminiSecret, setShowGeminiSecret] = useState(false);
+  const [isTestingGemini, setIsTestingGemini] = useState(false);
+  const [geminiStatus, setGeminiStatus] = useState<{ text: string; isError?: boolean } | null>(null);
+  const [isGeminiActive, setIsGeminiActive] = useState(hasApiKey());
+
+  const handleSaveGeminiKey = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStoredApiKey(geminiKeyInput);
+    const active = hasApiKey();
+    setIsGeminiActive(active);
+    setGeminiStatus({
+      text: active ? 'Gemini API Key tersimpan dan aktif!' : 'API Key dihapus. Terminal beralih ke Mode Cepat / Offline.',
+      isError: false,
+    });
+    setTimeout(() => setGeminiStatus(null), 3500);
+  };
+
+  const handleTestGeminiKey = async () => {
+    if (!geminiKeyInput.trim()) {
+      setGeminiStatus({ text: 'Masukkan Gemini API Key terlebih dahulu.', isError: true });
+      return;
+    }
+    setIsTestingGemini(true);
+    setGeminiStatus(null);
+    const res = await testGeminiApiKey(geminiKeyInput);
+    setIsTestingGemini(false);
+    setGeminiStatus({
+      text: res.message,
+      isError: !res.success,
+    });
+    if (res.success) {
+      setStoredApiKey(geminiKeyInput);
+      setIsGeminiActive(true);
+    }
+  };
 
   const handleSaveBalance = (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,6 +178,103 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               </span>
             )}
           </div>
+        </form>
+      </div>
+
+      {/* Gemini AI Vision Scanner Configuration */}
+      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-[#181a22] pb-3">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-[#10b981]" />
+            <span className="text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+              Google Gemini AI Vision Scanner
+            </span>
+          </div>
+          {isGeminiActive ? (
+            <span className="px-2 py-0.5 rounded text-[10.5px] bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 flex items-center gap-1.5 font-mono">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
+              Aktif (Gemini 2.5 Flash)
+            </span>
+          ) : (
+            <span className="px-2 py-0.5 rounded text-[10.5px] bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center gap-1.5 font-mono">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+              Mode Cepat / Local OCR
+            </span>
+          )}
+        </div>
+
+        <p className="text-[#8c92a2] text-xs font-sans leading-relaxed">
+          AI Scanner membaca screenshot PnL Binance, Bybit, OKX, atau tiket MT5 dan otomatis mengisi instrumen, arah, harga entry/exit, dan P&L. Masukkan API Key Google Gemini Anda di bawah ini agar pemindaian berjalan dengan presisi multimodal 100%.
+        </p>
+
+        <form onSubmit={handleSaveGeminiKey} className="space-y-3 max-w-lg">
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[#696f7e] block">Gemini API Key</label>
+              <a
+                href="https://aistudio.google.com/app/apikey"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[#10b981] hover:underline flex items-center gap-1 text-[11px]"
+              >
+                <span>Dapatkan API Key Gratis di Google AI Studio</span>
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </div>
+
+            <div className="relative">
+              <input
+                type={showGeminiSecret ? 'text' : 'password'}
+                placeholder="AIzaSy..."
+                value={geminiKeyInput}
+                onChange={e => setGeminiKeyInput(e.target.value)}
+                className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 pr-8 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowGeminiSecret(!showGeminiSecret)}
+                className="absolute right-2 top-2 text-[#6e7484] hover:text-[#e4e7ec]"
+              >
+                {showGeminiSecret ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="submit"
+              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+            >
+              <Check className="h-3.5 w-3.5 text-[#10b981]" />
+              <span>Simpan API Key</span>
+            </button>
+
+            <button
+              type="button"
+              disabled={isTestingGemini}
+              onClick={handleTestGeminiKey}
+              className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#11141b] hover:bg-[#181c26] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-50 transition-colors"
+            >
+              {isTestingGemini ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#10b981]" />
+              ) : (
+                <RefreshCw className="h-3.5 w-3.5 text-[#10b981]" />
+              )}
+              <span>Tes Koneksi</span>
+            </button>
+          </div>
+
+          {geminiStatus && (
+            <div
+              className={`rounded border p-2.5 text-[11px] ${
+                geminiStatus.isError
+                  ? 'border-[#3a1b22] bg-[#140b0e] text-[#ef4444]'
+                  : 'border-[#1b3a2a] bg-[#0b1410] text-[#10b981]'
+              }`}
+            >
+              {geminiStatus.text}
+            </div>
+          )}
         </form>
       </div>
 

@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, AlertTriangle, Check, Upload, Calculator, ArrowRight, ShieldCheck, Sparkles, Coins, DollarSign, Loader2, Camera, Image as ImageIcon, ChevronDown, ChevronUp } from 'lucide-react';
+import { X, AlertTriangle, Check, Upload, Calculator, ArrowRight, ShieldCheck, Sparkles, Coins, DollarSign, Loader2, Camera, Image as ImageIcon, ChevronDown, ChevronUp, Key, Eye, EyeOff, ExternalLink, RefreshCw } from 'lucide-react';
 import { Trade, Direction, TradeResult, TradingSession, Timeframe, EmotionState, TradingPlan, MarketType, SizeUnit } from '../../types/trade';
 import { checkPlanViolations } from '../../utils/calculations';
-import { scanTradeScreenshotWithAI, fileToBase64, urlToBase64, SAMPLE_PRESET_CARDS } from '../../services/aiScanner';
+import {
+  scanTradeScreenshotWithAI,
+  fileToBase64,
+  urlToBase64,
+  SAMPLE_PRESET_CARDS,
+  PresetCardItem,
+  getStoredApiKey,
+  setStoredApiKey,
+  hasApiKey,
+  testGeminiApiKey,
+} from '../../services/aiScanner';
 
 interface TradeModalProps {
   isOpen: boolean;
@@ -124,11 +134,49 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // API Key Configuration State
+  const [apiKeyInput, setApiKeyInput] = useState(getStoredApiKey());
+  const [showKeyConfig, setShowKeyConfig] = useState(false);
+  const [showKeySecret, setShowKeySecret] = useState(false);
+  const [keyStatusMessage, setKeyStatusMessage] = useState<{ text: string; isError?: boolean } | null>(null);
+  const [isTestingKey, setIsTestingKey] = useState(false);
+  const [hasConfiguredKey, setHasConfiguredKey] = useState(hasApiKey());
+
+  const handleSaveApiKey = () => {
+    setStoredApiKey(apiKeyInput);
+    const configured = hasApiKey();
+    setHasConfiguredKey(configured);
+    setKeyStatusMessage({
+      text: configured ? 'API Key berhasil disimpan di browser.' : 'API Key dihapus. Menggunakan Mode Cepat / Offline.',
+      isError: false,
+    });
+    setTimeout(() => setKeyStatusMessage(null), 3500);
+  };
+
+  const handleTestApiKey = async () => {
+    if (!apiKeyInput.trim()) {
+      setKeyStatusMessage({ text: 'Ketik atau paste Gemini API Key terlebih dahulu.', isError: true });
+      return;
+    }
+    setIsTestingKey(true);
+    setKeyStatusMessage(null);
+    const result = await testGeminiApiKey(apiKeyInput);
+    setIsTestingKey(false);
+    setKeyStatusMessage({
+      text: result.message,
+      isError: !result.success,
+    });
+    if (result.success) {
+      setStoredApiKey(apiKeyInput);
+      setHasConfiguredKey(true);
+    }
+  };
+
   // 1R = 1% dari total balance ($5.00 untuk akun $500)
   const balance = accountBalance > 0 ? accountBalance : 500;
   const riskAmount1R = Number((balance * 0.01).toFixed(2));
 
-  const executeAiScan = async (base64: string, previewUrl?: string) => {
+  const executeAiScan = async (base64: string, previewUrl?: string, presetItem?: PresetCardItem) => {
     setIsAiScanning(true);
     setAiScanError(null);
     setAiScanSuccess(null);
@@ -137,7 +185,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
       setScreenshotUrl(previewUrl);
     }
     try {
-      const data = await scanTradeScreenshotWithAI(base64);
+      const data = await scanTradeScreenshotWithAI(base64, presetItem?.id);
       if (data.instrument) setInstrument(data.instrument);
       if (data.marketType) setMarketType(data.marketType);
       if (data.direction) setDirection(data.direction);
@@ -158,8 +206,17 @@ export const TradeModal: React.FC<TradeModalProps> = ({
         setNotes(prev => (prev ? `${prev}\n[AI Note]: ${data.summary}` : `[AI Note]: ${data.summary}`));
       }
 
+      const engineName =
+        data.scanEngine === 'preset-verified'
+          ? 'Preset Terverifikasi'
+          : data.scanEngine === 'gemini-client'
+          ? 'Gemini 2.5 Flash (Direct API)'
+          : data.scanEngine === 'gemini-cloud'
+          ? 'Gemini 2.5 Flash (Server)'
+          : 'Smart Local Scanner';
+
       setAiScanSuccess(
-        `AI Extracted: ${data.instrument} ${data.direction} · Open: ${data.entryPrice} · Close: ${data.exitPrice} · Net P&L: ${data.pnl >= 0 ? '+' : ''}$${data.pnl.toFixed(2)}${data.roiPercent !== undefined ? ` (${data.roiPercent >= 0 ? '+' : ''}${data.roiPercent}%)` : ''} [${data.brokerOrExchange || 'Exchange'}]`
+        `[${engineName}] ${data.instrument} ${data.direction} · Open: ${data.entryPrice} · Close: ${data.exitPrice} · Net P&L: ${data.pnl >= 0 ? '+' : ''}$${data.pnl.toFixed(2)}${data.roiPercent !== undefined ? ` (${data.roiPercent >= 0 ? '+' : ''}${data.roiPercent}%)` : ''} · Platform: ${data.brokerOrExchange || 'Exchange'}`
       );
     } catch (err: any) {
       console.error(err);
@@ -177,16 +234,37 @@ export const TradeModal: React.FC<TradeModalProps> = ({
     }
   };
 
-  const handlePresetScan = async (presetUrl: string) => {
-    try {
-      setIsAiScanning(true);
-      setAiScanError(null);
-      const base64 = await urlToBase64(presetUrl);
-      await executeAiScan(base64, presetUrl);
-    } catch (err: any) {
-      setIsAiScanning(false);
-      setAiScanError(err.message || 'Gagal memuat preset screenshot.');
+  const handlePresetScan = async (preset: PresetCardItem) => {
+    setIsAiScanning(true);
+    setAiScanError(null);
+    setAiPreviewUrl(preset.url);
+    setScreenshotUrl(preset.url);
+
+    // Direct verified instant data loading
+    const data = preset.data;
+    if (data.instrument) setInstrument(data.instrument);
+    if (data.marketType) setMarketType(data.marketType);
+    if (data.direction) setDirection(data.direction);
+    if (data.entryPrice) setEntryPrice(data.entryPrice);
+    if (data.exitPrice) setExitPrice(data.exitPrice);
+    if (data.stopLoss && data.stopLoss > 0) setStopLoss(data.stopLoss);
+    if (data.takeProfit && data.takeProfit > 0) setTakeProfit(data.takeProfit);
+    if (data.positionSize && data.positionSize > 0) setPositionSize(data.positionSize);
+    if (data.sizeUnit) setSizeUnit(data.sizeUnit);
+    if (data.date) setDate(data.date);
+    if (data.time) setTime(data.time);
+    if (data.pnl !== undefined) {
+      setPnl(data.pnl);
+      const computedR = riskAmount1R > 0 ? Number((data.pnl / riskAmount1R).toFixed(2)) : 0;
+      setRMultiple(computedR);
     }
+    if (data.summary) {
+      setNotes(prev => (prev ? `${prev}\n[Preset Note]: ${data.summary}` : `[Preset Note]: ${data.summary}`));
+    }
+    setAiScanSuccess(
+      `[Preset Terverifikasi] ${data.instrument} ${data.direction} · Open: ${data.entryPrice} · Close: ${data.exitPrice} · Net P&L: ${data.pnl >= 0 ? '+' : ''}$${data.pnl.toFixed(2)}${data.roiPercent !== undefined ? ` (${data.roiPercent >= 0 ? '+' : ''}${data.roiPercent}%)` : ''} · Platform: ${data.brokerOrExchange}`
+    );
+    setIsAiScanning(false);
   };
 
   // Clipboard paste listener (Ctrl+V)
@@ -577,25 +655,126 @@ export const TradeModal: React.FC<TradeModalProps> = ({
 
           {/* AI TRADE TICKET & SHARED PNL SCANNER */}
           <div className="rounded-lg border border-[#1e2330] bg-[#0d1017] p-4 text-xs font-mono space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#10b981]" />
                 <span className="font-semibold text-xs uppercase tracking-wider text-[#e4e7ec]">
                   AI Shared PnL & Order Ticket Scanner
                 </span>
-                <span className="px-2 py-0.5 rounded text-[10px] bg-[#10b981]/10 text-[#10b981] border border-[#10b981]/25">
-                  Gemini 3.8 Flash Vision
-                </span>
+                {hasConfiguredKey ? (
+                  <span className="px-2 py-0.5 rounded text-[10px] bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#10b981] animate-pulse" />
+                    Gemini 2.5 Flash Vision
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 rounded text-[10px] bg-amber-500/15 text-amber-400 border border-amber-500/30 flex items-center gap-1">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                    Mode Cepat & Smart Local OCR
+                  </span>
+                )}
               </div>
-              <button
-                type="button"
-                onClick={() => setIsAiCardExpanded(!isAiCardExpanded)}
-                className="text-[#696f7e] hover:text-[#e4e7ec] p-1 flex items-center gap-1 text-[11px]"
-              >
-                <span>{isAiCardExpanded ? 'Collapse' : 'Expand Scanner'}</span>
-                {isAiCardExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowKeyConfig(!showKeyConfig)}
+                  className={`px-2 py-0.5 rounded text-[10.5px] border flex items-center gap-1.5 transition-colors ${
+                    showKeyConfig
+                      ? 'border-[#10b981]/50 bg-[#10b981]/15 text-[#10b981]'
+                      : 'border-[#242a3a] bg-[#141722] text-[#8c92a2] hover:text-[#e4e7ec] hover:bg-[#1a1f2e]'
+                  }`}
+                  title="Atur Gemini API Key untuk pemindaian gambar AI multimodal"
+                >
+                  <Key className="h-3 w-3 text-amber-400" />
+                  <span>{hasConfiguredKey ? 'Gemini Key (Aktif)' : 'Set Gemini Key'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsAiCardExpanded(!isAiCardExpanded)}
+                  className="text-[#696f7e] hover:text-[#e4e7ec] p-1 flex items-center gap-1 text-[11px]"
+                >
+                  <span>{isAiCardExpanded ? 'Tutup' : 'Buka Scanner'}</span>
+                  {isAiCardExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                </button>
+              </div>
             </div>
+
+            {/* Collapsible API Key Drawer */}
+            {showKeyConfig && (
+              <div className="rounded-md border border-[#23293a] bg-[#12151f] p-3.5 space-y-2.5">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="text-[#e4e7ec] font-semibold flex items-center gap-1.5">
+                    <Key className="h-3.5 w-3.5 text-amber-400" />
+                    Konfigurasi Google Gemini API Key
+                  </span>
+                  <a
+                    href="https://aistudio.google.com/app/apikey"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[#10b981] hover:underline flex items-center gap-1 text-[10.5px]"
+                  >
+                    <span>Dapatkan Key Gratis (Google AI Studio)</span>
+                    <ExternalLink className="h-3 w-3" />
+                  </a>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="relative flex-1">
+                    <input
+                      type={showKeySecret ? 'text' : 'password'}
+                      placeholder="Masukkan AIzaSy... (tersimpan aman di browser Anda)"
+                      value={apiKeyInput}
+                      onChange={e => setApiKeyInput(e.target.value)}
+                      className="w-full h-8 rounded border border-[#2a3044] bg-[#0b0d14] px-3 pr-8 text-[#e4e7ec] text-xs focus:border-[#10b981] focus:outline-none font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowKeySecret(!showKeySecret)}
+                      className="absolute right-2 top-2 text-[#6e7484] hover:text-[#e4e7ec]"
+                    >
+                      {showKeySecret ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                    </button>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={isTestingKey}
+                      onClick={handleTestApiKey}
+                      className="h-8 px-3 rounded border border-[#2f374e] bg-[#171b28] hover:bg-[#202638] text-[11px] text-[#cfd3df] hover:text-[#fff] disabled:opacity-50 flex items-center gap-1.5 transition-colors shrink-0"
+                    >
+                      {isTestingKey ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin text-[#10b981]" />
+                      ) : (
+                        <RefreshCw className="h-3.5 w-3.5 text-[#10b981]" />
+                      )}
+                      <span>Tes Koneksi</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleSaveApiKey}
+                      className="h-8 px-3.5 rounded bg-[#10b981] hover:bg-[#0ea371] text-[11px] font-semibold text-[#091510] transition-colors shrink-0"
+                    >
+                      Simpan
+                    </button>
+                  </div>
+                </div>
+
+                {keyStatusMessage && (
+                  <div
+                    className={`rounded p-2 text-[11px] ${
+                      keyStatusMessage.isError
+                        ? 'border border-red-500/30 bg-red-950/20 text-red-400'
+                        : 'border border-emerald-500/30 bg-emerald-950/20 text-emerald-400'
+                    }`}
+                  >
+                    {keyStatusMessage.text}
+                  </div>
+                )}
+              </div>
+            )}
 
             {isAiCardExpanded && (
               <div className="space-y-3 pt-1">
@@ -634,18 +813,31 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                     <div className="flex flex-col items-center justify-center py-2 space-y-2">
                       <Loader2 className="h-6 w-6 animate-spin text-[#10b981]" />
                       <span className="text-xs text-[#e4e7ec] font-medium">
-                        Memindai data trade dengan Gemini Vision...
+                        Memindai data trade dengan AI Multimodal Vision...
                       </span>
                       <span className="text-[10px] text-[#696f7e]">
-                        Mengekstrak harga entry, exit, arah posisi, dan nominal profit/loss
+                        Mengekstrak harga entry, exit, arah posisi, dan nominal profit/loss secara instan
                       </span>
                     </div>
                   ) : (
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                       <div className="flex items-center gap-3 text-left">
-                        <div className="h-10 w-10 rounded bg-[#161820] border border-[#222736] flex items-center justify-center shrink-0 text-[#8c92a2]">
-                          <Camera className="h-5 w-5" />
-                        </div>
+                        {aiPreviewUrl ? (
+                          <div className="relative h-12 w-12 rounded border border-[#2a3044] overflow-hidden shrink-0 group">
+                            <img
+                              src={aiPreviewUrl}
+                              alt="Scan preview"
+                              className="h-full w-full object-cover"
+                            />
+                            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-[9px] text-[#fff] opacity-0 group-hover:opacity-100 transition-opacity">
+                              Preview
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="h-10 w-10 rounded bg-[#161820] border border-[#222736] flex items-center justify-center shrink-0 text-[#8c92a2]">
+                            <Camera className="h-5 w-5" />
+                          </div>
+                        )}
                         <div>
                           <div className="text-xs text-[#e4e7ec] font-medium">
                             Tarik & letakkan screenshot di sini, atau tekan <kbd className="px-1 py-0.5 rounded bg-[#1c202c] border border-[#282f42] text-[10px] text-[#a0a6b5]">Ctrl+V</kbd>
@@ -675,7 +867,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                       key={preset.id}
                       type="button"
                       disabled={isAiScanning}
-                      onClick={() => handlePresetScan(preset.url)}
+                      onClick={() => handlePresetScan(preset)}
                       className="px-2.5 py-1 rounded text-[11px] border border-[#1e2330] bg-[#141720] text-[#8c92a2] hover:text-[#f4f5f7] hover:border-[#2d3548] disabled:opacity-50 transition-colors flex items-center gap-1.5"
                     >
                       <Sparkles className="h-3 w-3 text-[#10b981]" />
@@ -698,7 +890,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   <div className="rounded p-2.5 bg-[#ef4444]/10 border border-[#ef4444]/30 text-[#ef4444] text-[11px] leading-relaxed flex items-start gap-2">
                     <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <strong>Gagal Scan:</strong> {aiScanError}
+                      <strong>Info Scan:</strong> {aiScanError}
                     </div>
                   </div>
                 )}

@@ -17,10 +17,24 @@ async function startServer() {
   // Accept up to 25mb for high-res trade screenshots
   app.use(express.json({ limit: '25mb' }));
 
+  // Health check endpoint for AI service
+  app.get('/api/ai/health', (req, res) => {
+    const hasKey = Boolean(
+      (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'MY_GEMINI_API_KEY') ||
+      (process.env.VITE_GEMINI_API_KEY && process.env.VITE_GEMINI_API_KEY !== 'MY_GEMINI_API_KEY') ||
+      process.env.GOOGLE_API_KEY
+    );
+    res.json({
+      status: 'ok',
+      hasServerKey: hasKey,
+      recommendedModel: 'gemini-2.5-flash',
+    });
+  });
+
   // AI Endpoint: Multimodal Trade PnL & Order Ticket Scanner
   app.post('/api/ai/scan-trade', async (req, res) => {
     try {
-      const { imageBase64, mimeType } = req.body;
+      const { imageBase64, mimeType, apiKey: userKey } = req.body;
       if (!imageBase64) {
         return res.status(400).json({ error: 'Image base64 data is required' });
       }
@@ -29,7 +43,14 @@ async function startServer() {
       const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
       const detectedMime = mimeType || (imageBase64.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,/)?.[1] ?? 'image/jpeg');
 
-      const apiKey = process.env.GEMINI_API_KEY;
+      const apiKey = (userKey || req.headers['x-api-key'] || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || process.env.GOOGLE_API_KEY || '').toString().trim();
+      if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+        return res.status(400).json({
+          error: 'Gemini API Key belum dikonfigurasi. Masukkan API Key gratis di menu modal atau file .env.',
+          needsApiKey: true,
+        });
+      }
+
       const ai = new GoogleGenAI({ apiKey });
 
       const systemPrompt = `You are a high-precision algorithmic trading journal OCR engine.
@@ -52,52 +73,71 @@ Extract all numerical and structural trade execution data with maximum precision
 14. "brokerOrExchange": Platform name (e.g. Binance, Bybit, MetaTrader 5, OKX, Bitget, etc.).
 15. "summary": A concise factual 1-sentence recap of the trade (e.g., "Long BTCUSDT opened at 64,250 and closed at 65,800 realizing +$45.50 (+24.1% ROI)").`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
-        contents: [
-          {
-            role: 'user',
-            parts: [
+      const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+      let lastError: any = null;
+      let responseText = '';
+
+      for (const model of candidateModels) {
+        try {
+          const response = await ai.models.generateContent({
+            model,
+            contents: [
               {
-                inlineData: {
-                  mimeType: detectedMime,
-                  data: cleanBase64,
-                },
-              },
-              {
-                text: systemPrompt,
+                role: 'user',
+                parts: [
+                  {
+                    inlineData: {
+                      mimeType: detectedMime,
+                      data: cleanBase64,
+                    },
+                  },
+                  {
+                    text: systemPrompt,
+                  },
+                ],
               },
             ],
-          },
-        ],
-        config: {
-          responseMimeType: 'application/json',
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              instrument: { type: Type.STRING },
-              marketType: { type: Type.STRING, enum: ['Crypto', 'Forex', 'CFD'] },
-              direction: { type: Type.STRING, enum: ['LONG', 'SHORT'] },
-              entryPrice: { type: Type.NUMBER },
-              exitPrice: { type: Type.NUMBER },
-              stopLoss: { type: Type.NUMBER },
-              takeProfit: { type: Type.NUMBER },
-              pnl: { type: Type.NUMBER },
-              roiPercent: { type: Type.NUMBER },
-              positionSize: { type: Type.NUMBER },
-              sizeUnit: { type: Type.STRING },
-              date: { type: Type.STRING },
-              time: { type: Type.STRING },
-              brokerOrExchange: { type: Type.STRING },
-              summary: { type: Type.STRING },
+            config: {
+              responseMimeType: 'application/json',
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  instrument: { type: Type.STRING },
+                  marketType: { type: Type.STRING, enum: ['Crypto', 'Forex', 'CFD'] },
+                  direction: { type: Type.STRING, enum: ['LONG', 'SHORT'] },
+                  entryPrice: { type: Type.NUMBER },
+                  exitPrice: { type: Type.NUMBER },
+                  stopLoss: { type: Type.NUMBER },
+                  takeProfit: { type: Type.NUMBER },
+                  pnl: { type: Type.NUMBER },
+                  roiPercent: { type: Type.NUMBER },
+                  positionSize: { type: Type.NUMBER },
+                  sizeUnit: { type: Type.STRING },
+                  date: { type: Type.STRING },
+                  time: { type: Type.STRING },
+                  brokerOrExchange: { type: Type.STRING },
+                  summary: { type: Type.STRING },
+                },
+                required: ['instrument', 'direction', 'entryPrice', 'exitPrice', 'pnl'],
+              },
             },
-            required: ['instrument', 'direction', 'entryPrice', 'exitPrice', 'pnl'],
-          },
-        },
-      });
+          });
 
-      const responseText = response.text?.trim() || '{}';
-      const parsedData = JSON.parse(responseText);
+          responseText = response.text?.trim() || '';
+          if (responseText) {
+            break;
+          }
+        } catch (err: any) {
+          lastError = err;
+          console.warn(`Model ${model} failed, trying next candidate:`, err.message || err);
+        }
+      }
+
+      if (!responseText && lastError) {
+        throw lastError;
+      }
+
+      const parsedData = JSON.parse(responseText || '{}');
 
       return res.json({
         success: true,
