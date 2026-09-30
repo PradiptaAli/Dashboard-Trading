@@ -27,8 +27,34 @@ async function startServer() {
     res.json({
       status: 'ok',
       hasServerKey: hasKey,
-      recommendedModel: 'gemini-2.5-flash',
+      recommendedModel: 'gemini-2.0-flash',
     });
+  });
+
+  // Test API key endpoint — called by frontend to validate user-supplied key server-side
+  app.post('/api/ai/test-key', async (req, res) => {
+    const { apiKey } = req.body;
+    const key = (apiKey || '').toString().trim();
+    if (!key) return res.status(400).json({ success: false, message: 'API Key kosong.' });
+
+    const testModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
+    let lastMsg = '';
+
+    for (const model of testModels) {
+      try {
+        const { GoogleGenAI } = await import('@google/genai');
+        const ai = new GoogleGenAI({ apiKey: key });
+        await ai.models.generateContent({
+          model,
+          contents: [{ role: 'user', parts: [{ text: 'Reply with OK.' }] }],
+        });
+        return res.json({ success: true, message: `Koneksi ke Gemini (${model}) Berhasil! ✅`, model });
+      } catch (err: any) {
+        lastMsg = err.message || String(err);
+        console.warn(`test-key: model ${model} failed:`, lastMsg);
+      }
+    }
+    return res.status(400).json({ success: false, message: lastMsg || 'Semua model gagal.' });
   });
 
   // AI Endpoint: Multimodal Trade PnL & Order Ticket Scanner

@@ -138,7 +138,23 @@ export async function testGeminiApiKey(apiKey: string): Promise<{ success: boole
   const key = apiKey.trim();
   if (!key) return { success: false, message: 'API Key kosong.' };
 
-  // Try models in order — free tier new users may not have access to newer models
+  // Try server-side test first (avoids CORS + model availability issues)
+  try {
+    const serverRes = await fetch('/api/ai/test-key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ apiKey: key }),
+    });
+    const serverData = await serverRes.json().catch(() => ({}));
+    if (serverData.success) return { success: true, message: serverData.message };
+    if (!serverRes.ok && serverData.message) {
+      return { success: false, message: serverData.message };
+    }
+  } catch (_) {
+    // Server unreachable — fall through to direct browser call
+  }
+
+  // Fallback: direct browser call to Gemini REST API
   const testModels = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-2.0-flash-lite'];
   let lastMsg = '';
 
@@ -166,6 +182,7 @@ export async function testGeminiApiKey(apiKey: string): Promise<{ success: boole
 
   return { success: false, message: lastMsg || 'Gagal menghubungi server Google Gemini.' };
 }
+
 
 export async function fileToBase64(file: File | Blob): Promise<string> {
   return new Promise((resolve, reject) => {
