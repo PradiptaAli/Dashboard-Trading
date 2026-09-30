@@ -207,7 +207,7 @@ async function callGeminiVisionDirect(imageBase64: string, apiKey: string): Prom
   const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
   const detectedMime = imageBase64.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,/)?.[1] ?? 'image/jpeg';
 
-  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+  const models = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
   let lastErr: any = null;
 
   for (const model of models) {
