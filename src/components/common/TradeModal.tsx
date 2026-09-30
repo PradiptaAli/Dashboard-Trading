@@ -1082,73 +1082,9 @@ export const TradeModal: React.FC<TradeModalProps> = ({
               </div>
             </div>
 
-            {/* SIZING SECTION (DIRECT MANUAL INPUT) */}
-            <div className="rounded-md border border-[#181a22] bg-[#11141b] p-3.5 space-y-2.5 font-mono">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#181a22] pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs uppercase font-medium text-[#9ea3b0]">
-                    Position Sizing (Manual Input)
-                  </span>
-                  <span className="text-[10px] text-[#8c92a2] bg-[#181b23] px-2 py-0.5 rounded border border-[#232734]">
-                    Direct Input {sizeUnit}
-                  </span>
-                </div>
-
-                {autoRecommendedSize > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => handlePositionSizeChange(autoRecommendedSize)}
-                    className="text-[11px] px-2.5 py-0.5 rounded border border-[#1e222c] bg-[#161820] text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
-                  >
-                    Set 1R Standard: {autoRecommendedSize} {sizeUnit}
-                  </button>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-                <div className="sm:col-span-8">
-                  <label className="block text-[#696f7e] text-xs mb-1">
-                    Executed Position Size ({sizeUnit})
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      step="any"
-                      value={positionSize}
-                      onChange={e => handlePositionSizeChange(parseFloat(e.target.value) || 0)}
-                      placeholder={sizeUnit === 'USDT' ? 'e.g. 500' : 'e.g. 0.10'}
-                      className="flex-1 h-8 rounded border border-[#1e222c] bg-[#0c0e13] px-3 text-xs font-semibold font-mono text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
-                      required
-                    />
-                    <select
-                      value={sizeUnit}
-                      onChange={e => setSizeUnit(e.target.value as SizeUnit)}
-                      className="h-8 rounded border border-[#1e222c] bg-[#0c0e13] px-2.5 text-[#e4e7ec] text-xs font-medium focus:outline-none"
-                    >
-                      <option value="USDT">USDT</option>
-                      <option value="Lots">Lots</option>
-                      <option value="Contracts">Contracts</option>
-                      <option value="Units">Units</option>
-                    </select>
-                  </div>
-                  <div className="text-[10px] text-[#555a66] mt-1 font-sans">
-                    {sizeUnit === 'USDT'
-                      ? 'Enter trade notion size in USDT (e.g., 250, 500)'
-                      : 'Enter trade volume in Lots / Contracts (e.g., 0.05, 0.10)'}
-                  </div>
-                </div>
-
-                <div className="sm:col-span-4 rounded bg-[#0c0e13] p-2.5 border border-[#181a22] text-xs">
-                  <div className="text-[10px] text-[#555a66] uppercase">Stop Distance</div>
-                  <div className="text-xs font-semibold text-[#e4e7ec] mt-0.5 tabular-nums">
-                    {stopDistance.toFixed(entryPrice < 1 ? 6 : 2)} pts ({stopDistancePercent.toFixed(2)}%)
-                  </div>
-                  <div className="text-[10px] text-[#555a66] mt-0.5">
-                    1R Reference: ${riskAmount1R.toFixed(2)}
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* SIZING — hidden, AI-filled automatically via scanner */}
+            <input type="hidden" value={positionSize} readOnly />
+            <input type="hidden" value={sizeUnit} readOnly />
 
             {/* THREE INTERCONNECTED FIELDS */}
             <div className="rounded-md border border-[#181a22] bg-[#11141b] p-3.5 space-y-3 font-mono">
