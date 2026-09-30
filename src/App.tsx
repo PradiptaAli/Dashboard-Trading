@@ -140,7 +140,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#0c0e12] text-[#e6e9ef] antialiased">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#07090E] text-[#E2E8F0] antialiased">
       {/* Persistent Terminal Sidebar */}
       <Sidebar
         currentTab={currentTab}
@@ -156,7 +156,7 @@ export default function App() {
       />
 
       {/* Main Workspace Frame */}
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden bg-[#07090E]">
         {/* Top Header Bar */}
         <Header
           currentTab={selectedTrade ? 'journal' : currentTab}
@@ -167,7 +167,7 @@ export default function App() {
         />
 
         {/* Dynamic Viewport Canvas */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#0c0e12]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#07090E]">
           <div className="mx-auto max-w-[1560px]">
             {selectedTrade ? (
               <TradeDetailView

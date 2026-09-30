@@ -127,19 +127,19 @@ export const JournalView: React.FC<JournalViewProps> = ({
   };
 
   return (
-    <div className="space-y-4 max-w-[1500px]">
+    <div className="space-y-5 max-w-[1500px]">
       {/* 1. Header Toolbar & Compact Filters */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#181a22]">
+      <div className="p-4 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-lg flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         {/* Search & Status */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#555a66]" />
+        <div className="flex flex-wrap items-center gap-2.5 flex-1">
+          <div className="relative flex-1 min-w-[220px] max-w-sm">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-500" />
             <input
               type="text"
               placeholder="Search ticker, setup, notes..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="h-8 w-60 sm:w-72 rounded-md border border-[#1e222c] bg-[#0c0e13] pl-8 pr-3 text-xs text-[#e4e7ec] placeholder-[#555a66] focus:border-[#3a4154] focus:outline-none"
+              className="h-9 w-full rounded-xl border border-white/[0.08] bg-white/[0.03] pl-9 pr-3 text-xs text-slate-200 placeholder-slate-500 focus:border-emerald-500/40 focus:outline-none transition-colors"
             />
           </div>
 
@@ -147,7 +147,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
           <select
             value={filterInstrument}
             onChange={e => setFilterInstrument(e.target.value)}
-            className="h-8 rounded-md border border-[#1e222c] bg-[#0c0e13] px-2.5 text-xs text-[#a0a6b5] focus:outline-none"
+            className="h-9 rounded-xl border border-white/[0.08] bg-[#121622] px-3 text-xs text-slate-300 focus:outline-none focus:border-emerald-500/40 transition-colors"
           >
             <option value="ALL">All Instruments</option>
             {uniqueInstruments.map(i => (
@@ -158,7 +158,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
           <select
             value={filterDirection}
             onChange={e => setFilterDirection(e.target.value)}
-            className="h-8 rounded-md border border-[#1e222c] bg-[#0c0e13] px-2.5 text-xs text-[#a0a6b5] focus:outline-none"
+            className="h-9 rounded-xl border border-white/[0.08] bg-[#121622] px-3 text-xs text-slate-300 focus:outline-none focus:border-emerald-500/40 transition-colors"
           >
             <option value="ALL">All Sides</option>
             <option value="LONG">Long</option>
@@ -168,7 +168,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
           <select
             value={filterResult}
             onChange={e => setFilterResult(e.target.value)}
-            className="h-8 rounded-md border border-[#1e222c] bg-[#0c0e13] px-2.5 text-xs text-[#a0a6b5] focus:outline-none"
+            className="h-9 rounded-xl border border-white/[0.08] bg-[#121622] px-3 text-xs text-slate-300 focus:outline-none focus:border-emerald-500/40 transition-colors"
           >
             <option value="ALL">All Outcomes</option>
             <option value="WIN">Win</option>
@@ -179,7 +179,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
           {(searchQuery || filterInstrument !== 'ALL' || filterDirection !== 'ALL' || filterResult !== 'ALL') && (
             <button
               onClick={handleResetFilters}
-              className="flex items-center gap-1 text-xs text-[#6e7484] hover:text-[#d0d4dc] px-2 py-1"
+              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white px-2.5 py-1.5 rounded-lg hover:bg-white/[0.05] transition-colors"
             >
               <RotateCcw className="h-3 w-3" />
               <span>Reset</span>
@@ -188,15 +188,15 @@ export const JournalView: React.FC<JournalViewProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-[#646a78] font-mono text-[11px] mr-2 hidden sm:inline">
+        <div className="flex items-center gap-2.5 text-xs">
+          <span className="text-slate-500 font-mono text-[11px] mr-1 hidden sm:inline">
             {sortedTrades.length} of {trades.length} entries
           </span>
 
           <button
             onClick={handleExportCSV}
             disabled={trades.length === 0}
-            className="flex items-center gap-1.5 h-8 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-3 text-[#a0a6b5] hover:text-[#e4e7ec] transition-colors disabled:opacity-40"
+            className="flex items-center gap-1.5 h-9 rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] px-3.5 text-slate-300 hover:text-white transition-all disabled:opacity-40"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export CSV</span>
@@ -204,16 +204,17 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
           <button
             onClick={onOpenNewTrade}
-            className="flex items-center gap-1.5 h-8 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3 font-medium text-[#f0f2f5] transition-colors"
+            className="flex items-center gap-1.5 h-9 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 px-4 font-bold text-[#07090E] shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all active:scale-[0.98]"
           >
-            <Plus className="h-3.5 w-3.5 text-[#10b981]" />
+            <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Record Trade</span>
           </button>
         </div>
       </div>
 
       {/* 2. Professional Data Table */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
+      <div className="rounded-2xl border border-white/[0.07] bg-[#0D111A] overflow-hidden shadow-xl">
+
         {trades.length === 0 ? (
           <div className="py-20 text-center">
             <h4 className="text-sm font-medium text-[#e4e7ec]">No trades recorded yet</h4>
@@ -241,65 +242,65 @@ export const JournalView: React.FC<JournalViewProps> = ({
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="sticky top-0 z-10 bg-[#0f1117] border-b border-[#181a22] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
+              <thead className="sticky top-0 z-10 bg-[#0F1422] border-b border-white/[0.07] text-[10.5px] uppercase tracking-wider text-slate-400">
                 <tr>
                   <th
                     onClick={() => handleSort('date')}
-                    className="py-2.5 px-3 cursor-pointer hover:text-[#d0d4dc]"
+                    className="py-3 px-3.5 cursor-pointer hover:text-white transition-colors"
                   >
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                       <span>Date</span>
                       <ArrowUpDown className="h-3 w-3 opacity-60" />
                     </div>
                   </th>
                   <th
                     onClick={() => handleSort('instrument')}
-                    className="py-2.5 px-3 cursor-pointer hover:text-[#d0d4dc]"
+                    className="py-3 px-3 cursor-pointer hover:text-white transition-colors"
                   >
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                       <span>Instrument</span>
                       <ArrowUpDown className="h-3 w-3 opacity-60" />
                     </div>
                   </th>
-                  <th className="py-2.5 px-3">Side</th>
-                  <th className="py-2.5 px-3">Setup</th>
+                  <th className="py-3 px-3">Side</th>
+                  <th className="py-3 px-3">Setup</th>
                   <th
                     onClick={() => handleSort('entryPrice')}
-                    className="py-2.5 px-3 text-right cursor-pointer hover:text-[#d0d4dc]"
+                    className="py-3 px-3 text-right cursor-pointer hover:text-white transition-colors"
                   >
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex items-center justify-end gap-1.5">
                       <span>Entry</span>
                       <ArrowUpDown className="h-3 w-3 opacity-60" />
                     </div>
                   </th>
-                  <th className="py-2.5 px-3 text-right">Exit</th>
-                  <th className="py-2.5 px-3 text-right">Size</th>
+                  <th className="py-3 px-3 text-right">Exit</th>
+                  <th className="py-3 px-3 text-right">Size</th>
                   <th
                     onClick={() => handleSort('pnl')}
-                    className="py-2.5 px-3 text-right cursor-pointer hover:text-[#d0d4dc]"
+                    className="py-3 px-3 text-right cursor-pointer hover:text-white transition-colors"
                   >
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex items-center justify-end gap-1.5">
                       <span>Net P&L</span>
                       <ArrowUpDown className="h-3 w-3 opacity-60" />
                     </div>
                   </th>
                   <th
                     onClick={() => handleSort('r')}
-                    className="py-2.5 px-3 text-right cursor-pointer hover:text-[#d0d4dc]"
+                    className="py-3 px-3 text-right cursor-pointer hover:text-white transition-colors"
                   >
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex items-center justify-end gap-1.5">
                       <span>R</span>
                       <ArrowUpDown className="h-3 w-3 opacity-60" />
                     </div>
                   </th>
-                  <th className="py-2.5 px-3 text-center">Result</th>
-                  <th className="py-2.5 px-3 text-right">Actions</th>
+                  <th className="py-3 px-3 text-center">Result</th>
+                  <th className="py-3 px-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#15171e]">
+              <tbody className="divide-y divide-white/[0.03]">
                 {sortedTrades.length === 0 ? (
                   <tr>
-                    <td colSpan={11} className="py-12 text-center text-[#555a66] text-xs">
+                    <td colSpan={11} className="py-16 text-center text-slate-500 text-xs">
                       No executions match the current filters.
                     </td>
                   </tr>
@@ -311,33 +312,33 @@ export const JournalView: React.FC<JournalViewProps> = ({
                     return (
                       <tr
                         key={trade.id}
-                        className="hover:bg-[#12151c] transition-colors group cursor-pointer"
+                        className="hover:bg-white/[0.035] transition-colors group cursor-pointer"
                       >
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 text-[#696f7e] tabular-nums whitespace-nowrap"
+                          className="py-3 px-3.5 text-slate-400 tabular-nums whitespace-nowrap"
                         >
-                          <span className="text-[#a0a6b5]">{trade.date}</span>{' '}
-                          <span className="text-[#4f5461] text-[10px]">{trade.time}</span>
+                          <span className="text-slate-200 font-medium">{trade.date}</span>{' '}
+                          <span className="text-slate-500 text-[10px]">{trade.time}</span>
                         </td>
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 font-medium text-[#e4e7ec] whitespace-nowrap"
+                          className="py-3 px-3 font-bold text-white whitespace-nowrap"
                         >
                           {trade.instrument}
                         </td>
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 whitespace-nowrap"
+                          className="py-3 px-3 whitespace-nowrap"
                         >
                           <span
-                            className={
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                               trade.direction === 'LONG'
-                                ? 'text-[#10b981]'
-                                : 'text-[#ef4444]'
-                            }
+                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                            }`}
                           >
                             {trade.direction}
                           </span>
@@ -345,40 +346,40 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 text-[#8c92a2] max-w-[200px] truncate"
+                          className="py-3 px-3 text-slate-300 max-w-[200px] truncate"
                         >
                           {trade.setup}
                         </td>
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 text-right text-[#a0a6b5] tabular-nums"
+                          className="py-3 px-3 text-right text-slate-300 tabular-nums"
                         >
                           {trade.entryPrice}
                         </td>
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 text-right text-[#a0a6b5] tabular-nums"
+                          className="py-3 px-3 text-right text-slate-300 tabular-nums"
                         >
                           {trade.exitPrice}
                         </td>
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 text-right text-[#696f7e] tabular-nums whitespace-nowrap"
+                          className="py-3 px-3 text-right text-slate-400 tabular-nums whitespace-nowrap"
                         >
                           {trade.positionSize} {trade.sizeUnit || 'USDT'}
                         </td>
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className={`py-2.5 px-3 text-right font-medium tabular-nums ${
+                          className={`py-3 px-3 text-right font-bold tabular-nums ${
                             isWin
-                              ? 'text-[#10b981]'
+                              ? 'text-emerald-400'
                               : isLoss
-                              ? 'text-[#ef4444]'
-                              : 'text-[#696f7e]'
+                              ? 'text-rose-400'
+                              : 'text-slate-400'
                           }`}
                         >
                           {trade.pnl >= 0 ? '+' : ''}${trade.pnl.toFixed(2)}
@@ -386,8 +387,8 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className={`py-2.5 px-3 text-right font-medium tabular-nums ${
-                            trade.rMultiple >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'
+                          className={`py-3 px-3 text-right font-semibold tabular-nums ${
+                            trade.rMultiple >= 0 ? 'text-emerald-400' : 'text-rose-400'
                           }`}
                         >
                           {trade.rMultiple >= 0 ? '+' : ''}{trade.rMultiple.toFixed(2)}R
@@ -395,15 +396,15 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
                         <td
                           onClick={() => onSelectTrade(trade)}
-                          className="py-2.5 px-3 text-center"
+                          className="py-3 px-3 text-center"
                         >
                           <span
-                            className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                               isWin
-                                ? 'text-[#10b981] bg-[#10b981]/10'
+                                ? 'text-emerald-300 bg-emerald-500/15 border border-emerald-500/30'
                                 : isLoss
-                                ? 'text-[#ef4444] bg-[#ef4444]/10'
-                                : 'text-[#6e7484] bg-[#1a1d25]'
+                                ? 'text-rose-300 bg-rose-500/15 border border-rose-500/30'
+                                : 'text-slate-300 bg-white/[0.06] border border-white/[0.08]'
                             }`}
                           >
                             {trade.result}

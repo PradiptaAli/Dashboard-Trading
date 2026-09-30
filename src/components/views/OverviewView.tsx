@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Trade } from '../../types/trade';
 import { PerformanceStats } from '../../utils/calculations';
 import { EquityChart } from '../common/EquityChart';
-import { ArrowUpRight, ArrowDownRight, ChevronRight } from 'lucide-react';
+import {
+  TrendingUp,
+  TrendingDown,
+  ChevronRight,
+  ShieldCheck,
+  Target,
+  Sparkles,
+  Zap,
+  ArrowUpRight,
+  ArrowDownRight,
+  Calendar,
+} from 'lucide-react';
 
 interface OverviewViewProps {
   trades: Trade[];
@@ -11,225 +22,544 @@ interface OverviewViewProps {
   onViewAllTrades: () => void;
 }
 
+// 1. High-Tech Circular Gauge (Umber Style - Image 2)
+interface CircularGaugeProps {
+  value: number;
+  max?: number;
+  label: string;
+  sublabel?: string;
+  color?: string;
+  displayValue?: string;
+}
+
+const CircularGauge: React.FC<CircularGaugeProps> = ({
+  value,
+  max = 100,
+  label,
+  sublabel,
+  color = '#10B981',
+  displayValue,
+}) => {
+  const radius = 38;
+  const stroke = 6;
+  const normalizedRadius = radius - stroke / 2;
+  const circumference = normalizedRadius * 2 * Math.PI;
+  const percent = Math.min(100, Math.max(0, (value / max) * 100));
+  const strokeDashoffset = circumference - (percent / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center justify-between p-3.5 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.07] hover:border-white/[0.14] transition-all group">
+      <div className="relative flex items-center justify-center my-1">
+        <svg height={radius * 2} width={radius * 2} className="rotate-[-90deg]">
+          {/* Subtle track */}
+          <circle
+            stroke="rgba(255, 255, 255, 0.07)"
+            fill="transparent"
+            strokeWidth={stroke}
+            r={normalizedRadius}
+            cx={radius}
+            cy={radius}
+          />
+          {/* Neon progress arc */}
+          <circle
+            stroke={color}
+            fill="transparent"
+            strokeWidth={stroke}
+            strokeDasharray={`${circumference} ${circumference}`}
+            style={{ strokeDashoffset, transition: 'stroke-dashoffset 0.8s ease' }}
+            strokeLinecap="round"
+            r={normalizedRadius}
+            cx={radius}
+            cy={radius}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+          <span className="text-xs font-bold font-mono text-white tabular-nums tracking-tight">
+            {displayValue || `${value.toFixed(1)}%`}
+          </span>
+        </div>
+      </div>
+      <span className="mt-1 text-xs font-semibold text-slate-200 tracking-tight group-hover:text-white transition-colors">
+        {label}
+      </span>
+      {sublabel && (
+        <span className="text-[10px] text-slate-400 font-mono mt-0.5">{sublabel}</span>
+      )}
+    </div>
+  );
+};
+
+// 2. Mini Ticker Sparkline Card (Tradervue & Umber Style - Images 2 & 3)
+interface TickerCardProps {
+  symbol: string;
+  tradesCount: number;
+  winRate: number;
+  totalPnl: number;
+  points: number[];
+}
+
+const TickerCard: React.FC<TickerCardProps> = ({
+  symbol,
+  tradesCount,
+  winRate,
+  totalPnl,
+  points,
+}) => {
+  const isPositive = totalPnl >= 0;
+  const strokeColor = isPositive ? '#10B981' : '#F43F5E';
+
+  // SVG mini sparkline path builder
+  const width = 80;
+  const height = 30;
+  const pathD = useMemo(() => {
+    if (!points || points.length === 0) return '';
+    const min = Math.min(...points);
+    const max = Math.max(...points);
+    const range = max - min || 1;
+
+    return points.reduce((acc, val, i) => {
+      const x = (i / Math.max(1, points.length - 1)) * width;
+      const y = height - ((val - min) / range) * (height - 8) - 4;
+      return i === 0 ? `M ${x} ${y}` : `${acc} L ${x} ${y}`;
+    }, '');
+  }, [points]);
+
+  return (
+    <div className="flex items-center justify-between p-3.5 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.015] border border-white/[0.06] hover:border-white/[0.12] transition-all group">
+      <div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-xs font-bold text-white font-mono tracking-tight">{symbol}</span>
+          <span className="text-[10px] text-slate-400 font-mono">({tradesCount} trades)</span>
+        </div>
+        <div className="flex items-center gap-2 mt-1">
+          <span
+            className={`font-mono text-xs font-semibold tabular-nums ${
+              isPositive ? 'text-emerald-400' : 'text-rose-400'
+            }`}
+          >
+            {isPositive ? '+' : ''}${totalPnl.toFixed(2)}
+          </span>
+          <span className="text-[10px] text-slate-400 font-mono">
+            {winRate.toFixed(0)}% WR
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center">
+        {pathD ? (
+          <svg width={width} height={height} className="overflow-visible">
+            <path
+              d={pathD}
+              fill="none"
+              stroke={strokeColor}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        ) : (
+          <div className="h-6 w-12 rounded bg-white/[0.04] flex items-center justify-center text-[10px] text-slate-600 font-mono">
+            -
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 export const OverviewView: React.FC<OverviewViewProps> = ({
   trades,
   stats,
   onSelectTrade,
   onViewAllTrades,
 }) => {
-  const recentTrades = [...trades]
-    .sort((a, b) => new Date(`${b.date}T${b.time || '00:00'}`).getTime() - new Date(`${a.date}T${a.time || '00:00'}`).getTime())
-    .slice(0, 8);
+  const recentTrades = useMemo(() => {
+    return [...trades]
+      .sort((a, b) => new Date(`${b.date}T${b.time || '00:00'}`).getTime() - new Date(`${a.date}T${a.time || '00:00'}`).getTime())
+      .slice(0, 8);
+  }, [trades]);
 
   const netPnlPercent = stats.initialBalance > 0
     ? (stats.totalPnl / stats.initialBalance) * 100
     : 0;
 
+  // 1. Weekly Calendar Strip data (Tradervue Style - Image 3)
+  const weeklyStrip = useMemo(() => {
+    // Generate dates for current week or recent 7 calendar days
+    const today = new Date();
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      const dateStr = d.toISOString().split('T')[0];
+      const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+      const dayNum = d.toLocaleDateString('en-US', { day: '2-digit' });
+
+      const dayTrades = trades.filter(t => t.date === dateStr);
+      const dayPnl = dayTrades.reduce((acc, curr) => acc + curr.pnl, 0);
+
+      days.push({
+        dateStr,
+        dayName,
+        dayNum,
+        tradesCount: dayTrades.length,
+        pnl: dayPnl,
+        isToday: i === 0,
+      });
+    }
+    return days;
+  }, [trades]);
+
+  // 2. Traded Tickers Aggregation (Top 4 traded assets)
+  const tickerStats = useMemo(() => {
+    const map: Record<string, { trades: Trade[]; pnl: number; wins: number; points: number[] }> = {};
+    const sortedChronological = [...trades].sort((a, b) => new Date(`${a.date}T${a.time || '00:00'}`).getTime() - new Date(`${b.date}T${b.time || '00:00'}`).getTime());
+
+    sortedChronological.forEach(t => {
+      const sym = t.instrument.toUpperCase();
+      if (!map[sym]) {
+        map[sym] = { trades: [], pnl: 0, wins: 0, points: [0] };
+      }
+      map[sym].trades.push(t);
+      map[sym].pnl += t.pnl;
+      if (t.pnl > 0) map[sym].wins++;
+      const lastVal = map[sym].points[map[sym].points.length - 1];
+      map[sym].points.push(lastVal + t.pnl);
+    });
+
+    return Object.entries(map)
+      .map(([sym, item]) => ({
+        symbol: sym,
+        tradesCount: item.trades.length,
+        winRate: item.trades.length > 0 ? (item.wins / item.trades.length) * 100 : 0,
+        totalPnl: item.pnl,
+        points: item.points,
+      }))
+      .sort((a, b) => b.tradesCount - a.tradesCount)
+      .slice(0, 4);
+  }, [trades]);
+
   return (
-    <div className="space-y-8 max-w-[1400px]">
-      {/* 1. TOP: Portfolio / Account Summary (Editorial Hierarchy) */}
-      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[#181a22]">
-        {/* Main Equity Callout */}
-        <div>
-          <span className="text-[11px] font-mono uppercase tracking-wider text-[#696f7e]">
-            Account Balance & Equity
-          </span>
-          <div className="mt-1 flex items-baseline gap-4">
-            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#f4f5f7] font-mono tabular-nums">
-              ${stats.accountBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </h1>
-            <div className="flex items-center gap-1.5 text-xs font-mono">
-              <span
-                className={`font-medium tabular-nums ${
-                  stats.totalPnl >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'
+    <div className="space-y-6 max-w-[1500px]">
+      {/* 1. TOP HERO: Portfolio & Net Equity Header (Umber Style) */}
+      <section className="p-6 rounded-2xl bg-gradient-to-r from-[#0E1320] via-[#111726] to-[#0D121D] border border-white/[0.08] shadow-[0_15px_40px_-15px_rgba(0,0,0,0.7)] relative overflow-hidden">
+        {/* Subtle Ambient Backlight Glow */}
+        <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-rose-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          {/* Equity Callout */}
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400">
+                Total Portfolio Capital
+              </span>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            </div>
+            <div className="mt-1 flex flex-wrap items-baseline gap-4">
+              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono tabular-nums">
+                ${stats.accountBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </h1>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white/[0.05] border border-white/[0.08] shadow-sm">
+                {stats.totalPnl >= 0 ? (
+                  <ArrowUpRight className="h-4 w-4 text-emerald-400" />
+                ) : (
+                  <ArrowDownRight className="h-4 w-4 text-rose-400" />
+                )}
+                <span
+                  className={`font-mono font-bold text-xs tabular-nums ${
+                    stats.totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                  }`}
+                >
+                  {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(2)}
+                </span>
+                <span className={`text-[11px] font-mono font-medium ${stats.totalPnl >= 0 ? 'text-emerald-400/90' : 'text-rose-400/90'}`}>
+                  ({stats.totalPnl >= 0 ? '+' : ''}{netPnlPercent.toFixed(2)}%)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Metrics Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Today's P&L</div>
+              <div
+                className={`text-sm font-bold tabular-nums mt-1 ${
+                  stats.todayPnl > 0
+                    ? 'text-emerald-400'
+                    : stats.todayPnl < 0
+                    ? 'text-rose-400'
+                    : 'text-slate-300'
                 }`}
               >
-                {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(2)}
-              </span>
-              <span className={`text-[11px] ${stats.totalPnl >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'}`}>
-                ({stats.totalPnl >= 0 ? '+' : ''}{netPnlPercent.toFixed(2)}%)
-              </span>
+                {stats.todayPnl >= 0 ? '+' : ''}${stats.todayPnl.toFixed(2)}
+              </div>
             </div>
-          </div>
-        </div>
 
-        {/* Compact Right Summary Items */}
-        <div className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs font-mono">
-          <div>
-            <div className="text-[11px] text-[#696f7e]">Today's P&L</div>
-            <div
-              className={`text-base font-semibold tabular-nums mt-0.5 ${
-                stats.todayPnl > 0
-                  ? 'text-[#10b981]'
-                  : stats.todayPnl < 0
-                  ? 'text-[#ef4444]'
-                  : 'text-[#9ea3b0]'
-              }`}
-            >
-              {stats.todayPnl >= 0 ? '+' : ''}${stats.todayPnl.toFixed(2)}
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Monthly P&L</div>
+              <div
+                className={`text-sm font-bold tabular-nums mt-1 ${
+                  stats.monthlyPnl > 0
+                    ? 'text-emerald-400'
+                    : stats.monthlyPnl < 0
+                    ? 'text-rose-400'
+                    : 'text-slate-300'
+                }`}
+              >
+                {stats.monthlyPnl >= 0 ? '+' : ''}${stats.monthlyPnl.toFixed(2)}
+              </div>
             </div>
-          </div>
 
-          <div className="h-7 w-px bg-[#181a22] hidden sm:block" />
-
-          <div>
-            <div className="text-[11px] text-[#696f7e]">Monthly P&L</div>
-            <div
-              className={`text-base font-semibold tabular-nums mt-0.5 ${
-                stats.monthlyPnl > 0
-                  ? 'text-[#10b981]'
-                  : stats.monthlyPnl < 0
-                  ? 'text-[#ef4444]'
-                  : 'text-[#9ea3b0]'
-              }`}
-            >
-              {stats.monthlyPnl >= 0 ? '+' : ''}${stats.monthlyPnl.toFixed(2)}
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Initial Base</div>
+              <div className="text-sm font-bold tabular-nums text-slate-200 mt-1">
+                ${stats.initialBalance.toLocaleString()}
+              </div>
             </div>
-          </div>
 
-          <div className="h-7 w-px bg-[#181a22] hidden sm:block" />
-
-          <div>
-            <div className="text-[11px] text-[#696f7e]">Baseline Capital</div>
-            <div className="text-base font-semibold tabular-nums text-[#d0d4dc] mt-0.5">
-              ${stats.initialBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-            </div>
-          </div>
-
-          <div className="h-7 w-px bg-[#181a22] hidden sm:block" />
-
-          <div>
-            <div className="text-[11px] text-[#696f7e]">Total Logged</div>
-            <div className="text-base font-semibold tabular-nums text-[#d0d4dc] mt-0.5">
-              {stats.totalTrades} trades
+            <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.05]">
+              <div className="text-[10px] text-slate-400 uppercase tracking-wider">Executions</div>
+              <div className="text-sm font-bold tabular-nums text-slate-200 mt-1">
+                {stats.totalTrades} Logged
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 2. Primary Equity Curve (Spacious, prominent) */}
-      <section className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5">
-        <div className="flex items-center justify-between mb-3 text-xs">
-          <div>
-            <h2 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0]">
-              Equity & Realized Performance Curve
+      {/* 2. RECENT 7-DAYS CALENDAR STRIP (Tradervue Style - Image 3) */}
+      <section className="space-y-2">
+        <div className="flex items-center justify-between text-xs px-1">
+          <div className="flex items-center gap-2">
+            <Calendar className="h-3.5 w-3.5 text-slate-400" />
+            <span className="font-semibold text-slate-300 tracking-tight">Recent Daily P&L Rhythm</span>
+          </div>
+          <span className="text-[11px] text-slate-500 font-mono">Last 7 Trading Sessions</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5">
+          {weeklyStrip.map(day => {
+            const hasTrades = day.tradesCount > 0;
+            const isProfit = day.pnl > 0;
+            const isLoss = day.pnl < 0;
+
+            return (
+              <div
+                key={day.dateStr}
+                className={`p-3 rounded-xl border transition-all ${
+                  day.isToday
+                    ? 'bg-emerald-500/[0.06] border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.1)]'
+                    : 'bg-white/[0.02] border-white/[0.05] hover:border-white/[0.1]'
+                }`}
+              >
+                <div className="flex items-center justify-between text-xs font-mono">
+                  <span className="font-semibold text-slate-300">{day.dayName}</span>
+                  <span className="text-[10px] text-slate-500">{day.dayNum}</span>
+                </div>
+                <div className="mt-2">
+                  <div
+                    className={`font-mono text-xs font-bold tabular-nums ${
+                      isProfit
+                        ? 'text-emerald-400'
+                        : isLoss
+                        ? 'text-rose-400'
+                        : 'text-slate-400'
+                    }`}
+                  >
+                    {hasTrades ? (
+                      <>
+                        {isProfit ? '+' : ''}${day.pnl.toFixed(2)}
+                      </>
+                    ) : (
+                      '$0.00'
+                    )}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                    {day.tradesCount} {day.tradesCount === 1 ? 'trade' : 'trades'}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* 3. CIRCULAR GAUGES & TICKER SPARKLINES (Umber Style - Image 2) */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left: 4 Circular Dials (6 cols) */}
+        <div className="lg:col-span-6 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-lg">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 text-emerald-400" />
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
+                Execution Quality Gauges
+              </h2>
+            </div>
+            <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+              Algorithm V2.4
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <CircularGauge
+              value={stats.winRate}
+              label="Win Rate"
+              sublabel={`${stats.winCount}W / ${stats.lossCount}L`}
+              color="#00F5A0"
+              displayValue={`${stats.winRate.toFixed(1)}%`}
+            />
+
+            <CircularGauge
+              value={Math.min(100, (stats.profitFactor / 3) * 100)}
+              max={100}
+              label="Profit Factor"
+              sublabel={stats.profitFactor >= 2 ? 'Elite Edge' : 'Stable'}
+              color="#10B981"
+              displayValue={stats.profitFactor.toFixed(2)}
+            />
+
+            <CircularGauge
+              value={Math.min(100, Math.max(0, (stats.expectancy + 1) * 35))}
+              max={100}
+              label="Expectancy"
+              sublabel="R / Trade"
+              color="#34D399"
+              displayValue={`${stats.expectancy >= 0 ? '+' : ''}${stats.expectancy}R`}
+            />
+
+            <CircularGauge
+              value={Math.max(0, 100 - stats.maxDrawdownPercent * 4)}
+              max={100}
+              label="Risk Health"
+              sublabel={`-${stats.maxDrawdownPercent.toFixed(1)}% DD`}
+              color={stats.maxDrawdownPercent < 5 ? '#00F5A0' : '#F59E0B'}
+              displayValue={`${Math.max(0, Math.round(100 - stats.maxDrawdownPercent * 4))}%`}
+            />
+          </div>
+        </div>
+
+        {/* Right: Traded Asset Ticker Sparklines (6 cols) */}
+        <div className="lg:col-span-6 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-lg">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
+            <div className="flex items-center gap-2">
+              <Target className="h-4 w-4 text-emerald-400" />
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-200 font-mono">
+                Core Traded Assets
+              </h2>
+            </div>
+            <span className="text-[10px] text-slate-400 font-mono">Performance by Ticker</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {tickerStats.length > 0 ? (
+              tickerStats.map(item => (
+                <TickerCard
+                  key={item.symbol}
+                  symbol={item.symbol}
+                  tradesCount={item.tradesCount}
+                  winRate={item.winRate}
+                  totalPnl={item.totalPnl}
+                  points={item.points}
+                />
+              ))
+            ) : (
+              <div className="col-span-2 py-8 text-center text-xs text-slate-500 font-mono">
+                Log trades to view ticker breakdown & sparklines.
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* 4. PRIMARY EQUITY PERFORMANCE CURVE */}
+      <section className="p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-xl">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="h-3 w-1 bg-emerald-400 rounded-full" />
+            <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+              Equity & Trajectory Dynamics
             </h2>
           </div>
-          <span className="text-[11px] text-[#555a66] font-mono">
-            Cumulative progression
+          <span className="text-[11px] text-slate-400 font-mono">
+            Compounded realized account trajectory
           </span>
         </div>
         <EquityChart trades={trades} initialBalance={stats.initialBalance} />
       </section>
 
-      {/* 3. Performance Metrics in Compact Horizontal Section */}
-      <section className="rounded-lg border border-[#181a22] bg-[#0c0e13] px-4 py-3.5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs font-mono divide-y sm:divide-y-0 sm:divide-x divide-[#181a22]">
+      {/* 5. SUMMARY METRICS ROW */}
+      <section className="p-4 rounded-2xl bg-[#0D111A] border border-white/[0.07]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 text-xs font-mono divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06]">
           <div className="pt-2 sm:pt-0 sm:pr-4">
-            <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Win Rate</span>
+            <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Win Rate</span>
             <div className="mt-1 flex items-baseline gap-1.5">
-              <span className="text-base font-semibold text-[#f0f2f5] tabular-nums">
+              <span className="text-base font-bold text-white tabular-nums">
                 {stats.winRate.toFixed(1)}%
               </span>
-              <span className="text-[10px] text-[#696f7e]">
-                ({stats.winCount}W / {stats.lossCount}L)
+              <span className="text-[10px] text-slate-400">
+                ({stats.winCount}W/{stats.lossCount}L)
               </span>
             </div>
           </div>
 
           <div className="pt-2 sm:pt-0 sm:px-4">
-            <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Profit Factor</span>
-            <div className="mt-1 text-base font-semibold text-[#f0f2f5] tabular-nums">
+            <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Profit Factor</span>
+            <div className="mt-1 text-base font-bold text-white tabular-nums">
               {stats.profitFactor.toFixed(2)}
             </div>
           </div>
 
-          <div className="pt-2 sm:pt-0 sm:px-4 group cursor-help" title="Trading Expectancy: Rata-rata ekspektasi hasil per trade dalam satuan R (Risk Multiple). Formula: (Win Rate × Avg Win) - (Loss Rate × Avg Loss). Angka positif (+R) menandakan sistem Anda memiliki keunggulan (edge) jangka panjang.">
-            <div className="flex items-center gap-1">
-              <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e] group-hover:text-[#a0a6b5] transition-colors">Expectancy</span>
-              <span className="text-[9px] text-[#555a66] font-sans">ℹ</span>
-            </div>
-            <div className="mt-1 flex items-baseline gap-1.5">
-              <span className={`text-base font-semibold tabular-nums ${stats.expectancy >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'}`}>
+          <div className="pt-2 sm:pt-0 sm:px-4">
+            <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Expectancy</span>
+            <div className="mt-1 flex items-baseline gap-1">
+              <span className={`text-base font-bold tabular-nums ${stats.expectancy >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                 {stats.expectancy >= 0 ? '+' : ''}{stats.expectancy}R
               </span>
-              <span className="text-[10px] text-[#555a66]">/ trade</span>
-            </div>
-          </div>
-
-          <div
-            className="pt-2 sm:pt-0 sm:px-4 group cursor-help"
-            title={
-              stats.totalTrades === 0
-                ? 'Average Risk-to-Reward: Belum ada data trade.'
-                : stats.winCount === 0 && stats.lossCount > 0
-                ? `Average Risk-to-Reward: Target 1:${(stats.avgPlannedRR > 0 ? stats.avgPlannedRR : 1).toFixed(2)} dari setup trading TP & SL (Belum ada trade profit terealisasi).`
-                : stats.lossCount === 0 && stats.winCount > 0
-                ? `Average Risk-to-Reward: 1:${stats.avgRR.toFixed(2)} dihitung dari rata-rata capaian Win R (+${stats.avgRR.toFixed(2)}R per 1R risk).`
-                : `Average Realized Risk-to-Reward: 1:${stats.avgRR.toFixed(2)} (Rasio rata-rata kemenangan $${stats.avgWin.toFixed(2)} berbanding rata-rata kekalahan $${stats.avgLoss.toFixed(2)}).`
-            }
-          >
-            <div className="flex items-center gap-1">
-              <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e] group-hover:text-[#a0a6b5] transition-colors">
-                Average R:R
-              </span>
-              <span className="text-[9px] text-[#555a66] font-sans">ℹ</span>
-            </div>
-            <div className="mt-1 flex items-baseline gap-1.5">
-              {stats.totalTrades === 0 ? (
-                <span className="text-base font-semibold text-[#555a66] font-mono">-</span>
-              ) : stats.winCount === 0 && stats.lossCount > 0 ? (
-                <>
-                  <span className="text-base font-semibold text-[#f0f2f5] tabular-nums">
-                    1:{(stats.avgPlannedRR > 0 ? stats.avgPlannedRR : 1).toFixed(2)}
-                  </span>
-                  <span className="text-[10px] text-[#696f7e] font-sans">Planned</span>
-                </>
-              ) : (
-                <>
-                  <span className="text-base font-semibold text-[#f0f2f5] tabular-nums">
-                    1:{stats.avgRR.toFixed(2)}
-                  </span>
-                  <span className="text-[10px] text-[#696f7e] font-sans">
-                    {stats.lossCount === 0 ? 'Win R' : 'Realized'}
-                  </span>
-                </>
-              )}
+              <span className="text-[10px] text-slate-400">/ trade</span>
             </div>
           </div>
 
           <div className="pt-2 sm:pt-0 sm:px-4">
-            <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Max Drawdown</span>
-            <div className="mt-1 text-base font-semibold tabular-nums text-[#ef4444]">
+            <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Average R:R</span>
+            <div className="mt-1 text-base font-bold text-white tabular-nums">
+              1:{stats.avgRR.toFixed(2)}
+            </div>
+          </div>
+
+          <div className="pt-2 sm:pt-0 sm:px-4">
+            <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Max Drawdown</span>
+            <div className="mt-1 text-base font-bold text-rose-400 tabular-nums">
               -{stats.maxDrawdownPercent.toFixed(1)}%
             </div>
           </div>
 
           <div className="pt-2 sm:pt-0 sm:pl-4">
-            <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Avg Hold Time</span>
-            <div className="mt-1 text-base font-semibold text-[#f0f2f5] tabular-nums">
+            <span className="text-[10.5px] uppercase tracking-wider text-slate-400 font-semibold">Avg Hold Time</span>
+            <div className="mt-1 text-base font-bold text-white tabular-nums">
               {stats.avgHoldingTimeMinutes} min
             </div>
           </div>
         </div>
       </section>
 
-      {/* 4. Recent Executions & Performance Breakdown (Two-Column Split) */}
-      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Recent Executions Table (8 cols) */}
-        <div className="lg:col-span-8 rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5">
-          <div className="flex items-center justify-between pb-3 border-b border-[#181a22] mb-3">
+      {/* 6. RECENT EXECUTIONS & PERFORMANCE EXTREMES (Two-Column) */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        {/* Left: Recent Executions (8 cols) */}
+        <div className="lg:col-span-8 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-xl">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
             <div>
-              <h3 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0]">
-                Recent Executions
+              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+                Recent Journal Executions
               </h3>
-              <p className="text-[11px] text-[#555a66]">Latest recorded journal entries</p>
+              <p className="text-[11px] text-slate-400">Latest recorded trades with verified execution</p>
             </div>
             <button
               onClick={onViewAllTrades}
-              className="flex items-center gap-1 text-xs font-mono text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+              className="flex items-center gap-1 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors"
             >
-              <span>Full Journal</span>
+              <span>View All</span>
               <ChevronRight className="h-3.5 w-3.5" />
             </button>
           </div>
@@ -237,21 +567,21 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono">
               <thead>
-                <tr className="border-b border-[#181a22] text-[10px] uppercase text-[#696f7e]">
-                  <th className="py-2 px-2.5">Date</th>
-                  <th className="py-2 px-2.5">Asset</th>
-                  <th className="py-2 px-2.5">Side</th>
-                  <th className="py-2 px-2.5">Setup</th>
-                  <th className="py-2 px-2.5 text-right">Entry</th>
-                  <th className="py-2 px-2.5 text-right">Exit</th>
-                  <th className="py-2 px-2.5 text-right">P&L</th>
-                  <th className="py-2 px-2.5 text-right">R</th>
+                <tr className="border-b border-white/[0.06] text-[10px] uppercase text-slate-400">
+                  <th className="py-2.5 px-3">Date</th>
+                  <th className="py-2.5 px-3">Asset</th>
+                  <th className="py-2.5 px-3">Side</th>
+                  <th className="py-2.5 px-3">Setup</th>
+                  <th className="py-2.5 px-3 text-right">Entry</th>
+                  <th className="py-2.5 px-3 text-right">Exit</th>
+                  <th className="py-2.5 px-3 text-right">P&L</th>
+                  <th className="py-2.5 px-3 text-right">R</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#15171e]">
+              <tbody className="divide-y divide-white/[0.03]">
                 {recentTrades.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-10 text-center text-[#555a66] text-xs">
+                    <td colSpan={8} className="py-12 text-center text-slate-500 text-xs">
                       No executions logged. Click &ldquo;Record Trade&rdquo; to start.
                     </td>
                   </tr>
@@ -263,48 +593,48 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                       <tr
                         key={trade.id}
                         onClick={() => onSelectTrade(trade)}
-                        className="hover:bg-[#12151c] cursor-pointer transition-colors"
+                        className="hover:bg-white/[0.03] cursor-pointer transition-colors group"
                       >
-                        <td className="py-2.5 px-2.5 text-[#696f7e] tabular-nums whitespace-nowrap">
+                        <td className="py-3 px-3 text-slate-400 tabular-nums whitespace-nowrap">
                           {trade.date}
                         </td>
-                        <td className="py-2.5 px-2.5 font-medium text-[#e4e7ec] whitespace-nowrap">
+                        <td className="py-3 px-3 font-bold text-white whitespace-nowrap">
                           {trade.instrument}
                         </td>
-                        <td className="py-2.5 px-2.5 whitespace-nowrap">
+                        <td className="py-3 px-3 whitespace-nowrap">
                           <span
-                            className={
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                               trade.direction === 'LONG'
-                                ? 'text-[#10b981]'
-                                : 'text-[#ef4444]'
-                            }
+                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                                : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                            }`}
                           >
                             {trade.direction}
                           </span>
                         </td>
-                        <td className="py-2.5 px-2.5 text-[#8c92a2] max-w-[180px] truncate">
+                        <td className="py-3 px-3 text-slate-400 max-w-[160px] truncate">
                           {trade.setup}
                         </td>
-                        <td className="py-2.5 px-2.5 text-right text-[#a0a6b5] tabular-nums">
+                        <td className="py-3 px-3 text-right text-slate-300 tabular-nums">
                           {trade.entryPrice}
                         </td>
-                        <td className="py-2.5 px-2.5 text-right text-[#a0a6b5] tabular-nums">
+                        <td className="py-3 px-3 text-right text-slate-300 tabular-nums">
                           {trade.exitPrice}
                         </td>
                         <td
-                          className={`py-2.5 px-2.5 text-right font-medium tabular-nums ${
+                          className={`py-3 px-3 text-right font-bold tabular-nums ${
                             isWin
-                              ? 'text-[#10b981]'
+                              ? 'text-emerald-400'
                               : isLoss
-                              ? 'text-[#ef4444]'
-                              : 'text-[#696f7e]'
+                              ? 'text-rose-400'
+                              : 'text-slate-400'
                           }`}
                         >
                           {trade.pnl >= 0 ? '+' : ''}${trade.pnl.toFixed(2)}
                         </td>
                         <td
-                          className={`py-2.5 px-2.5 text-right tabular-nums ${
-                            trade.rMultiple >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'
+                          className={`py-3 px-3 text-right font-semibold tabular-nums ${
+                            trade.rMultiple >= 0 ? 'text-emerald-400' : 'text-rose-400'
                           }`}
                         >
                           {trade.rMultiple >= 0 ? '+' : ''}{trade.rMultiple.toFixed(2)}R
@@ -318,120 +648,113 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
           </div>
         </div>
 
-        {/* Right Column: Execution Extremes & Summary (4 cols, Editorial Key-Value) */}
-        <div className="lg:col-span-4 rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5">
-          <div className="pb-3 border-b border-[#181a22] mb-3">
-            <h3 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0]">
+        {/* Right: Extremes & Records (4 cols) */}
+        <div className="lg:col-span-4 p-5 rounded-2xl bg-[#0D111A] border border-white/[0.07] shadow-xl">
+          <div className="pb-3 border-b border-white/[0.06] mb-3">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
               Performance Extremes
             </h3>
-            <p className="text-[11px] text-[#555a66]">Historical boundary data</p>
+            <p className="text-[11px] text-slate-400">Statistical boundaries and streaks</p>
           </div>
 
           <div className="space-y-3 font-mono text-xs">
-            {/* Best Trade */}
-            <div className="flex items-center justify-between py-1.5 border-b border-[#161820]">
-              <span className="text-[#696f7e]">Best Trade</span>
+            <div className="flex items-center justify-between py-2 border-b border-white/[0.04]">
+              <span className="text-slate-400">Best Trade</span>
               <div className="text-right">
                 {stats.bestTrade.pnl > 0 ? (
                   <div>
-                    <span className="font-semibold text-[#10b981] tabular-nums">
+                    <span className="font-bold text-emerald-400 tabular-nums">
                       +${stats.bestTrade.pnl.toFixed(2)}
                     </span>
-                    <span className="text-[10px] text-[#555a66] ml-1.5">
+                    <span className="text-[10px] text-slate-400 ml-1.5 font-mono">
                       {stats.bestTrade.instrument} (+{stats.bestTrade.r}R)
                     </span>
                   </div>
                 ) : (
-                  <span className="text-[#555a66]">-</span>
+                  <span className="text-slate-500">-</span>
                 )}
               </div>
             </div>
 
-            {/* Worst Trade */}
-            <div className="flex items-center justify-between py-1.5 border-b border-[#161820]">
-              <span className="text-[#696f7e]">Worst Trade</span>
+            <div className="flex items-center justify-between py-2 border-b border-white/[0.04]">
+              <span className="text-slate-400">Worst Trade</span>
               <div className="text-right">
                 {stats.worstTrade.pnl < 0 ? (
                   <div>
-                    <span className="font-semibold text-[#ef4444] tabular-nums">
+                    <span className="font-bold text-rose-400 tabular-nums">
                       -${Math.abs(stats.worstTrade.pnl).toFixed(2)}
                     </span>
-                    <span className="text-[10px] text-[#555a66] ml-1.5">
+                    <span className="text-[10px] text-slate-400 ml-1.5 font-mono">
                       {stats.worstTrade.instrument} ({stats.worstTrade.r}R)
                     </span>
                   </div>
                 ) : (
-                  <span className="text-[#555a66]">-</span>
+                  <span className="text-slate-500">-</span>
                 )}
               </div>
             </div>
 
-            {/* Best Day */}
-            <div className="flex items-center justify-between py-1.5 border-b border-[#161820]">
-              <span className="text-[#696f7e]">Best Day</span>
+            <div className="flex items-center justify-between py-2 border-b border-white/[0.04]">
+              <span className="text-slate-400">Best Day</span>
               <div className="text-right">
                 {stats.bestDay.pnl > 0 ? (
                   <div>
-                    <span className="font-semibold text-[#10b981] tabular-nums">
+                    <span className="font-bold text-emerald-400 tabular-nums">
                       +${stats.bestDay.pnl.toFixed(2)}
                     </span>
-                    <span className="text-[10px] text-[#555a66] ml-1.5">{stats.bestDay.date}</span>
+                    <span className="text-[10px] text-slate-400 ml-1.5 font-mono">{stats.bestDay.date}</span>
                   </div>
                 ) : (
-                  <span className="text-[#555a66]">-</span>
+                  <span className="text-slate-500">-</span>
                 )}
               </div>
             </div>
 
-            {/* Worst Day */}
-            <div className="flex items-center justify-between py-1.5 border-b border-[#161820]">
-              <span className="text-[#696f7e]">Worst Day</span>
+            <div className="flex items-center justify-between py-2 border-b border-white/[0.04]">
+              <span className="text-slate-400">Worst Day</span>
               <div className="text-right">
                 {stats.worstDay.pnl < 0 ? (
                   <div>
-                    <span className="font-semibold text-[#ef4444] tabular-nums">
+                    <span className="font-bold text-rose-400 tabular-nums">
                       -${Math.abs(stats.worstDay.pnl).toFixed(2)}
                     </span>
-                    <span className="text-[10px] text-[#555a66] ml-1.5">{stats.worstDay.date}</span>
+                    <span className="text-[10px] text-slate-400 ml-1.5 font-mono">{stats.worstDay.date}</span>
                   </div>
                 ) : (
-                  <span className="text-[#555a66]">-</span>
+                  <span className="text-slate-500">-</span>
                 )}
               </div>
             </div>
 
-            {/* Average Win */}
-            <div className="flex items-center justify-between py-1.5 border-b border-[#161820]">
-              <span className="text-[#696f7e]">Average Win</span>
+            <div className="flex items-center justify-between py-2 border-b border-white/[0.04]">
+              <span className="text-slate-400">Average Win</span>
               <div className="text-right">
-                <span className="font-semibold text-[#10b981] tabular-nums">
+                <span className="font-bold text-emerald-400 tabular-nums">
                   {stats.winCount > 0 ? `+$${stats.avgWin.toFixed(2)}` : '$0.00'}
                 </span>
-                <span className="text-[10px] text-[#555a66] ml-1.5">({stats.winCount} wins)</span>
+                <span className="text-[10px] text-slate-400 ml-1.5 font-mono">({stats.winCount} wins)</span>
               </div>
             </div>
 
-            {/* Average Loss */}
-            <div className="flex items-center justify-between py-1.5 border-b border-[#161820]">
-              <span className="text-[#696f7e]">Average Loss</span>
+            <div className="flex items-center justify-between py-2 border-b border-white/[0.04]">
+              <span className="text-slate-400">Average Loss</span>
               <div className="text-right">
-                <span className="font-semibold text-[#ef4444] tabular-nums">
+                <span className="font-bold text-rose-400 tabular-nums">
                   {stats.lossCount > 0 ? `-$${stats.avgLoss.toFixed(2)}` : '$0.00'}
                 </span>
-                <span className="text-[10px] text-[#555a66] ml-1.5">({stats.lossCount} losses)</span>
+                <span className="text-[10px] text-slate-400 ml-1.5 font-mono">({stats.lossCount} losses)</span>
               </div>
             </div>
 
-            {/* Current Streak */}
-            <div className="flex items-center justify-between py-1.5">
-              <span className="text-[#696f7e]">Current Streak</span>
+            <div className="flex items-center justify-between py-2">
+              <span className="text-slate-400">Current Streak</span>
               <span
-                className={`font-semibold tabular-nums ${
+                className={`font-bold tabular-nums ${
                   stats.currentStreak.type === 'WIN'
-                    ? 'text-[#10b981]'
+                    ? 'text-emerald-400'
                     : stats.currentStreak.type === 'LOSS'
-                    ? 'text-[#ef4444]'
-                    : 'text-[#696f7e]'
+                    ? 'text-rose-400'
+                    : 'text-slate-400'
                 }`}
               >
                 {stats.currentStreak.count} {stats.currentStreak.type}

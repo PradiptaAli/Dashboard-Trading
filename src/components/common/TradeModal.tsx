@@ -614,23 +614,23 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-2 sm:p-4 backdrop-blur-sm overflow-y-auto">
-      <div className="relative my-auto w-full max-w-4xl rounded-lg border border-[#1e222c] bg-[#0c0e13] text-[#e8ebf0] shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 backdrop-blur-md overflow-y-auto">
+      <div className="relative my-auto w-full max-w-4xl rounded-2xl border border-white/[0.09] bg-[#0A0D15]/95 text-[#e8ebf0] shadow-[0_25px_70px_rgba(0,0,0,0.9)] backdrop-blur-2xl overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-[#181a22] bg-[#0f1117] px-5 py-3.5">
-          <div className="flex items-center gap-2.5">
-            <div className="h-2 w-2 rounded-full bg-[#10b981]" />
-            <h2 className="text-xs sm:text-sm font-semibold font-mono tracking-tight uppercase text-[#f4f5f7]">
-              {isEditing ? `Edit Execution — ${initialTrade?.id}` : 'Record New Trade'}
+        <div className="flex items-center justify-between border-b border-white/[0.06] bg-[#0F1424] px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+            <h2 className="text-xs sm:text-sm font-bold font-mono tracking-tight uppercase text-white">
+              {isEditing ? `Edit Execution — ${initialTrade?.id}` : 'Record New Execution'}
             </h2>
-            <span className="text-[11px] font-mono text-[#696f7e] ml-2 hidden sm:inline">
-              Balance: <strong className="text-[#10b981] font-medium">${balance.toFixed(2)}</strong> (1R = ${riskAmount1R.toFixed(2)})
+            <span className="text-[11px] font-mono text-slate-400 ml-2 hidden sm:inline">
+              Balance: <strong className="text-emerald-400 font-bold">${balance.toFixed(2)}</strong> (1R = ${riskAmount1R.toFixed(2)})
             </span>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded p-1 text-[#6e7484] hover:bg-[#181b22] hover:text-[#e4e7ec] transition-colors"
+            className="rounded-xl p-1.5 text-slate-400 hover:bg-white/[0.06] hover:text-white transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -1445,29 +1445,26 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           </div>
 
           {/* Modal Footer */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#181a22] pt-4 font-mono text-xs">
-            <div className="text-[#696f7e]">
-              Outcome: <strong className={pnl >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'}>
+          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-5 font-mono text-xs">
+            <div className="text-slate-400">
+              Outcome: <strong className={pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
                 {pnl >= 0 ? '+' : ''}${pnl.toFixed(2)} ({rMultiple >= 0 ? '+' : ''}{rMultiple}R · {computedResult})
               </strong>
-              <span className="text-[#555a66] text-[11px] ml-2">
-                | Sizing: {positionSize} {sizeUnit}
-              </span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <button
                 type="button"
                 onClick={onClose}
-                className="rounded-md border border-[#1e222c] bg-[#101217] px-3.5 py-1.5 text-xs text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
+                className="rounded-xl border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.08] px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-all"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-4 py-1.5 text-xs font-medium text-[#f0f2f5] transition-colors"
+                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 px-5 py-2 text-xs font-bold text-[#07090E] shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all active:scale-[0.98]"
               >
-                <Check className="h-3.5 w-3.5 text-[#10b981]" />
+                <Check className="h-4 w-4 stroke-[2.5]" />
                 <span>{isEditing ? 'Save Changes' : 'Commit Trade to Journal'}</span>
               </button>
             </div>

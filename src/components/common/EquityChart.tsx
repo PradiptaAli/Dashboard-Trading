@@ -102,51 +102,51 @@ export const EquityChart: React.FC<EquityChartProps> = ({
   return (
     <div className="relative select-none" ref={containerRef}>
       {/* Chart Controls: Clean minimal segmented bars */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#181b22]">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
         {/* Metric Switcher */}
-        <div className="flex items-center gap-1 rounded bg-[#101217] p-0.5 text-xs">
+        <div className="flex items-center gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.05] text-xs">
           <button
             onClick={() => setMetric('equity')}
-            className={`px-2.5 py-1 text-xs rounded transition-colors ${
+            className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'equity'
-                ? 'bg-[#1b1f28] text-[#e8ebf0] font-medium'
-                : 'text-[#6f7584] hover:text-[#b4bac8]'
+                ? 'bg-white/[0.1] text-white font-bold shadow-sm border border-white/[0.08]'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            Equity
+            Equity Curve
           </button>
           <button
             onClick={() => setMetric('pnl')}
-            className={`px-2.5 py-1 text-xs rounded transition-colors ${
+            className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'pnl'
-                ? 'bg-[#1b1f28] text-[#e8ebf0] font-medium'
-                : 'text-[#6f7584] hover:text-[#b4bac8]'
+                ? 'bg-white/[0.1] text-white font-bold shadow-sm border border-white/[0.08]'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            Net P&L
+            Net Realized P&L
           </button>
           <button
             onClick={() => setMetric('r')}
-            className={`px-2.5 py-1 text-xs rounded transition-colors ${
+            className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'r'
-                ? 'bg-[#1b1f28] text-[#e8ebf0] font-medium'
-                : 'text-[#6f7584] hover:text-[#b4bac8]'
+                ? 'bg-white/[0.1] text-white font-bold shadow-sm border border-white/[0.08]'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            R-Multiple
+            R-Multiple (Risk)
           </button>
         </div>
 
         {/* Timeframe Filter */}
-        <div className="flex items-center gap-0.5 rounded bg-[#101217] p-0.5 text-xs">
+        <div className="flex items-center gap-1 rounded-xl bg-white/[0.03] p-1 border border-white/[0.05] text-xs">
           {(['7D', '30D', '3M', '6M', '1Y', 'ALL'] as const).map(tf => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
-              className={`px-2 py-1 text-[11px] rounded transition-colors font-mono ${
+              className={`px-2.5 py-1 text-[11px] rounded-lg transition-all font-mono font-medium ${
                 timeframe === tf
-                  ? 'bg-[#1b1f28] text-[#e8ebf0] font-medium'
-                  : 'text-[#686e7c] hover:text-[#b2b8c5]'
+                  ? 'bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30 shadow-[0_0_10px_rgba(16,185,129,0.15)]'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               {tf}
@@ -156,13 +156,13 @@ export const EquityChart: React.FC<EquityChartProps> = ({
       </div>
 
       {/* SVG Rendering */}
-      <div className="relative pt-2">
+      <div className="relative pt-3">
         {points.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-64 text-center rounded border border-dashed border-[#1a1d25] bg-[#0c0e13]">
-            <div className="text-[#a0a5b2] text-xs font-medium">
+          <div className="flex flex-col items-center justify-center h-64 text-center rounded-xl border border-dashed border-white/[0.08] bg-white/[0.01]">
+            <div className="text-slate-300 text-xs font-semibold">
               Baseline Capital: ${initialBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
-            <div className="text-[#555a66] text-xs mt-1">
+            <div className="text-slate-500 text-xs mt-1">
               No executions logged yet. The equity trajectory will render once trades are logged.
             </div>
           </div>
@@ -175,8 +175,9 @@ export const EquityChart: React.FC<EquityChartProps> = ({
           >
             <defs>
               <linearGradient id="restrainedEquityFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#10b981" stopOpacity="0.08" />
-                <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
+                <stop offset="0%" stopColor="#00F5A0" stopOpacity="0.22" />
+                <stop offset="60%" stopColor="#10B981" stopOpacity="0.05" />
+                <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
               </linearGradient>
             </defs>
 
@@ -191,14 +192,14 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                     y1={y}
                     x2={width - padding.right}
                     y2={y}
-                    stroke="#161820"
-                    strokeDasharray="2 3"
+                    stroke="rgba(255, 255, 255, 0.05)"
+                    strokeDasharray="3 3"
                   />
                   <text
                     x={padding.left - 10}
                     y={y + 3.5}
                     textAnchor="end"
-                    className="fill-[#5c6170] text-[10px] font-mono tabular-nums"
+                    className="fill-slate-500 text-[10px] font-mono tabular-nums"
                   >
                     {formatYAxis(val)}
                   </text>
@@ -213,24 +214,38 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                 y1={zeroY}
                 x2={width - padding.right}
                 y2={zeroY}
-                stroke="#2b2f3c"
-                strokeWidth="1"
+                stroke="rgba(255, 255, 255, 0.15)"
+                strokeWidth="1.5"
+                strokeDasharray="4 2"
               />
             )}
 
-            {/* Ultra-subtle area fill */}
+            {/* Glowing area fill */}
             {areaD && <path d={areaD} fill="url(#restrainedEquityFill)" />}
 
-            {/* Clean Line */}
+            {/* High-Tech Glowing Line */}
             {pathD && (
-              <path
-                d={pathD}
-                fill="none"
-                stroke="#10b981"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              <>
+                {/* Outer soft glow */}
+                <path
+                  d={pathD}
+                  fill="none"
+                  stroke="#00F5A0"
+                  strokeWidth="6"
+                  strokeOpacity="0.18"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                {/* Crisp core stroke */}
+                <path
+                  d={pathD}
+                  fill="none"
+                  stroke="#00F5A0"
+                  strokeWidth="2.25"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </>
             )}
 
             {/* Hover Crosshair & Point */}
@@ -241,15 +256,15 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                   y1={padding.top}
                   x2={activePoint.x}
                   y2={padding.top + chartHeight}
-                  stroke="#383d4c"
+                  stroke="rgba(255, 255, 255, 0.25)"
                   strokeWidth="1"
-                  strokeDasharray="2 2"
+                  strokeDasharray="3 3"
                 />
                 <circle
                   cx={activePoint.x}
                   cy={activePoint.y}
-                  r="3.5"
-                  className="fill-[#10b981] stroke-[#0c0e12] stroke-2"
+                  r="5"
+                  className="fill-[#00F5A0] stroke-[#080B11] stroke-2 shadow-lg"
                 />
               </g>
             )}
@@ -260,7 +275,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                 <text
                   x={padding.left}
                   y={height - 8}
-                  className="fill-[#5c6170] font-mono text-[10px]"
+                  className="fill-slate-500 font-mono text-[10px]"
                 >
                   {points[0].date}
                 </text>
@@ -269,7 +284,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                     x={width - padding.right}
                     y={height - 8}
                     textAnchor="end"
-                    className="fill-[#5c6170] font-mono text-[10px]"
+                    className="fill-slate-500 font-mono text-[10px]"
                   >
                     {points[points.length - 1].date}
                   </text>
@@ -281,24 +296,24 @@ export const EquityChart: React.FC<EquityChartProps> = ({
 
         {/* Clean Hover Tooltip */}
         {activePoint && (
-          <div className="pointer-events-none absolute top-3 right-3 rounded border border-[#232734] bg-[#11131a] px-3 py-2 text-xs font-mono shadow-md">
-            <div className="text-[#656b78] text-[10px] flex items-center justify-between gap-5">
+          <div className="pointer-events-none absolute top-4 right-4 rounded-2xl border border-white/[0.12] bg-[#0C111C]/95 p-3.5 text-xs font-mono shadow-2xl backdrop-blur-xl">
+            <div className="text-slate-400 text-[10px] flex items-center justify-between gap-6 pb-1.5 border-b border-white/[0.06]">
               <span>{activePoint.point.date} {activePoint.point.time}</span>
-              <span>#{activePoint.point.tradeIndex}</span>
+              <span className="font-semibold text-slate-300">Trade #{activePoint.point.tradeIndex}</span>
             </div>
-            <div className="mt-1 flex items-baseline justify-between gap-5">
-              <span className="text-[#d8dce6] font-medium">{activePoint.point.instrument}</span>
+            <div className="mt-2 flex items-baseline justify-between gap-6">
+              <span className="text-white font-bold">{activePoint.point.instrument}</span>
               <span
-                className={`font-semibold tabular-nums ${
-                  activePoint.point.pnl >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'
+                className={`font-bold tabular-nums text-sm ${
+                  activePoint.point.pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'
                 }`}
               >
                 {activePoint.point.pnl >= 0 ? '+' : ''}${activePoint.point.pnl.toFixed(2)} ({activePoint.point.r >= 0 ? '+' : ''}{activePoint.point.r}R)
               </span>
             </div>
-            <div className="mt-0.5 text-[11px] text-[#787f91] flex justify-between gap-4">
-              <span>Running Capital</span>
-              <span className="text-[#c2c7d4] font-medium tabular-nums">
+            <div className="mt-1 text-[11px] text-slate-400 flex justify-between gap-6">
+              <span>Account Equity</span>
+              <span className="text-slate-200 font-bold tabular-nums">
                 ${activePoint.point.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>

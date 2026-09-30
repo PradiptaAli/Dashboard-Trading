@@ -25,42 +25,42 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm select-none">
-      <div className="relative w-full max-w-md rounded-lg border border-[#1e222c] bg-[#0c0e13] p-5 shadow-2xl text-[#e8ebf0]">
-        <div className="flex items-start justify-between border-b border-[#181a22] pb-3 mb-3">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className={`h-4 w-4 ${isDestructive ? 'text-[#ef4444]' : 'text-[#f59e0b]'}`} />
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-[#f4f5f7]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md select-none">
+      <div className="relative w-full max-w-md rounded-2xl border border-white/[0.09] bg-[#0A0D15]/95 p-6 shadow-2xl text-[#e8ebf0] backdrop-blur-2xl">
+        <div className="flex items-start justify-between border-b border-white/[0.06] pb-3.5 mb-4">
+          <div className="flex items-center gap-2.5">
+            <AlertTriangle className={`h-4 w-4 ${isDestructive ? 'text-rose-400' : 'text-amber-400'}`} />
+            <h3 className="font-mono text-xs font-bold uppercase tracking-wider text-white">
               {title}
             </h3>
           </div>
           <button
             onClick={onCancel}
-            className="rounded p-1 text-[#6e7484] hover:text-[#e4e7ec]"
+            className="rounded-lg p-1 text-slate-400 hover:text-white hover:bg-white/[0.06] transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <p className="text-xs text-[#a0a6b5] leading-relaxed mb-5 font-sans">
+        <p className="text-xs text-slate-300 leading-relaxed mb-6 font-sans">
           {message}
         </p>
 
-        <div className="flex items-center justify-end gap-2 font-mono text-xs">
+        <div className="flex items-center justify-end gap-2.5 font-mono text-xs">
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md border border-[#1e222c] bg-[#101217] px-3 py-1.5 text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
+            className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-4 py-2 text-slate-300 hover:text-white hover:bg-white/[0.08] transition-all"
           >
             {cancelLabel}
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className={`rounded-md px-3.5 py-1.5 font-medium transition-colors ${
+            className={`rounded-xl px-4 py-2 font-bold transition-all shadow-md active:scale-[0.98] ${
               isDestructive
-                ? 'bg-[#ef4444] text-white hover:bg-[#dc2626]'
-                : 'bg-[#161820] text-[#f4f5f7] hover:bg-[#1f232e] border border-[#262a36]'
+                ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]'
+                : 'bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-[#07090E] shadow-[0_0_15px_rgba(16,185,129,0.3)]'
             }`}
           >
             {confirmLabel}
