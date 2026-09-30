@@ -1,0 +1,2298 @@
+diff --git a/index.html b/index.html
+index 87e3b59..89e4605 100644
+--- a/index.html
++++ b/index.html
+@@ -11,9 +11,9 @@
+     <meta name="twitter:card" content="summary_large_image" />
+     <link rel="preconnect" href="https://fonts.googleapis.com" />
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
++    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+   </head>
+-  <body class="bg-[#07090E] text-[#E2E8F0] antialiased selection:bg-emerald-500/25 selection:text-emerald-300">
++  <body class="bg-[#050506] text-[#E4E4E7] antialiased selection:bg-white/20 selection:text-white">
+     <div id="root"></div>
+     <script type="module" src="/src/main.tsx"></script>
+   </body>
+diff --git a/src/components/common/ConfirmModal.tsx b/src/components/common/ConfirmModal.tsx
+index d9e047f..bcbe943 100644
+--- a/src/components/common/ConfirmModal.tsx
++++ b/src/components/common/ConfirmModal.tsx
+@@ -26,7 +26,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
+ 
+   return (
+     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md select-none">
+-      <div className="relative w-full max-w-md rounded-2xl border border-white/[0.09] bg-[#0A0D15]/95 p-6 shadow-2xl text-[#e8ebf0] backdrop-blur-2xl">
++      <div className="relative w-full max-w-md rounded-2xl border border-white/[0.09] bg-[#09090B]/95 p-6 shadow-2xl text-[#e8ebf0] backdrop-blur-2xl">
+         <div className="flex items-start justify-between border-b border-white/[0.06] pb-3.5 mb-4">
+           <div className="flex items-center gap-2.5">
+             <AlertTriangle className={`h-4 w-4 ${isDestructive ? 'text-rose-400' : 'text-amber-400'}`} />
+@@ -59,8 +59,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
+             onClick={onConfirm}
+             className={`rounded-xl px-4 py-2 font-bold transition-all shadow-md active:scale-[0.98] ${
+               isDestructive
+-                ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]'
+-                : 'bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-[#07090E] shadow-[0_0_15px_rgba(16,185,129,0.3)]'
++                ? 'bg-rose-500 hover:bg-rose-600 text-white'
++                : 'bg-white hover:bg-white/85 text-black'
+             }`}
+           >
+             {confirmLabel}
+diff --git a/src/components/common/EquityChart.tsx b/src/components/common/EquityChart.tsx
+index f733bb8..f395158 100644
+--- a/src/components/common/EquityChart.tsx
++++ b/src/components/common/EquityChart.tsx
+@@ -145,7 +145,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
+               onClick={() => setTimeframe(tf)}
+               className={`px-2.5 py-1 text-[11px] rounded-lg transition-all font-mono font-medium ${
+                 timeframe === tf
+-                  ? 'bg-emerald-500/25 text-emerald-300 font-bold border border-emerald-500/40 shadow-[0_0_12px_rgba(0,245,160,0.25)]'
++                  ? 'bg-white/10 text-white font-medium border border-white/20'
+                   : 'text-slate-400 hover:text-slate-200'
+               }`}
+             >
+@@ -175,9 +175,9 @@ export const EquityChart: React.FC<EquityChartProps> = ({
+           >
+             <defs>
+               <linearGradient id="restrainedEquityFill" x1="0" y1="0" x2="0" y2="1">
+-                <stop offset="0%" stopColor="#00F5A0" stopOpacity="0.22" />
+-                <stop offset="60%" stopColor="#10B981" stopOpacity="0.05" />
+-                <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
++                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.14" />
++                <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.03" />
++                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+               </linearGradient>
+             </defs>
+ 
+@@ -230,9 +230,9 @@ export const EquityChart: React.FC<EquityChartProps> = ({
+                 <path
+                   d={pathD}
+                   fill="none"
+-                  stroke="#00F5A0"
++                  stroke="#FFFFFF"
+                   strokeWidth="6"
+-                  strokeOpacity="0.18"
++                  strokeOpacity="0.06"
+                   strokeLinecap="round"
+                   strokeLinejoin="round"
+                 />
+@@ -240,7 +240,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
+                 <path
+                   d={pathD}
+                   fill="none"
+-                  stroke="#00F5A0"
++                  stroke="#F4F4F5"
+                   strokeWidth="2.25"
+                   strokeLinecap="round"
+                   strokeLinejoin="round"
+@@ -264,7 +264,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
+                   cx={activePoint.x}
+                   cy={activePoint.y}
+                   r="5"
+-                  className="fill-[#00F5A0] stroke-[#080B11] stroke-2 shadow-lg"
++                  className="fill-white stroke-[#050506] stroke-2 shadow-lg"
+                 />
+               </g>
+             )}
+@@ -296,7 +296,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
+ 
+         {/* Clean Hover Tooltip */}
+         {activePoint && (
+-          <div className="pointer-events-none absolute top-4 right-4 rounded-2xl border border-white/[0.12] bg-[#0C111C]/95 p-3.5 text-xs font-mono shadow-2xl backdrop-blur-xl">
++          <div className="pointer-events-none absolute top-4 right-4 rounded-2xl border border-white/[0.12] bg-[#0A0A0C]/95 p-3.5 text-xs font-mono shadow-2xl backdrop-blur-xl">
+             <div className="text-slate-400 text-[10px] flex items-center justify-between gap-6 pb-1.5 border-b border-white/[0.06]">
+               <span>{activePoint.point.date} {activePoint.point.time}</span>
+               <span className="font-semibold text-slate-300">Trade #{activePoint.point.tradeIndex}</span>
+diff --git a/src/components/common/TradeModal.tsx b/src/components/common/TradeModal.tsx
+index 0225b39..3b3bb9d 100644
+--- a/src/components/common/TradeModal.tsx
++++ b/src/components/common/TradeModal.tsx
+@@ -615,11 +615,11 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+ 
+   return (
+     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 backdrop-blur-md overflow-y-auto">
+-      <div className="relative my-auto w-full max-w-4xl rounded-2xl border border-white/[0.09] bg-[#0A0D15]/95 text-[#e8ebf0] shadow-[0_25px_70px_rgba(0,0,0,0.9)] backdrop-blur-2xl overflow-hidden">
++      <div className="relative my-auto w-full max-w-4xl rounded-2xl border border-white/[0.09] bg-[#09090B]/95 text-[#e8ebf0] shadow-2xl backdrop-blur-2xl overflow-hidden">
+         {/* Modal Header */}
+-        <div className="flex items-center justify-between border-b border-white/[0.06] bg-[#0F1424] px-6 py-4">
++        <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.03] px-6 py-4">
+           <div className="flex items-center gap-3">
+-            <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
++            <div className="h-2 w-2 rounded-full bg-emerald-400" />
+             <h2 className="text-xs sm:text-sm font-bold font-mono tracking-tight uppercase text-white">
+               {isEditing ? `Edit Execution — ${initialTrade?.id}` : 'Record New Execution'}
+             </h2>
+@@ -654,7 +654,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+           )}
+ 
+           {/* AI TRADE TICKET & SHARED PNL SCANNER */}
+-          <div className="rounded-lg border border-[#1e2330] bg-[#0d1017] p-4 text-xs font-mono space-y-3">
++          <div className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-4 text-xs font-mono space-y-3">
+             <div className="flex flex-wrap items-center justify-between gap-2">
+               <div className="flex flex-wrap items-center gap-2">
+                 <Sparkles className="h-4 w-4 text-[#10b981]" />
+@@ -681,7 +681,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   className={`px-2 py-0.5 rounded text-[10.5px] border flex items-center gap-1.5 transition-colors ${
+                     showKeyConfig
+                       ? 'border-[#10b981]/50 bg-[#10b981]/15 text-[#10b981]'
+-                      : 'border-[#242a3a] bg-[#141722] text-[#8c92a2] hover:text-[#e4e7ec] hover:bg-[#1a1f2e]'
++                      : 'border-white/[0.09] bg-white/[0.04] text-[#8c92a2] hover:text-[#e4e7ec] hover:bg-white/[0.07]'
+                   }`}
+                   title="Atur Gemini API Key untuk pemindaian gambar AI multimodal"
+                 >
+@@ -702,7 +702,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+ 
+             {/* Collapsible API Key Drawer */}
+             {showKeyConfig && (
+-              <div className="rounded-md border border-[#23293a] bg-[#12151f] p-3.5 space-y-2.5">
++              <div className="rounded-md border border-white/[0.08] bg-white/[0.03] p-3.5 space-y-2.5">
+                 <div className="flex items-center justify-between text-[11px]">
+                   <span className="text-[#e4e7ec] font-semibold flex items-center gap-1.5">
+                     <Key className="h-3.5 w-3.5 text-amber-400" />
+@@ -798,7 +798,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   className={`border-2 border-dashed rounded-md p-4 text-center transition-all ${
+                     isDragging
+                       ? 'border-[#10b981] bg-[#10b981]/10'
+-                      : 'border-[#1e2330] bg-[#11141b]/80 hover:border-[#2d3548]'
++                      : 'border-white/[0.07] bg-white/[0.03]/80 hover:border-[#2d3548]'
+                   }`}
+                 >
+                   <input
+@@ -834,7 +834,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                             </div>
+                           </div>
+                         ) : (
+-                          <div className="h-10 w-10 rounded bg-[#161820] border border-[#222736] flex items-center justify-center shrink-0 text-[#8c92a2]">
++                          <div className="h-10 w-10 rounded bg-white/[0.04] border border-[#222736] flex items-center justify-center shrink-0 text-[#8c92a2]">
+                             <Camera className="h-5 w-5" />
+                           </div>
+                         )}
+@@ -868,7 +868,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                       type="button"
+                       disabled={isAiScanning}
+                       onClick={() => handlePresetScan(preset)}
+-                      className="px-2.5 py-1 rounded text-[11px] border border-[#1e2330] bg-[#141720] text-[#8c92a2] hover:text-[#f4f5f7] hover:border-[#2d3548] disabled:opacity-50 transition-colors flex items-center gap-1.5"
++                      className="px-2.5 py-1 rounded text-[11px] border border-white/[0.07] bg-[#141720] text-[#8c92a2] hover:text-[#f4f5f7] hover:border-[#2d3548] disabled:opacity-50 transition-colors flex items-center gap-1.5"
+                     >
+                       <Sparkles className="h-3 w-3 text-[#10b981]" />
+                       <span>{preset.title}</span>
+@@ -915,8 +915,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   onClick={() => handleMarketTypeChange(type)}
+                   className={`py-2 px-3 rounded-md border text-xs font-mono font-medium flex items-center justify-center gap-2 transition-colors ${
+                     marketType === type
+-                      ? 'border-[#262a36] bg-[#181b23] text-[#f4f5f7]'
+-                      : 'border-[#181a22] bg-[#11141b] text-[#696f7e] hover:text-[#a0a6b5] hover:bg-[#141720]'
++                      ? 'border-white/[0.09] bg-white/[0.04] text-[#f4f5f7]'
++                      : 'border-white/[0.06] bg-white/[0.03] text-[#696f7e] hover:text-[#a0a6b5] hover:bg-[#141720]'
+                   }`}
+                 >
+                   {type === 'Crypto' && <span>Crypto (USDT)</span>}
+@@ -944,7 +944,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                       setSizeUnit('USDT');
+                     }
+                   }}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] font-mono text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] font-mono text-xs focus:border-white/[0.14] focus:outline-none"
+                   required
+                 />
+               </div>
+@@ -952,7 +952,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+               {/* Direction: Long or Short */}
+               <div className="sm:col-span-3">
+                 <label className="block text-[#696f7e] mb-1">Side / Direction</label>
+-                <div className="grid grid-cols-2 gap-1 rounded bg-[#11141b] p-0.5 border border-[#181a22] h-8 items-center">
++                <div className="grid grid-cols-2 gap-1 rounded bg-white/[0.03] p-0.5 border border-white/[0.06] h-8 items-center">
+                   <button
+                     type="button"
+                     onClick={() => handleDirectionToggle('LONG')}
+@@ -985,7 +985,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   type="date"
+                   value={date}
+                   onChange={e => setDate(e.target.value)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                   required
+                 />
+               </div>
+@@ -996,7 +996,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   type="time"
+                   value={time}
+                   onChange={e => setTime(e.target.value)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                   required
+                 />
+               </div>
+@@ -1012,8 +1012,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   onClick={() => handleSelectSuggestion(s.sym, s.defaultEntry, s.defaultStep)}
+                   className={`px-2 py-0.5 rounded border transition-colors ${
+                     instrument === s.sym
+-                      ? 'border-[#2d3243] bg-[#181b23] text-[#e4e7ec]'
+-                      : 'border-[#181a22] bg-[#11141b] text-[#696f7e] hover:text-[#a0a6b5]'
++                      ? 'border-[#2d3243] bg-white/[0.04] text-[#e4e7ec]'
++                      : 'border-white/[0.06] bg-white/[0.03] text-[#696f7e] hover:text-[#a0a6b5]'
+                   }`}
+                 >
+                   {s.sym}
+@@ -1023,15 +1023,15 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+           </div>
+ 
+           {/* Section 2: SMART CALCULATOR */}
+-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5 space-y-4">
+-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#181a22] pb-3">
++          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 sm:p-5 space-y-4">
++            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] pb-3">
+               <div className="flex items-center gap-2">
+                 <Calculator className="h-4 w-4 text-[#8c92a2]" />
+                 <h3 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0]">
+                   2. Pricing Levels & Reactive Execution Calculator
+                 </h3>
+               </div>
+-              <div className="text-[11px] font-mono flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#1e222c] bg-[#11141b] text-[#8c92a2]">
++              <div className="text-[11px] font-mono flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-white/[0.08] bg-white/[0.03] text-[#8c92a2]">
+                 <span className="text-[#696f7e]">Benchmark 1R:</span>
+                 <span className="font-semibold text-[#10b981] tabular-nums">${riskAmount1R.toFixed(2)} (1.0% equity)</span>
+               </div>
+@@ -1048,7 +1048,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   step="any"
+                   value={entryPrice}
+                   onChange={e => handleEntryChange(parseFloat(e.target.value) || 0)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
+                   required
+                 />
+               </div>
+@@ -1062,7 +1062,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   step="any"
+                   value={stopLoss}
+                   onChange={e => handleStopLossChange(parseFloat(e.target.value) || 0)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#ef4444] font-medium font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#ef4444] font-medium font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
+                   required
+                 />
+               </div>
+@@ -1076,7 +1076,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   step="any"
+                   value={takeProfit}
+                   onChange={e => setTakeProfit(parseFloat(e.target.value) || 0)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#10b981] font-medium font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#10b981] font-medium font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
+                   required
+                 />
+               </div>
+@@ -1087,8 +1087,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+             <input type="hidden" value={sizeUnit} readOnly />
+ 
+             {/* THREE INTERCONNECTED FIELDS */}
+-            <div className="rounded-md border border-[#181a22] bg-[#11141b] p-3.5 space-y-3 font-mono">
+-              <div className="flex items-center justify-between border-b border-[#181a22] pb-2 text-xs">
++            <div className="rounded-md border border-white/[0.06] bg-white/[0.03] p-3.5 space-y-3 font-mono">
++              <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 text-xs">
+                 <span className="font-medium text-[#9ea3b0]">
+                   Realized Outcome (Exit Price ↔ P&L ↔ R-Multiple)
+                 </span>
+@@ -1099,7 +1099,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+ 
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                 {/* 1. Exit Price */}
+-                <div className="rounded bg-[#0c0e13] p-3 border border-[#181a22]">
++                <div className="rounded bg-black/30 p-3 border border-white/[0.06]">
+                   <label className="block text-[#696f7e] text-xs mb-1">
+                     1. Exit Price
+                   </label>
+@@ -1108,7 +1108,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                     step="any"
+                     value={exitPrice}
+                     onChange={e => handleExitPriceChange(parseFloat(e.target.value) || 0)}
+-                    className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
++                    className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
+                     placeholder="Exit Price"
+                     required
+                   />
+@@ -1116,7 +1116,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                 </div>
+ 
+                 {/* 2. P&L ($) */}
+-                <div className="rounded bg-[#0c0e13] p-3 border border-[#181a22]">
++                <div className="rounded bg-black/30 p-3 border border-white/[0.06]">
+                   <div className="flex justify-between items-baseline mb-1">
+                     <label className="block text-[#696f7e] text-xs">
+                       2. Realized P&L ($)
+@@ -1135,7 +1135,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                           ? 'border-[#10b981]/40 bg-[#10b981]/10 text-[#10b981]'
+                           : pnl < 0
+                           ? 'border-[#ef4444]/40 bg-[#ef4444]/10 text-[#ef4444]'
+-                          : 'border-[#1e222c] bg-[#11141b] text-[#e4e7ec]'
++                          : 'border-white/[0.08] bg-white/[0.03] text-[#e4e7ec]'
+                       }`}
+                       placeholder="-8.00"
+                       required
+@@ -1145,7 +1145,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                 </div>
+ 
+                 {/* 3. R-Multiple */}
+-                <div className="rounded bg-[#0c0e13] p-3 border border-[#181a22]">
++                <div className="rounded bg-black/30 p-3 border border-white/[0.06]">
+                   <div className="flex justify-between items-baseline mb-1">
+                     <label className="block text-[#696f7e] text-xs">
+                       3. R-Multiple
+@@ -1163,7 +1163,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                           ? 'border-[#10b981]/40 bg-[#10b981]/10 text-[#10b981]'
+                           : rMultiple < 0
+                           ? 'border-[#ef4444]/40 bg-[#ef4444]/10 text-[#ef4444]'
+-                          : 'border-[#1e222c] bg-[#11141b] text-[#e4e7ec]'
++                          : 'border-white/[0.08] bg-white/[0.03] text-[#e4e7ec]'
+                       }`}
+                       placeholder="-1.60"
+                       required
+@@ -1177,26 +1177,26 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+               </div>
+ 
+               {/* Quick Fill Buttons for Exit Price */}
+-              <div className="flex flex-wrap items-center gap-2 pt-2 font-mono text-[11px] border-t border-[#181a22]">
++              <div className="flex flex-wrap items-center gap-2 pt-2 font-mono text-[11px] border-t border-white/[0.06]">
+                 <span className="text-[#555a66] font-sans">Presets:</span>
+                 <button
+                   type="button"
+                   onClick={setExitToSL}
+-                  className="rounded border border-[#1e222c] bg-[#161820] px-2 py-0.5 text-[#ef4444] hover:bg-[#201519] transition-colors"
++                  className="rounded border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[#ef4444] hover:bg-[#201519] transition-colors"
+                 >
+                   Hit SL (-1.00R / -${riskAmount1R.toFixed(2)})
+                 </button>
+                 <button
+                   type="button"
+                   onClick={setExitToBE}
+-                  className="rounded border border-[#1e222c] bg-[#161820] px-2 py-0.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
++                  className="rounded border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+                 >
+                   Breakeven (0.00R / $0.00)
+                 </button>
+                 <button
+                   type="button"
+                   onClick={setExitToTP}
+-                  className="rounded border border-[#1e222c] bg-[#161820] px-2 py-0.5 text-[#10b981] hover:bg-[#12221a] transition-colors"
++                  className="rounded border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[#10b981] hover:bg-[#12221a] transition-colors"
+                 >
+                   Hit TP (+2.00R / +${(riskAmount1R * 2).toFixed(2)})
+                 </button>
+@@ -1209,7 +1209,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+           </div>
+ 
+           {/* Section 3: Strategy & Context */}
+-          <div className="space-y-3 border-t border-[#181a22] pt-4">
++          <div className="space-y-3 border-t border-white/[0.06] pt-4">
+             <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
+               3. Strategy, Setup & Execution Thesis
+             </h3>
+@@ -1220,7 +1220,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   list="strategies-list"
+                   value={strategy}
+                   onChange={e => setStrategy(e.target.value)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                 />
+                 <datalist id="strategies-list">
+                   {PRESET_STRATEGIES.map(s => (
+@@ -1235,7 +1235,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   list="setups-list"
+                   value={setup}
+                   onChange={e => setSetup(e.target.value)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                 />
+                 <datalist id="setups-list">
+                   {PRESET_SETUPS.map(su => (
+@@ -1249,7 +1249,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                 <select
+                   value={session}
+                   onChange={e => setSession(e.target.value as TradingSession)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                 >
+                   <option value="London">London</option>
+                   <option value="New York">New York</option>
+@@ -1262,7 +1262,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                 <select
+                   value={timeframe}
+                   onChange={e => setTimeframe(e.target.value as Timeframe)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                 >
+                   <option value="M1">M1</option>
+                   <option value="M5">M5</option>
+@@ -1281,7 +1281,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   rows={2}
+                   value={entryReason}
+                   onChange={e => setEntryReason(e.target.value)}
+-                  className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none resize-none font-sans placeholder-[#555a66]"
++                  className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
+                   placeholder="Rationale behind trade entry..."
+                 />
+               </div>
+@@ -1292,7 +1292,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   rows={2}
+                   value={exitReason}
+                   onChange={e => setExitReason(e.target.value)}
+-                  className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none resize-none font-sans placeholder-[#555a66]"
++                  className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
+                   placeholder="Rationale behind trade exit..."
+                 />
+               </div>
+@@ -1300,7 +1300,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+           </div>
+ 
+           {/* Section 4: Psychology & Execution Discipline */}
+-          <div className="space-y-3 border-t border-[#181a22] pt-4">
++          <div className="space-y-3 border-t border-white/[0.06] pt-4">
+             <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
+               4. Behavioral Psychology & Execution Quality
+             </h3>
+@@ -1310,7 +1310,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                 <select
+                   value={emotion}
+                   onChange={e => setEmotion(e.target.value as EmotionState)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none font-mono"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
+                 >
+                   {PRESET_EMOTIONS.map(emo => (
+                     <option key={emo} value={emo}>{emo}</option>
+@@ -1323,7 +1323,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                 <select
+                   value={mistake}
+                   onChange={e => setMistake(e.target.value)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none font-mono"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
+                 >
+                   {PRESET_MISTAKES.map(m => (
+                     <option key={m} value={m}>{m}</option>
+@@ -1370,7 +1370,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   value={tagsInput}
+                   onChange={e => setTagsInput(e.target.value)}
+                   placeholder="e.g. Crypto, A+ Setup, Trailed SL"
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                 />
+               </div>
+ 
+@@ -1380,14 +1380,14 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   type="number"
+                   value={holdingMinutes}
+                   onChange={e => setHoldingMinutes(parseInt(e.target.value) || 0)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none tabular-nums"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none tabular-nums"
+                 />
+               </div>
+             </div>
+           </div>
+ 
+           {/* Section 5: Screenshot Attachment */}
+-          <div className="space-y-3 border-t border-[#181a22] pt-4">
++          <div className="space-y-3 border-t border-white/[0.06] pt-4">
+             <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
+               5. Execution Chart Snapshot
+             </h3>
+@@ -1395,7 +1395,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+               <div className="flex-1 space-y-2 text-xs font-mono">
+                 <label className="block text-[#696f7e]">Attach image or choose preset</label>
+                 <div className="flex flex-wrap gap-2">
+-                  <label className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
++                  <label className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
+                     <Upload className="h-3.5 w-3.5" />
+                     <span>Upload Image</span>
+                     <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
+@@ -1403,14 +1403,14 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   <button
+                     type="button"
+                     onClick={() => setScreenshotUrl('/src/assets/images/chart_breakout_setup_1790744925578.jpg')}
+-                    className="rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
++                    className="rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
+                   >
+                     Preset 1
+                   </button>
+                   <button
+                     type="button"
+                     onClick={() => setScreenshotUrl('/src/assets/images/chart_reversal_trade_1790744940943.jpg')}
+-                    className="rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
++                    className="rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
+                   >
+                     Preset 2
+                   </button>
+@@ -1420,12 +1420,12 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+                   placeholder="Or enter image URL"
+                   value={screenshotUrl}
+                   onChange={e => setScreenshotUrl(e.target.value)}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-[11px] focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-[11px] focus:border-white/[0.14] focus:outline-none"
+                 />
+               </div>
+ 
+               {screenshotUrl && (
+-                <div className="h-24 w-40 rounded-md border border-[#1e222c] overflow-hidden bg-black shrink-0 relative">
++                <div className="h-24 w-40 rounded-md border border-white/[0.08] overflow-hidden bg-black shrink-0 relative">
+                   <img
+                     src={screenshotUrl}
+                     alt="Chart preview"
+@@ -1462,7 +1462,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
+               </button>
+               <button
+                 type="submit"
+-                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 px-5 py-2 text-xs font-bold text-[#07090E] shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all active:scale-[0.98]"
++                className="flex items-center gap-2 rounded-full bg-white hover:bg-white/85 px-5 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
+               >
+                 <Check className="h-4 w-4 stroke-[2.5]" />
+                 <span>{isEditing ? 'Save Changes' : 'Commit Trade to Journal'}</span>
+diff --git a/src/components/layout/Header.tsx b/src/components/layout/Header.tsx
+index a0a945e..1c294e1 100644
+--- a/src/components/layout/Header.tsx
++++ b/src/components/layout/Header.tsx
+@@ -51,11 +51,11 @@ export const Header: React.FC<HeaderProps> = ({
+ 
+         <div>
+           <div className="flex items-center gap-2">
+-            <span className="text-sm font-bold tracking-tight text-white font-sans drop-shadow-sm">
++            <span className="text-sm font-semibold tracking-tight text-white font-sans">
+               {getTabTitle(currentTab)}
+             </span>
+             <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono liquid-glass-pill text-slate-300">
+-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
++              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+               Live
+             </span>
+           </div>
+@@ -71,7 +71,7 @@ export const Header: React.FC<HeaderProps> = ({
+             readOnly
+             onClick={onOpenNewTrade}
+             placeholder="Quick search instruments, setups, strategies... (Press / to search)"
+-            className="w-full h-9 rounded-xl liquid-glass-pill pl-10 pr-9 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-500/50 transition-all cursor-pointer font-sans"
++            className="w-full h-9 rounded-full liquid-glass-pill pl-10 pr-9 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-white/30 transition-all cursor-pointer font-sans"
+           />
+           <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 bg-white/[0.08] px-1.5 py-0.5 rounded border border-white/[0.1]">
+             /
+@@ -82,15 +82,15 @@ export const Header: React.FC<HeaderProps> = ({
+       {/* Right: Restrained summary tickers & Action (Liquid Glass Capsules) */}
+       <div className="flex items-center gap-3 text-xs">
+         {/* Today's Performance Pill */}
+-        <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-xl liquid-glass-pill">
++        <div className="hidden sm:flex items-center gap-2.5 px-3 py-1.5 rounded-full liquid-glass-pill">
+           <Activity className="h-3.5 w-3.5 text-slate-400" />
+           <span className="text-slate-400 text-[11px] font-medium">Today</span>
+           <span
+             className={`font-mono font-bold tabular-nums text-xs ${
+               stats.todayPnl > 0
+-                ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(16,185,129,0.3)]'
++                ? 'text-emerald-400'
+                 : stats.todayPnl < 0
+-                ? 'text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.3)]'
++                ? 'text-rose-400'
+                 : 'text-slate-400'
+             }`}
+           >
+@@ -99,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({
+         </div>
+ 
+         {/* Win Rate Pill */}
+-        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-xl liquid-glass-pill">
++        <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full liquid-glass-pill">
+           <span className="text-slate-400 text-[11px] font-medium">Win Rate</span>
+           <span className="font-mono font-bold tabular-nums text-xs text-slate-100">
+             {stats.winRate.toFixed(1)}%
+@@ -107,7 +107,7 @@ export const Header: React.FC<HeaderProps> = ({
+         </div>
+ 
+         {/* Risk Status Indicator */}
+-        <div className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-xl liquid-glass-pill">
++        <div className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full liquid-glass-pill">
+           {riskStatus === 'GREEN' ? (
+             <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+           ) : riskStatus === 'YELLOW' ? (
+@@ -123,17 +123,17 @@ export const Header: React.FC<HeaderProps> = ({
+         {/* AI Scan PnL Action */}
+         <button
+           onClick={onOpenNewTrade}
+-          className="hidden sm:flex items-center gap-1.5 rounded-xl liquid-glass-pill hover:border-emerald-500/40 px-3 py-2 text-xs font-semibold text-emerald-300 transition-all active:scale-[0.98]"
++          className="hidden sm:flex items-center gap-1.5 rounded-full liquid-glass-pill px-3 py-2 text-xs font-medium text-zinc-200 transition-all active:scale-[0.98]"
+           title="Scan trade screenshot or shared PnL card with Gemini AI Vision"
+         >
+-          <Sparkles className="h-3.5 w-3.5 text-emerald-400" />
++          <Sparkles className="h-3.5 w-3.5 text-zinc-300" />
+           <span>AI Vision Scan</span>
+         </button>
+ 
+         {/* Record Trade Button */}
+         <button
+           onClick={onOpenNewTrade}
+-          className="flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 px-4 py-2 text-xs font-bold text-[#07090E] shadow-[0_0_24px_rgba(16,185,129,0.35)] transition-all active:scale-[0.98] border border-white/20"
++          className="flex items-center gap-1.5 rounded-full bg-white hover:bg-white/85 px-4 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
+         >
+           <Plus className="h-4 w-4 stroke-[2.5]" />
+           <span className="hidden sm:inline">New Trade</span>
+diff --git a/src/components/layout/Sidebar.tsx b/src/components/layout/Sidebar.tsx
+index 013601b..23aef18 100644
+--- a/src/components/layout/Sidebar.tsx
++++ b/src/components/layout/Sidebar.tsx
+@@ -80,18 +80,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
+         <div className="flex h-16 items-center justify-between px-5 border-b border-white/[0.06] relative">
+           <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+           <div className="flex items-center gap-3">
+-            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-400/25 to-teal-500/10 border border-emerald-400/40 shadow-[0_0_16px_rgba(0,245,160,0.25)]">
+-              <TrendingUp className="h-4 w-4 text-emerald-300" />
+-              <div className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_10px_#00F5A0]" />
+-            </div>
++            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-white/[0.06] border border-white/15">
++              <TrendingUp className="h-4 w-4 text-white" />
++              </div>
+             <div>
+               <div className="flex items-center gap-1.5">
+-                <span className="text-sm font-extrabold tracking-tight text-white font-sans drop-shadow-sm">TradeOS</span>
+-                <span className="text-[9px] font-bold text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-1.5 py-0.2 rounded font-mono shadow-[0_0_8px_rgba(16,185,129,0.2)]">
++                <span className="text-sm font-semibold tracking-tight text-white font-sans">TradeOS</span>
++                <span className="text-[9px] font-medium text-zinc-300 bg-white/[0.06] border border-white/10 px-1.5 py-0.5 rounded-full">
+                   PRO
+                 </span>
+               </div>
+-              <p className="text-[9.5px] text-slate-400 font-mono tracking-widest">LIQUID TERMINAL</p>
++              <p className="text-[9.5px] text-slate-400 font-mono tracking-widest">TRADING JOURNAL</p>
+             </div>
+           </div>
+           <button
+@@ -112,14 +111,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
+                 alt="Trader Profile"
+                 className="h-9 w-9 rounded-xl object-cover ring-1 ring-white/20 shadow-md"
+               />
+-              <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0A0D15] shadow-[0_0_8px_#34d399]" />
++              <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0A0D15]" />
+             </div>
+             <div className="min-w-0 flex-1">
+               <div className="flex items-center justify-between">
+                 <span className="text-xs font-bold text-white truncate">Alex Thorne</span>
+               </div>
+               <div className="flex items-center gap-1.5 mt-0.5">
+-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]" />
++                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                 <span className="text-[10px] font-mono text-emerald-400 font-semibold">Active Session</span>
+               </div>
+             </div>
+@@ -131,7 +130,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
+           <div className="px-3 py-2">
+             <button
+               onClick={onOpenNewTrade}
+-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 px-3.5 py-2 text-xs font-bold text-[#07090E] shadow-[0_0_24px_rgba(16,185,129,0.3)] transition-all active:scale-[0.98] border border-white/20"
++              className="flex w-full items-center justify-center gap-2 rounded-full bg-white hover:bg-white/85 px-3.5 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
+             >
+               <Plus className="h-4 w-4 stroke-[2.5]" />
+               <span>Record New Trade</span>
+@@ -163,13 +162,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
+                 <div className="flex items-center gap-2.5">
+                   <Icon
+                     className={`h-4 w-4 transition-colors ${
+-                      isActive ? 'text-emerald-400 drop-shadow-[0_0_8px_rgba(0,245,160,0.4)]' : 'text-slate-400 group-hover:text-slate-200'
++                      isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'
+                     }`}
+                   />
+                   <span className="truncate">{item.label}</span>
+                 </div>
+                 {isActive && (
+-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
++                  <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                 )}
+               </button>
+             );
+@@ -197,16 +196,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
+           <div className="p-3.5 rounded-2xl liquid-glass-card shadow-lg">
+             <div className="flex items-center justify-between text-[11px] text-slate-400">
+               <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400 font-semibold">Net Portfolio</span>
+-              <span className={`tabular-nums font-mono text-[11px] font-bold ${totalPnl >= 0 ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]' : 'text-rose-400'}`}>
++              <span className={`tabular-nums font-mono text-[11px] font-bold ${totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                 {totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}
+               </span>
+             </div>
+-            <div className="text-base font-extrabold tabular-nums text-white tracking-tight mt-1 font-mono drop-shadow-sm">
++            <div className="text-lg font-medium tabular-nums text-white tracking-tight mt-1 font-mono">
+               ${accountBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+             </div>
+             <div className="mt-2 h-1.5 w-full rounded-full bg-black/40 overflow-hidden p-0.5 border border-white/[0.08]">
+               <div 
+-                className={`h-full rounded-full ${totalPnl >= 0 ? 'bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 shadow-[0_0_10px_#00F5A0]' : 'bg-rose-500'}`}
++                className={`h-full rounded-full ${totalPnl >= 0 ? 'bg-emerald-400' : 'bg-rose-500'}`}
+                 style={{ width: `${Math.min(100, Math.max(10, ((accountBalance / 50000) * 100)))}%` }}
+               />
+             </div>
+diff --git a/src/components/views/AnalyticsView.tsx b/src/components/views/AnalyticsView.tsx
+index 0e2805c..2e31770 100644
+--- a/src/components/views/AnalyticsView.tsx
++++ b/src/components/views/AnalyticsView.tsx
+@@ -56,8 +56,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades }) => {
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* 1. Research Terminal Tabs */}
+-      <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-[#181a22]">
+-        <div className="flex items-center gap-1 rounded bg-[#0c0e13] p-0.5 text-xs font-mono border border-[#1e222c]">
++      <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
++        <div className="flex items-center gap-1 rounded bg-black/30 p-0.5 text-xs font-mono border border-white/[0.08]">
+           {tabs.map(tab => (
+             <button
+               key={tab.id}
+@@ -94,7 +94,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades }) => {
+ 
+       {/* 2. Analytical Research Breakdown */}
+       {statsList.length === 0 ? (
+-        <div className="py-20 text-center text-[#555a66] text-xs font-mono rounded-lg border border-[#181a22] bg-[#0c0e13]">
++        <div className="py-20 text-center text-[#555a66] text-xs font-mono rounded-lg border border-white/[0.06] bg-black/30">
+           No data recorded yet for {activeTab}. Log executions to generate comparative analytics.
+         </div>
+       ) : (
+@@ -106,10 +106,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades }) => {
+             return (
+               <div
+                 key={stat.name || idx}
+-                className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 font-mono text-xs space-y-3"
++                className="rounded-lg border border-white/[0.06] bg-black/30 p-4 font-mono text-xs space-y-3"
+               >
+                 {/* Title & Key Statistics Headline */}
+-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-2 border-b border-[#15171e]">
++                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-2 border-b border-white/[0.06]">
+                   <div className="flex items-baseline gap-2">
+                     <span className="text-sm font-semibold text-[#f4f5f7] tracking-tight">
+                       {stat.name || 'Unspecified'}
+diff --git a/src/components/views/CalendarView.tsx b/src/components/views/CalendarView.tsx
+index d6ce3d6..72b2b2b 100644
+--- a/src/components/views/CalendarView.tsx
++++ b/src/components/views/CalendarView.tsx
+@@ -94,12 +94,12 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* Month Header & Summary Bar */}
+-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
++      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
+         <div className="flex items-center gap-3">
+           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+             {monthNames[currentMonth]} {currentYear}
+           </h2>
+-          <div className="flex items-center gap-1 border border-[#1e222c] rounded-md p-0.5 bg-[#0c0e13]">
++          <div className="flex items-center gap-1 border border-white/[0.08] rounded-md p-0.5 bg-black/30">
+             <button
+               onClick={prevMonth}
+               className="p-1 text-[#6e7484] hover:text-[#e4e7ec] rounded"
+@@ -164,9 +164,9 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
+       </div>
+ 
+       {/* Minimalist Monthly Grid */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
+         {/* Days of week header */}
+-        <div className="grid grid-cols-7 border-b border-[#181a22] bg-[#0f1117] text-center text-[11px] font-mono text-[#696f7e] py-2">
++        <div className="grid grid-cols-7 border-b border-white/[0.06] bg-[#0f1117] text-center text-[11px] font-mono text-[#696f7e] py-2">
+           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+             <div key={day}>{day}</div>
+           ))}
+@@ -185,7 +185,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
+             const dayR = dayTrades.reduce((acc, t) => acc + t.rMultiple, 0);
+ 
+             // Subtle background intensity
+-            let cellStyle = 'bg-[#0c0e13] text-[#4f5461]';
++            let cellStyle = 'bg-black/30 text-[#4f5461]';
+             if (hasTrades) {
+               if (dayPnl > 0) {
+                 cellStyle = 'bg-[#10b981]/[0.03] hover:bg-[#10b981]/[0.07] text-[#e4e7ec] cursor-pointer';
+@@ -246,8 +246,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
+       {/* Clean Slide-Over / Modal for Day Executions */}
+       {selectedDayTrades && (
+         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+-          <div className="w-full max-w-lg rounded-lg border border-[#1e222c] bg-[#0c0e13] p-5 shadow-2xl">
+-            <div className="flex items-center justify-between pb-3 border-b border-[#181a22] mb-4">
++          <div className="w-full max-w-lg rounded-lg border border-white/[0.08] bg-black/30 p-5 shadow-2xl">
++            <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
+               <div>
+                 <h3 className="font-mono text-sm font-semibold text-[#f4f5f7]">
+                   Executions for {selectedDayTrades.date}
+@@ -272,7 +272,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
+                     setSelectedDayTrades(null);
+                     onSelectTrade(t);
+                   }}
+-                  className="flex items-center justify-between p-2.5 rounded-md border border-[#181a22] bg-[#11131a] hover:bg-[#161922] cursor-pointer transition-colors text-xs font-mono"
++                  className="flex items-center justify-between p-2.5 rounded-md border border-white/[0.06] bg-white/[0.03] hover:bg-[#161922] cursor-pointer transition-colors text-xs font-mono"
+                 >
+                   <div>
+                     <div className="font-semibold text-[#e4e7ec] flex items-center gap-1.5">
+diff --git a/src/components/views/JournalView.tsx b/src/components/views/JournalView.tsx
+index f2cc9ce..d7f9abd 100644
+--- a/src/components/views/JournalView.tsx
++++ b/src/components/views/JournalView.tsx
+@@ -204,7 +204,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
+ 
+           <button
+             onClick={onOpenNewTrade}
+-            className="flex items-center gap-1.5 h-9 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 px-4 font-bold text-[#07090E] shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all active:scale-[0.98]"
++            className="flex items-center gap-1.5 h-9 rounded-full bg-white hover:bg-white/85 px-4 text-xs font-medium text-black transition-all active:scale-[0.98]"
+           >
+             <Plus className="h-4 w-4 stroke-[2.5]" />
+             <span>Record Trade</span>
+@@ -224,7 +224,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
+             <div className="mt-5 flex items-center justify-center gap-3">
+               <button
+                 onClick={onOpenNewTrade}
+-                className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 text-xs font-medium text-[#f0f2f5]"
++                className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3.5 py-1.5 text-xs font-medium text-[#f0f2f5]"
+               >
+                 <Plus className="h-3.5 w-3.5 text-[#10b981]" />
+                 <span>Record First Trade</span>
+@@ -232,7 +232,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
+               {onLoadDemoTrades && (
+                 <button
+                   onClick={onLoadDemoTrades}
+-                  className="rounded-md border border-[#1e222c] px-3.5 py-1.5 text-xs text-[#8c92a2] hover:text-[#e4e7ec]"
++                  className="rounded-md border border-white/[0.08] px-3.5 py-1.5 text-xs text-[#8c92a2] hover:text-[#e4e7ec]"
+                 >
+                   Load Demo Data
+                 </button>
+@@ -401,7 +401,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
+                           <span
+                             className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                               isWin
+-                                ? 'text-emerald-300 bg-emerald-500/15 border border-emerald-500/30'
++                                ? 'text-white bg-white/10 border border-white/20'
+                                 : isLoss
+                                 ? 'text-rose-300 bg-rose-500/15 border border-rose-500/30'
+                                 : 'text-slate-300 bg-white/[0.06] border border-white/[0.08]'
+diff --git a/src/components/views/OverviewView.tsx b/src/components/views/OverviewView.tsx
+index 9933195..2f1db72 100644
+--- a/src/components/views/OverviewView.tsx
++++ b/src/components/views/OverviewView.tsx
+@@ -244,8 +244,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+       {/* 1. TOP HERO: Portfolio & Net Equity Header (Liquid Glass) */}
+       <section className="p-6 rounded-2xl liquid-glass-card relative overflow-hidden shadow-2xl">
+         {/* Subtle Ambient Backlight Glow */}
+-        <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
+-        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
++        <div className="absolute -top-24 -left-24 w-72 h-72 bg-white/[0.05] rounded-full blur-3xl pointer-events-none" />
++        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-white/[0.04] rounded-full blur-3xl pointer-events-none" />
+         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+ 
+         <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+@@ -255,10 +255,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
+                 Total Portfolio Capital
+               </span>
+-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
++              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+             </div>
+             <div className="mt-1 flex flex-wrap items-baseline gap-4">
+-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono tabular-nums drop-shadow-sm">
++              <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-white font-mono tabular-nums">
+                 ${stats.accountBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+               </h1>
+               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl liquid-glass-pill">
+@@ -269,7 +269,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+                 )}
+                 <span
+                   className={`font-mono font-bold text-xs tabular-nums ${
+-                    stats.totalPnl >= 0 ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]' : 'text-rose-400'
++                    stats.totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                   }`}
+                 >
+                   {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(2)}
+@@ -288,7 +288,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               <div
+                 className={`text-sm font-bold tabular-nums mt-1 ${
+                   stats.todayPnl > 0
+-                    ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
++                    ? 'text-emerald-400'
+                     : stats.todayPnl < 0
+                     ? 'text-rose-400'
+                     : 'text-slate-300'
+@@ -303,7 +303,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               <div
+                 className={`text-sm font-bold tabular-nums mt-1 ${
+                   stats.monthlyPnl > 0
+-                    ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
++                    ? 'text-emerald-400'
+                     : stats.monthlyPnl < 0
+                     ? 'text-rose-400'
+                     : 'text-slate-300'
+@@ -351,7 +351,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+                 key={day.dateStr}
+                 className={`p-3 rounded-xl transition-all ${
+                   day.isToday
+-                    ? 'liquid-glass-pill border-emerald-500/40 shadow-[0_0_16px_rgba(0,245,160,0.2)]'
++                    ? 'liquid-glass-pill border-emerald-500/40'
+                     : 'liquid-glass-pill hover:border-white/20'
+                 }`}
+               >
+@@ -363,7 +363,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+                   <div
+                     className={`font-mono text-xs font-bold tabular-nums ${
+                       isProfit
+-                        ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
++                        ? 'text-emerald-400'
+                         : isLoss
+                         ? 'text-rose-400'
+                         : 'text-slate-400'
+@@ -408,7 +408,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               value={stats.winRate}
+               label="Win Rate"
+               sublabel={`${stats.winCount}W / ${stats.lossCount}L`}
+-              color="#00F5A0"
++              color="#F4F4F5"
+               displayValue={`${stats.winRate.toFixed(1)}%`}
+             />
+ 
+@@ -417,7 +417,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               max={100}
+               label="Profit Factor"
+               sublabel={stats.profitFactor >= 2 ? 'Elite Edge' : 'Stable'}
+-              color="#10B981"
++              color="#D4D4D8"
+               displayValue={stats.profitFactor.toFixed(2)}
+             />
+ 
+@@ -426,7 +426,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               max={100}
+               label="Expectancy"
+               sublabel="R / Trade"
+-              color="#34D399"
++              color="#A1A1AA"
+               displayValue={`${stats.expectancy >= 0 ? '+' : ''}${stats.expectancy}R`}
+             />
+ 
+@@ -435,7 +435,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+               max={100}
+               label="Risk Health"
+               sublabel={`-${stats.maxDrawdownPercent.toFixed(1)}% DD`}
+-              color={stats.maxDrawdownPercent < 5 ? '#00F5A0' : '#F59E0B'}
++              color={stats.maxDrawdownPercent < 5 ? '#F4F4F5' : '#F59E0B'}
+               displayValue={`${Math.max(0, Math.round(100 - stats.maxDrawdownPercent * 4))}%`}
+             />
+           </div>
+@@ -478,7 +478,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
+       <section className="p-5 rounded-2xl liquid-glass-card shadow-xl">
+         <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-xs">
+           <div className="flex items-center gap-2">
+-            <div className="h-3 w-1 bg-emerald-400 rounded-full" />
++            <div className="h-3 w-1 bg-white/70 rounded-full" />
+             <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
+               Equity & Trajectory Dynamics
+             </h2>
+diff --git a/src/components/views/PsychologyView.tsx b/src/components/views/PsychologyView.tsx
+index 5c03798..7c32521 100644
+--- a/src/components/views/PsychologyView.tsx
++++ b/src/components/views/PsychologyView.tsx
+@@ -15,7 +15,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* Header */}
+-      <div className="pb-4 border-b border-[#181a22]">
++      <div className="pb-4 border-b border-white/[0.06]">
+         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+           Behavioral Psychology & Cognitive Edge
+         </h2>
+@@ -25,7 +25,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+       </div>
+ 
+       {/* Psychology Highlights Row */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs">
+         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#181a22]">
+           <div className="pt-2 sm:pt-0 sm:pr-4">
+             <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Average Discipline</span>
+@@ -64,8 +64,8 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+       {/* Behavioral Insights: Discipline vs Emotion */}
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         {/* Discipline Correlation */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
+-          <div className="pb-3 border-b border-[#181a22]">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
++          <div className="pb-3 border-b border-white/[0.06]">
+             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+               Discipline vs Realized Edge
+             </h3>
+@@ -114,8 +114,8 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+         </div>
+ 
+         {/* Emotion Distribution Breakdown */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
+-          <div className="pb-3 border-b border-[#181a22]">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
++          <div className="pb-3 border-b border-white/[0.06]">
+             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+               Performance by Emotional State
+             </h3>
+@@ -124,7 +124,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+ 
+           <div className="space-y-2">
+             {insights.emotionGroups.map(grp => (
+-              <div key={grp.name} className="flex items-center justify-between text-xs py-1.5 border-b border-[#15171e]">
++              <div key={grp.name} className="flex items-center justify-between text-xs py-1.5 border-b border-white/[0.06]">
+                 <div className="flex items-center gap-2">
+                   <span className="text-[#e4e7ec] font-medium">{grp.name}</span>
+                   <span className="text-[10px] text-[#555a66]">({grp.totalTrades} trades)</span>
+@@ -146,8 +146,8 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+       </div>
+ 
+       {/* Execution Mistakes Table */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden font-mono text-xs">
+-        <div className="border-b border-[#181a22] p-4 bg-[#0f1117]">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden font-mono text-xs">
++        <div className="border-b border-white/[0.06] p-4 bg-[#0f1117]">
+           <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+             Cost of Execution Mistakes
+           </h3>
+@@ -158,7 +158,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
+ 
+         <table className="w-full text-left">
+           <thead>
+-            <tr className="border-b border-[#181a22] bg-[#0b0d11] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
++            <tr className="border-b border-white/[0.06] bg-[#0b0d11] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
+               <th className="py-2.5 px-4">Mistake Classification</th>
+               <th className="py-2.5 px-3 text-right">Frequency</th>
+               <th className="py-2.5 px-3 text-right">R Lost</th>
+diff --git a/src/components/views/ReviewsView.tsx b/src/components/views/ReviewsView.tsx
+index bc1cf14..498722f 100644
+--- a/src/components/views/ReviewsView.tsx
++++ b/src/components/views/ReviewsView.tsx
+@@ -180,7 +180,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* Top Header & Tab Controls */}
+-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
++      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
+         <div>
+           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+             Execution Reviews & Debriefs
+@@ -192,7 +192,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+ 
+         <div className="flex items-center gap-3">
+           {/* Daily / Weekly Switcher */}
+-          <div className="flex items-center gap-1 rounded bg-[#0c0e13] p-0.5 text-xs font-mono border border-[#1e222c]">
++          <div className="flex items-center gap-1 rounded bg-black/30 p-0.5 text-xs font-mono border border-white/[0.08]">
+             <button
+               onClick={() => {
+                 setActiveTab('daily');
+@@ -200,7 +200,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+               }}
+               className={`px-3 py-1.5 rounded transition-colors ${
+                 activeTab === 'daily'
+-                  ? 'bg-[#181b23] text-[#f4f5f7] font-medium'
++                  ? 'bg-white/[0.04] text-[#f4f5f7] font-medium'
+                   : 'text-[#696f7e] hover:text-[#d0d4dc]'
+               }`}
+             >
+@@ -213,7 +213,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+               }}
+               className={`px-3 py-1.5 rounded transition-colors ${
+                 activeTab === 'weekly'
+-                  ? 'bg-[#181b23] text-[#f4f5f7] font-medium'
++                  ? 'bg-white/[0.04] text-[#f4f5f7] font-medium'
+                   : 'text-[#696f7e] hover:text-[#d0d4dc]'
+               }`}
+             >
+@@ -223,7 +223,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+ 
+           <button
+             onClick={() => setIsAdding(!isAdding)}
+-            className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3 py-1.5 text-xs font-medium text-[#f0f2f5] transition-colors"
++            className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3 py-1.5 text-xs font-medium text-[#f0f2f5] transition-colors"
+           >
+             <Plus className="h-3.5 w-3.5 text-[#10b981]" />
+             <span>{isAdding ? 'Close Form' : `Log ${activeTab === 'daily' ? 'Daily' : 'Weekly'}`}</span>
+@@ -236,8 +236,8 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+         <div className="space-y-6">
+           {/* New Daily Review Form */}
+           {isAdding && (
+-            <form onSubmit={handleSubmitDaily} className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4 font-mono text-xs">
+-              <div className="flex items-center justify-between border-b border-[#181a22] pb-3">
++            <form onSubmit={handleSubmitDaily} className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4 font-mono text-xs">
++              <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+                 <span className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+                   Log Daily Trading Reflection
+                 </span>
+@@ -245,13 +245,13 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                   type="date"
+                   value={selectedDate}
+                   onChange={e => setSelectedDate(e.target.value)}
+-                  className="rounded border border-[#1e222c] bg-[#11141b] px-2.5 py-1 text-[#e4e7ec] focus:outline-none"
++                  className="rounded border border-white/[0.08] bg-white/[0.03] px-2.5 py-1 text-[#e4e7ec] focus:outline-none"
+                   required
+                 />
+               </div>
+ 
+               {/* Automatic Daily Stats Strip */}
+-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-[#11141b] p-3 rounded border border-[#181a22]">
++              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 bg-white/[0.03] p-3 rounded border border-white/[0.06]">
+                 <div>
+                   <span className="text-[10px] text-[#696f7e] uppercase block">Daily P&L</span>
+                   <span className={`text-sm font-semibold tabular-nums ${dayStats.pnl >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'}`}>
+@@ -287,7 +287,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={whatWentWell}
+                     onChange={e => setWhatWentWell(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Patience, execution discipline, setup identification..."
+                     required
+                   />
+@@ -299,7 +299,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={whatWentWrong}
+                     onChange={e => setWhatWentWrong(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Chased entries, impatience, premature exits..."
+                     required
+                   />
+@@ -311,7 +311,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     type="text"
+                     value={ruleViolations}
+                     onChange={e => setRuleViolations(e.target.value)}
+-                    className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                    className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                   />
+                 </div>
+ 
+@@ -321,7 +321,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     type="text"
+                     value={emotionalState}
+                     onChange={e => setEmotionalState(e.target.value)}
+-                    className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
++                    className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                   />
+                 </div>
+ 
+@@ -331,7 +331,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={mainLesson}
+                     onChange={e => setMainLesson(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Key principle to remember..."
+                     required
+                   />
+@@ -343,14 +343,14 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={tomorrowFocus}
+                     onChange={e => setTomorrowFocus(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Target watchlist, setups to prioritize..."
+                     required
+                   />
+                 </div>
+               </div>
+ 
+-              <div className="flex justify-end gap-2 pt-2 border-t border-[#181a22]">
++              <div className="flex justify-end gap-2 pt-2 border-t border-white/[0.06]">
+                 <button
+                   type="button"
+                   onClick={() => setIsAdding(false)}
+@@ -360,7 +360,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                 </button>
+                 <button
+                   type="submit"
+-                  className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-4 py-1.5 font-medium text-[#f0f2f5] transition-colors"
++                  className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-4 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+                 >
+                   <Check className="h-3.5 w-3.5 text-[#10b981]" />
+                   <span>Save Daily Debrief</span>
+@@ -372,13 +372,13 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+           {/* Daily Reviews Feed */}
+           <div className="space-y-4">
+             {dailyReviews.length === 0 ? (
+-              <div className="py-12 text-center text-[#555a66] font-mono text-xs rounded-lg border border-[#181a22] bg-[#0c0e13]">
++              <div className="py-12 text-center text-[#555a66] font-mono text-xs rounded-lg border border-white/[0.06] bg-black/30">
+                 No daily debriefs logged yet. Click &ldquo;Log Daily&rdquo; to record end-of-day observations.
+               </div>
+             ) : (
+               dailyReviews.map(rev => (
+-                <div key={rev.id} className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 font-mono text-xs space-y-3">
+-                  <div className="flex items-center justify-between border-b border-[#181a22] pb-2 text-[#a0a6b5]">
++                <div key={rev.id} className="rounded-lg border border-white/[0.06] bg-black/30 p-4 font-mono text-xs space-y-3">
++                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 text-[#a0a6b5]">
+                     <div className="flex items-center gap-2">
+                       <Calendar className="h-3.5 w-3.5 text-[#696f7e]" />
+                       <span className="font-semibold text-sm text-[#f4f5f7]">{rev.date} Daily Debrief</span>
+@@ -387,28 +387,28 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                   </div>
+ 
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[#d0d4dc] font-sans">
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#10b981] font-medium block mb-1">
+                         What Went Well
+                       </span>
+                       <p className="text-xs text-[#a0a6b5] leading-relaxed">{rev.whatWentWell}</p>
+                     </div>
+ 
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#ef4444] font-medium block mb-1">
+                         What Went Wrong
+                       </span>
+                       <p className="text-xs text-[#a0a6b5] leading-relaxed">{rev.whatWentWrong}</p>
+                     </div>
+ 
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#f59e0b] font-medium block mb-1">
+                         Key Lesson
+                       </span>
+                       <p className="text-xs text-[#a0a6b5] leading-relaxed">{rev.mainLesson}</p>
+                     </div>
+ 
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#696f7e] font-medium block mb-1">
+                         Tomorrow's Focus
+                       </span>
+@@ -416,7 +416,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     </div>
+                   </div>
+ 
+-                  <div className="flex justify-between text-[11px] text-[#555a66] pt-1 border-t border-[#181a22]">
++                  <div className="flex justify-between text-[11px] text-[#555a66] pt-1 border-t border-white/[0.06]">
+                     <span>Rule compliance: <strong className="text-[#a0a6b5] font-normal">{rev.ruleViolations}</strong></span>
+                     <span>Emotional tone: <strong className="text-[#a0a6b5] font-normal">{rev.emotionalState}</strong></span>
+                   </div>
+@@ -431,8 +431,8 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+       {activeTab === 'weekly' && (
+         <div className="space-y-6">
+           {isAdding && (
+-            <form onSubmit={handleSubmitWeekly} className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4 font-mono text-xs">
+-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#181a22] pb-3">
++            <form onSubmit={handleSubmitWeekly} className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4 font-mono text-xs">
++              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
+                 <span className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+                   Log Weekly Performance Retrospective
+                 </span>
+@@ -441,20 +441,20 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     type="date"
+                     value={weekStart}
+                     onChange={e => setWeekStart(e.target.value)}
+-                    className="rounded border border-[#1e222c] bg-[#11141b] px-2 py-1 text-[#e4e7ec] focus:outline-none"
++                    className="rounded border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[#e4e7ec] focus:outline-none"
+                   />
+                   <span className="text-[#555a66]">to</span>
+                   <input
+                     type="date"
+                     value={weekEnd}
+                     onChange={e => setWeekEnd(e.target.value)}
+-                    className="rounded border border-[#1e222c] bg-[#11141b] px-2 py-1 text-[#e4e7ec] focus:outline-none"
++                    className="rounded border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[#e4e7ec] focus:outline-none"
+                   />
+                 </div>
+               </div>
+ 
+               {/* Automatic Weekly Statistics Strip */}
+-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 bg-[#11141b] p-3 rounded border border-[#181a22]">
++              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 bg-white/[0.03] p-3 rounded border border-white/[0.06]">
+                 <div>
+                   <span className="text-[10px] text-[#696f7e] uppercase block">Weekly P&L</span>
+                   <span className={`text-sm font-semibold tabular-nums ${weekStats.pnl >= 0 ? 'text-[#10b981]' : 'text-[#ef4444]'}`}>
+@@ -494,7 +494,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={whatWorked}
+                     onChange={e => setWhatWorked(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Strategies with highest edge, patience..."
+                     required
+                   />
+@@ -506,7 +506,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={whatDidnt}
+                     onChange={e => setWhatDidnt(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Overtrading, choppy sessions, slip-ups..."
+                     required
+                   />
+@@ -518,14 +518,14 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                     rows={2}
+                     value={changesNextWeek}
+                     onChange={e => setChangesNextWeek(e.target.value)}
+-                    className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++                    className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] font-sans text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+                     placeholder="Adjust position size, refine session timing..."
+                     required
+                   />
+                 </div>
+               </div>
+ 
+-              <div className="flex justify-end gap-2 pt-2 border-t border-[#181a22]">
++              <div className="flex justify-end gap-2 pt-2 border-t border-white/[0.06]">
+                 <button
+                   type="button"
+                   onClick={() => setIsAdding(false)}
+@@ -535,7 +535,7 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+                 </button>
+                 <button
+                   type="submit"
+-                  className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-4 py-1.5 font-medium text-[#f0f2f5] transition-colors"
++                  className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-4 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+                 >
+                   <Check className="h-3.5 w-3.5 text-[#10b981]" />
+                   <span>Save Weekly Retrospective</span>
+@@ -547,33 +547,33 @@ export const ReviewsView: React.FC<ReviewsViewProps> = ({
+           {/* Weekly Reviews Feed */}
+           <div className="space-y-4">
+             {weeklyReviews.length === 0 ? (
+-              <div className="py-12 text-center text-[#555a66] font-mono text-xs rounded-lg border border-[#181a22] bg-[#0c0e13]">
++              <div className="py-12 text-center text-[#555a66] font-mono text-xs rounded-lg border border-white/[0.06] bg-black/30">
+                 No weekly retrospectives logged yet. Click &ldquo;Log Weekly&rdquo; to review weekly performance.
+               </div>
+             ) : (
+               weeklyReviews.map(w => (
+-                <div key={w.id} className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 font-mono text-xs space-y-3">
+-                  <div className="flex items-center justify-between border-b border-[#181a22] pb-2 text-[#a0a6b5]">
++                <div key={w.id} className="rounded-lg border border-white/[0.06] bg-black/30 p-4 font-mono text-xs space-y-3">
++                  <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 text-[#a0a6b5]">
+                     <span className="font-semibold text-sm text-[#f4f5f7]">{w.weekLabel}</span>
+                     <span className="text-[11px] text-[#555a66]">{w.startDate} → {w.endDate}</span>
+                   </div>
+ 
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-[#d0d4dc] font-sans">
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#10b981] font-medium block mb-1">
+                         What Worked
+                       </span>
+                       <p className="text-xs text-[#a0a6b5] leading-relaxed">{w.whatWorked}</p>
+                     </div>
+ 
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#ef4444] font-medium block mb-1">
+                         What Didn't Work
+                       </span>
+                       <p className="text-xs text-[#a0a6b5] leading-relaxed">{w.whatDidnt}</p>
+                     </div>
+ 
+-                    <div className="rounded bg-[#11141b] p-3 border border-[#181a22]">
++                    <div className="rounded bg-white/[0.03] p-3 border border-white/[0.06]">
+                       <span className="font-mono text-[10px] uppercase text-[#f59e0b] font-medium block mb-1">
+                         Next Week's Mandate
+                       </span>
+diff --git a/src/components/views/RiskCenterView.tsx b/src/components/views/RiskCenterView.tsx
+index 80d564a..d06b68d 100644
+--- a/src/components/views/RiskCenterView.tsx
++++ b/src/components/views/RiskCenterView.tsx
+@@ -50,7 +50,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* 1. Header with Subtle Status Indicator */}
+-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
++      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
+         <div>
+           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+             Risk & Capital Preservation
+@@ -69,10 +69,10 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+       </div>
+ 
+       {/* 2. Primary Drawdown Callout & Core Gauges */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono">
+         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+           {/* Main Drawdown Metric (Most important) */}
+-          <div className="md:col-span-4 border-b md:border-b-0 md:border-r border-[#181a22] pb-5 md:pb-0 md:pr-6">
++          <div className="md:col-span-4 border-b md:border-b-0 md:border-r border-white/[0.06] pb-5 md:pb-0 md:pr-6">
+             <span className="text-[11px] uppercase tracking-wider text-[#696f7e] block">
+               Current Peak-to-Trough Drawdown
+             </span>
+@@ -151,8 +151,8 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+       </div>
+ 
+       {/* 3. Position Size Calculator (Clean, functional) */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono">
+-        <div className="pb-3 border-b border-[#181a22] mb-4 flex items-center justify-between">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono">
++        <div className="pb-3 border-b border-white/[0.06] mb-4 flex items-center justify-between">
+           <div className="flex items-center gap-2">
+             <Calculator className="h-4 w-4 text-[#8c92a2]" />
+             <h3 className="text-xs font-medium uppercase tracking-wider text-[#9ea3b0]">
+@@ -169,7 +169,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+               type="text"
+               value={calcInstrument}
+               onChange={e => setCalcInstrument(e.target.value.toUpperCase())}
+-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
++              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+             />
+           </div>
+ 
+@@ -179,7 +179,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+               type="number"
+               value={calcBalance}
+               onChange={e => setCalcBalance(parseFloat(e.target.value) || 0)}
+-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
++              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+             />
+           </div>
+ 
+@@ -190,7 +190,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+               step="0.1"
+               value={calcRiskPct}
+               onChange={e => setCalcRiskPct(parseFloat(e.target.value) || 1)}
+-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
++              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+             />
+           </div>
+ 
+@@ -201,7 +201,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+               step="any"
+               value={calcEntryPrice}
+               onChange={e => setCalcEntryPrice(parseFloat(e.target.value) || 0)}
+-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
++              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+             />
+           </div>
+ 
+@@ -212,13 +212,13 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+               step="any"
+               value={calcStopLoss}
+               onChange={e => setCalcStopLoss(parseFloat(e.target.value) || 0)}
+-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
++              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+             />
+           </div>
+         </div>
+ 
+         {/* Calculated Result */}
+-        <div className="mt-4 pt-3 border-t border-[#181a22] flex flex-wrap items-center justify-between gap-4 text-xs">
++        <div className="mt-4 pt-3 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-4 text-xs">
+           <div className="flex items-center gap-6">
+             <div>
+               <span className="text-[#696f7e] text-[10.5px]">Stop Distance:</span>
+@@ -251,7 +251,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
+                   riskAmt: calculatedRiskAmount,
+                 });
+               }}
+-              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3 py-1.5 font-medium text-[#f0f2f5] transition-colors"
++              className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+             >
+               <span>Apply to New Trade</span>
+               <ArrowRight className="h-3 w-3" />
+diff --git a/src/components/views/SettingsView.tsx b/src/components/views/SettingsView.tsx
+index 4fce107..68ab596 100644
+--- a/src/components/views/SettingsView.tsx
++++ b/src/components/views/SettingsView.tsx
+@@ -125,7 +125,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+ 
+   return (
+     <div className="space-y-6 max-w-4xl font-mono text-xs">
+-      <div className="pb-4 border-b border-[#181a22]">
++      <div className="pb-4 border-b border-white/[0.06]">
+         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight">
+           Terminal Settings & Data Management
+         </h2>
+@@ -147,8 +147,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+       )}
+ 
+       {/* Account Settings */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-        <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++        <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+           Account Baseline & Starting Capital
+         </div>
+ 
+@@ -160,14 +160,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+               step="any"
+               value={initialBalanceInput}
+               onChange={e => setInitialBalanceInput(parseFloat(e.target.value) || 0)}
+-              className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
++              className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
+             />
+           </div>
+ 
+           <div className="flex items-center gap-3">
+             <button
+               type="submit"
+-              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
++              className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+             >
+               <Check className="h-3.5 w-3.5 text-[#10b981]" />
+               <span>Save Baseline</span>
+@@ -182,8 +182,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+       </div>
+ 
+       {/* Gemini AI Vision Scanner Configuration */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-        <div className="flex items-center justify-between border-b border-[#181a22] pb-3">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+           <div className="flex items-center gap-2">
+             <Sparkles className="h-4 w-4 text-[#10b981]" />
+             <span className="text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+@@ -228,7 +228,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+                 placeholder="AIzaSy..."
+                 value={geminiKeyInput}
+                 onChange={e => setGeminiKeyInput(e.target.value)}
+-                className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 pr-8 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none font-mono"
++                className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 pr-8 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none font-mono"
+               />
+               <button
+                 type="button"
+@@ -243,7 +243,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+           <div className="flex items-center gap-3">
+             <button
+               type="submit"
+-              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
++              className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+             >
+               <Check className="h-3.5 w-3.5 text-[#10b981]" />
+               <span>Simpan API Key</span>
+@@ -253,7 +253,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+               type="button"
+               disabled={isTestingGemini}
+               onClick={handleTestGeminiKey}
+-              className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#11141b] hover:bg-[#181c26] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-50 transition-colors"
++              className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.03] hover:bg-[#181c26] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-50 transition-colors"
+             >
+               {isTestingGemini ? (
+                 <Loader2 className="h-3.5 w-3.5 animate-spin text-[#10b981]" />
+@@ -279,8 +279,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+       </div>
+ 
+       {/* Database State & Trade History Actions */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-        <div className="flex items-center justify-between border-b border-[#181a22] pb-3">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+           <span className="text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">Journal Database Records</span>
+           <span className="text-[11px] text-[#696f7e]">
+             Current: <strong className="text-[#e4e7ec] font-semibold">{trades.length} trades recorded</strong>
+@@ -302,7 +302,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+ 
+           <button
+             onClick={() => setShowLoadDemoModal(true)}
+-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
++            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+           >
+             <Sparkles className="h-3.5 w-3.5 text-[#10b981]" />
+             <span>Load Demo Trade Set</span>
+@@ -311,8 +311,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+       </div>
+ 
+       {/* Backup and Export */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-        <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++        <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+           Data Export & Backup
+         </div>
+ 
+@@ -320,7 +320,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+           <button
+             onClick={handleExportCSV}
+             disabled={trades.length === 0}
+-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
++            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
+           >
+             <Download className="h-3.5 w-3.5" />
+             <span>Export CSV</span>
+@@ -329,13 +329,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
+           <button
+             onClick={handleExportJSON}
+             disabled={trades.length === 0}
+-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
++            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
+           >
+             <Download className="h-3.5 w-3.5" />
+             <span>Export JSON Database</span>
+           </button>
+ 
+-          <label className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
++          <label className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
+             <Upload className="h-3.5 w-3.5" />
+             <span>Import JSON</span>
+             <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />
+diff --git a/src/components/views/StrategiesView.tsx b/src/components/views/StrategiesView.tsx
+index 14828a9..881cb86 100644
+--- a/src/components/views/StrategiesView.tsx
++++ b/src/components/views/StrategiesView.tsx
+@@ -64,11 +64,11 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
+   if (activeStrategy) {
+     return (
+       <div className="space-y-6 max-w-[1300px]">
+-        <div className="flex items-center justify-between border-b border-[#181a22] pb-4">
++        <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
+           <div className="flex items-center gap-3">
+             <button
+               onClick={() => setSelectedStrategyName(null)}
+-              className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
++              className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+             >
+               <ArrowLeft className="h-3.5 w-3.5" />
+               <span>Back to Playbooks</span>
+@@ -80,7 +80,7 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
+         </div>
+ 
+         {/* Strategy Summary Bar */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 font-mono text-xs">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 font-mono text-xs">
+           <div className="grid grid-cols-2 sm:grid-cols-6 gap-4">
+             <div>
+               <span className="text-[#646a78] text-[10.5px] uppercase block">Win Rate</span>
+@@ -110,10 +110,10 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
+         </div>
+ 
+         {/* Matching Trades List */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
+           <table className="w-full text-left text-xs font-mono">
+             <thead>
+-              <tr className="border-b border-[#181a22] bg-[#0f1117] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
++              <tr className="border-b border-white/[0.06] bg-[#0f1117] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
+                 <th className="py-2.5 px-3">Date</th>
+                 <th className="py-2.5 px-3">Instrument</th>
+                 <th className="py-2.5 px-3">Side</th>
+@@ -164,7 +164,7 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
+ 
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+-      <div className="pb-4 border-b border-[#181a22]">
++      <div className="pb-4 border-b border-white/[0.06]">
+         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+           Playbook Strategies
+         </h2>
+@@ -181,10 +181,10 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
+           return (
+             <div
+               key={s.id}
+-              className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 flex flex-col justify-between hover:border-[#262a36] transition-colors"
++              className="rounded-lg border border-white/[0.06] bg-black/30 p-4 flex flex-col justify-between hover:border-white/[0.09] transition-colors"
+             >
+               <div>
+-                <div className="flex items-start justify-between border-b border-[#181a22] pb-3 mb-3">
++                <div className="flex items-start justify-between border-b border-white/[0.06] pb-3 mb-3">
+                   <div>
+                     <h3 className="text-sm font-semibold font-mono text-[#f4f5f7]">{s.name}</h3>
+                     <p className="text-xs text-[#696f7e] mt-1 font-sans leading-relaxed">{s.description}</p>
+@@ -219,7 +219,7 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
+               </div>
+ 
+               {s.setups && s.setups.length > 0 && (
+-                <div className="pt-3 mt-3 border-t border-[#181a22]">
++                <div className="pt-3 mt-3 border-t border-white/[0.06]">
+                   <span className="text-[10px] font-mono uppercase text-[#555a66] block mb-1">Setups:</span>
+                   <div className="flex flex-wrap gap-2 text-xs text-[#8c92a2] font-mono">
+                     {s.setups.map((su: { name: string; description?: string }, idx: number) => (
+diff --git a/src/components/views/TradeDetailView.tsx b/src/components/views/TradeDetailView.tsx
+index 9892008..db6b36b 100644
+--- a/src/components/views/TradeDetailView.tsx
++++ b/src/components/views/TradeDetailView.tsx
+@@ -27,11 +27,11 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* Top action header */}
+-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
++      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
+         <div className="flex items-center gap-3">
+           <button
+             onClick={onBack}
+-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
++            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 hover:bg-[#151820] px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+           >
+             <ArrowLeft className="h-3.5 w-3.5" />
+             <span>Journal</span>
+@@ -68,14 +68,14 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+         <div className="flex items-center gap-2 text-xs">
+           <button
+             onClick={() => onDuplicate(trade.id)}
+-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
++            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+           >
+             <Copy className="h-3.5 w-3.5" />
+             <span className="hidden sm:inline">Duplicate</span>
+           </button>
+           <button
+             onClick={() => onEdit(trade)}
+-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
++            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+           >
+             <Edit3 className="h-3.5 w-3.5" />
+             <span>Edit</span>
+@@ -110,8 +110,8 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+         {/* LEFT COLUMN: Chart / Screenshot & Price Levels (7 cols) */}
+         <div className="lg:col-span-7 space-y-3">
+           {/* Chart Screenshot Container */}
+-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
+-            <div className="flex items-center justify-between border-b border-[#181a22] px-3.5 py-2 text-xs font-mono text-[#696f7e]">
++          <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
++            <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2 text-xs font-mono text-[#696f7e]">
+               <span>Execution Chart Snapshot</span>
+               {trade.screenshotBefore && (
+                 <button
+@@ -143,19 +143,19 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+ 
+           {/* Compact Price Levels Grid */}
+           <div className="grid grid-cols-4 gap-2 font-mono text-xs">
+-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
++            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
+               <span className="text-[10px] text-[#555a66] uppercase">Entry</span>
+               <div className="mt-0.5 font-semibold text-[#e4e7ec] tabular-nums">{trade.entryPrice}</div>
+             </div>
+-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
++            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
+               <span className="text-[10px] text-[#555a66] uppercase">Stop Loss</span>
+               <div className="mt-0.5 font-semibold text-[#ef4444] tabular-nums">{trade.stopLoss}</div>
+             </div>
+-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
++            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
+               <span className="text-[10px] text-[#555a66] uppercase">Take Profit</span>
+               <div className="mt-0.5 font-semibold text-[#10b981] tabular-nums">{trade.takeProfit}</div>
+             </div>
+-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
++            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
+               <span className="text-[10px] text-[#555a66] uppercase">Exit</span>
+               <div className="mt-0.5 font-semibold text-[#e4e7ec] tabular-nums">{trade.exitPrice}</div>
+             </div>
+@@ -163,9 +163,9 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+         </div>
+ 
+         {/* RIGHT COLUMN: Trade Statistics (5 cols) */}
+-        <div className="lg:col-span-5 rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5 font-mono text-xs space-y-4">
++        <div className="lg:col-span-5 rounded-lg border border-white/[0.06] bg-black/30 p-4 sm:p-5 font-mono text-xs space-y-4">
+           {/* Main Financial Result Callout */}
+-          <div className="flex items-center justify-between pb-4 border-b border-[#181a22]">
++          <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
+             <div>
+               <span className="text-[10px] uppercase tracking-wider text-[#696f7e]">Net Realized P&L</span>
+               <div
+@@ -190,41 +190,41 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+ 
+           {/* Key-Value Statistics List */}
+           <div className="space-y-2.5">
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Position Sizing</span>
+               <span className="font-semibold text-[#e4e7ec] tabular-nums">
+                 {trade.positionSize} {trade.sizeUnit || 'USDT'}
+               </span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Risk Amount (1R)</span>
+               <span className="font-semibold text-[#e4e7ec] tabular-nums">
+                 ${trade.riskAmount.toFixed(2)} ({trade.riskPercent}%)
+               </span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Holding Duration</span>
+               <span className="font-semibold text-[#e4e7ec] tabular-nums">
+                 {trade.holdingTimeMinutes || 30} minutes
+               </span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Setup Model</span>
+               <span className="font-semibold text-[#e4e7ec]">{trade.setup}</span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Strategy</span>
+               <span className="font-semibold text-[#e4e7ec]">{trade.strategy}</span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Trading Session</span>
+               <span className="font-semibold text-[#e4e7ec]">{trade.session}</span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Emotional State</span>
+               <span className="font-semibold text-[#e4e7ec]">{trade.emotion}</span>
+             </div>
+-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
+               <span className="text-[#696f7e]">Execution Discipline</span>
+               <span className="font-semibold text-[#10b981] tabular-nums">{trade.discipline} / 10</span>
+             </div>
+@@ -241,7 +241,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+       {/* BELOW: Thesis, Exit Reasoning, Reviews, Tags */}
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+         {/* Left: Thesis & Exit Reasoning */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 space-y-4">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 space-y-4">
+           <div>
+             <h4 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0] mb-1.5">
+               Trade Thesis (Entry Rationale)
+@@ -250,7 +250,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+               {trade.entryReason || 'No specific entry notes provided.'}
+             </p>
+           </div>
+-          <div className="pt-3 border-t border-[#181a22]">
++          <div className="pt-3 border-t border-white/[0.06]">
+             <h4 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0] mb-1.5">
+               Exit Reasoning
+             </h4>
+@@ -261,7 +261,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+         </div>
+ 
+         {/* Right: Notes, Review, Tags */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 space-y-4">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 space-y-4">
+           <div>
+             <h4 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0] mb-1.5">
+               Review Notes & Observations
+@@ -271,7 +271,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
+             </p>
+           </div>
+           {trade.tags && trade.tags.length > 0 && (
+-            <div className="pt-3 border-t border-[#181a22]">
++            <div className="pt-3 border-t border-white/[0.06]">
+               <span className="text-[10.5px] font-mono uppercase text-[#696f7e] block mb-1.5">Tags</span>
+               <div className="flex flex-wrap gap-2 text-xs text-[#8c92a2]">
+                 {trade.tags.map((tag, idx) => (
+diff --git a/src/components/views/TradingDNAView.tsx b/src/components/views/TradingDNAView.tsx
+index 392cd55..cfb91ac 100644
+--- a/src/components/views/TradingDNAView.tsx
++++ b/src/components/views/TradingDNAView.tsx
+@@ -12,7 +12,7 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
+   return (
+     <div className="space-y-6 max-w-[1200px]">
+       {/* 1. Header */}
+-      <div className="pb-4 border-b border-[#181a22]">
++      <div className="pb-4 border-b border-white/[0.06]">
+         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+           Trader Profile & Behavioral Traits
+         </h2>
+@@ -22,7 +22,7 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
+       </div>
+ 
+       {/* 2. Core Statistical Attributes Row */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs">
+         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#181a22]">
+           <div className="pt-2 sm:pt-0 sm:pr-4">
+             <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Optimal Session</span>
+@@ -69,8 +69,8 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
+       {/* 3. Behavioral Archetype & Execution Discipline */}
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+         {/* Execution Traits */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
+-          <div className="pb-3 border-b border-[#181a22]">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
++          <div className="pb-3 border-b border-white/[0.06]">
+             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+               Execution Discipline Metrics
+             </h3>
+@@ -91,17 +91,17 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
+               </div>
+             </div>
+ 
+-            <div className="flex justify-between items-center py-2 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-2 border-b border-white/[0.06]">
+               <span className="text-[#8c92a2]">Trading Archetype</span>
+               <span className="font-semibold text-[#e4e7ec]">{dna.scalpingVsSwing}</span>
+             </div>
+ 
+-            <div className="flex justify-between items-center py-2 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-2 border-b border-white/[0.06]">
+               <span className="text-[#8c92a2]">Risk Tolerance Profile</span>
+               <span className="font-semibold text-[#e4e7ec]">{dna.riskTakingScore}</span>
+             </div>
+ 
+-            <div className="flex justify-between items-center py-2 border-b border-[#15171e]">
++            <div className="flex justify-between items-center py-2 border-b border-white/[0.06]">
+               <span className="text-[#8c92a2]">Overtrading Propensity</span>
+               <span className="font-semibold text-[#e4e7ec]">{dna.overtradingRisk}</span>
+             </div>
+@@ -114,8 +114,8 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
+         </div>
+ 
+         {/* Behavioral Recommendations */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
+-          <div className="pb-3 border-b border-[#181a22]">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
++          <div className="pb-3 border-b border-white/[0.06]">
+             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+               Empirical Edge Guidelines
+             </h3>
+diff --git a/src/components/views/TradingPlanView.tsx b/src/components/views/TradingPlanView.tsx
+index 8d4dee8..b987c1c 100644
+--- a/src/components/views/TradingPlanView.tsx
++++ b/src/components/views/TradingPlanView.tsx
+@@ -61,7 +61,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+   return (
+     <div className="space-y-6 max-w-[1300px]">
+       {/* Top Header */}
+-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
++      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
+         <div>
+           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
+             Systematic Trading Plan & Risk Rules
+@@ -82,8 +82,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+       <form onSubmit={handleSave} className="space-y-6 font-mono text-xs">
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+           {/* 1. Quantitative Risk Rules */}
+-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-            <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
++          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++            <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+               1. Quantitative Risk Thresholds
+             </div>
+ 
+@@ -95,7 +95,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                   step="0.1"
+                   value={formData.riskPerTradePercent}
+                   onChange={e => setFormData({ ...formData, riskPerTradePercent: parseFloat(e.target.value) || 0 })}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
+                 />
+               </div>
+ 
+@@ -106,7 +106,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                   step="0.1"
+                   value={formData.maxDailyLossPercent}
+                   onChange={e => setFormData({ ...formData, maxDailyLossPercent: parseFloat(e.target.value) || 0 })}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
+                 />
+               </div>
+ 
+@@ -117,7 +117,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                   step="0.1"
+                   value={formData.maxWeeklyLossPercent}
+                   onChange={e => setFormData({ ...formData, maxWeeklyLossPercent: parseFloat(e.target.value) || 0 })}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
+                 />
+               </div>
+ 
+@@ -127,15 +127,15 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                   type="number"
+                   value={formData.maxTradesPerDay}
+                   onChange={e => setFormData({ ...formData, maxTradesPerDay: parseInt(e.target.value) || 1 })}
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
+                 />
+               </div>
+             </div>
+           </div>
+ 
+           {/* 2. Trading Specification Rules */}
+-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-            <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
++          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++            <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+               2. Technical Execution Specifications
+             </div>
+ 
+@@ -149,7 +149,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                     step="0.1"
+                     value={formData.minRR}
+                     onChange={e => setFormData({ ...formData, minRR: parseFloat(e.target.value) || 1 })}
+-                    className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
++                    className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
+                   />
+                 </div>
+               </div>
+@@ -166,8 +166,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                         onClick={() => toggleSession(sess)}
+                         className={`px-3 py-1 rounded text-xs transition-colors ${
+                           active
+-                            ? 'bg-[#181b23] text-[#f4f5f7] font-medium border border-[#2d3243]'
+-                            : 'bg-[#11141b] text-[#696f7e] border border-[#1e222c] hover:text-[#a0a6b5]'
++                            ? 'bg-white/[0.04] text-[#f4f5f7] font-medium border border-[#2d3243]'
++                            : 'bg-white/[0.03] text-[#696f7e] border border-white/[0.08] hover:text-[#a0a6b5]'
+                         }`}
+                       >
+                         {sess}
+@@ -189,8 +189,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                         onClick={() => toggleTimeframe(tf)}
+                         className={`px-2.5 py-1 rounded text-xs transition-colors ${
+                           active
+-                            ? 'bg-[#181b23] text-[#f4f5f7] font-medium border border-[#2d3243]'
+-                            : 'bg-[#11141b] text-[#696f7e] border border-[#1e222c] hover:text-[#a0a6b5]'
++                            ? 'bg-white/[0.04] text-[#f4f5f7] font-medium border border-[#2d3243]'
++                            : 'bg-white/[0.03] text-[#696f7e] border border-white/[0.08] hover:text-[#a0a6b5]'
+                         }`}
+                       >
+                         {tf}
+@@ -211,7 +211,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+                       allowedInstruments: e.target.value.split(',').map(s => s.trim().toUpperCase()).filter(Boolean),
+                     })
+                   }
+-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none"
++                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none"
+                 />
+               </div>
+             </div>
+@@ -219,14 +219,14 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+         </div>
+ 
+         {/* 3. Stop Conditions */}
+-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
+-          <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
++        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
++          <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+             3. Mandatory Circuit Breakers & Invalidation Triggers
+           </div>
+ 
+           <div className="space-y-2">
+             {formData.stopConditions.map((cond, idx) => (
+-              <div key={idx} className="flex items-center justify-between rounded bg-[#11141b] p-2.5 border border-[#181a22]">
++              <div key={idx} className="flex items-center justify-between rounded bg-white/[0.03] p-2.5 border border-white/[0.06]">
+                 <div className="flex items-center gap-2 text-[#d0d4dc]">
+                   <ShieldAlert className="h-3.5 w-3.5 text-[#f59e0b] shrink-0" />
+                   <span>{cond}</span>
+@@ -248,12 +248,12 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+               placeholder="Add stop condition (e.g., 2 consecutive losses trigger a 2-hour break)"
+               value={newStopCondition}
+               onChange={e => setNewStopCondition(e.target.value)}
+-              className="flex-1 h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
++              className="flex-1 h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
+             />
+             <button
+               type="button"
+               onClick={addStopCondition}
+-              className="h-8 rounded border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3 text-[#a0a6b5] hover:text-[#e4e7ec] flex items-center gap-1 transition-colors"
++              className="h-8 rounded border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3 text-[#a0a6b5] hover:text-[#e4e7ec] flex items-center gap-1 transition-colors"
+             >
+               <Plus className="h-3.5 w-3.5" />
+               <span>Add</span>
+@@ -264,7 +264,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+         <div className="flex justify-end">
+           <button
+             type="submit"
+-            className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-4 py-2 text-xs font-medium text-[#f0f2f5] transition-colors"
++            className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-4 py-2 text-xs font-medium text-[#f0f2f5] transition-colors"
+           >
+             <Check className="h-3.5 w-3.5 text-[#10b981]" />
+             <span>Save Trading Plan</span>
+@@ -273,8 +273,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
+       </form>
+ 
+       {/* 4. Historical Rule Infraction Log */}
+-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs">
+-        <div className="flex items-center justify-between border-b border-[#181a22] pb-3 mb-3">
++      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs">
++        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-3">
+           <div className="flex items-center gap-2">
+             <AlertTriangle className="h-3.5 w-3.5 text-[#f59e0b]" />
+             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
+diff --git a/src/index.css b/src/index.css
+index 44c7c54..8b73747 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -2,21 +2,21 @@
+ 
+ @layer base {
+   :root {
+-    --font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+-    --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
++    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
++    --font-mono: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+   }
+ 
+   body {
+     font-family: var(--font-sans);
+-    background-color: #07090E;
++    background-color: #050506;
+     color: #E2E8F0;
+-    letter-spacing: -0.015em;
++    letter-spacing: -0.01em;
+     -webkit-font-smoothing: antialiased;
+     -moz-osx-font-smoothing: grayscale;
+-    background-image: 
+-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.04), transparent),
+-      radial-gradient(ellipse 60% 40% at 100% 30%, rgba(244, 63, 94, 0.02), transparent),
+-      radial-gradient(ellipse 60% 40% at 0% 70%, rgba(16, 185, 129, 0.02), transparent);
++    background-image:
++      radial-gradient(ellipse 70% 45% at 50% -10%, rgba(255, 255, 255, 0.045), transparent),
++      radial-gradient(ellipse 50% 35% at 100% 100%, rgba(255, 255, 255, 0.03), transparent),
++      radial-gradient(ellipse 45% 30% at 0% 80%, rgba(255, 255, 255, 0.02), transparent);
+     background-attachment: fixed;
+   }
+ 
+@@ -29,11 +29,11 @@
+     background: transparent;
+   }
+   ::-webkit-scrollbar-thumb {
+-    background: #1C2333;
++    background: rgba(255,255,255,0.12);
+     border-radius: 9999px;
+   }
+   ::-webkit-scrollbar-thumb:hover {
+-    background: #2D374D;
++    background: rgba(255,255,255,0.22);
+   }
+ }
+ 
+@@ -52,134 +52,65 @@ input[type="number"] {
+   -moz-appearance: textfield;
+ }
+ 
+-/* Luxury Dark Glass & Panel Classes */
+-.dark-card {
+-  background: linear-gradient(180deg, rgba(18, 24, 38, 0.72) 0%, rgba(11, 15, 24, 0.88) 100%);
+-  border: 1px solid rgba(255, 255, 255, 0.065);
++/* ========================================================
++   ECHOFI-STYLE SURFACES: near-black, thin borders, soft frosted cards
++   ======================================================== */
++.font-mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1, "cv11" 1; }
++.font-extrabold, .font-bold { font-weight: 600; }
++.font-semibold { font-weight: 500; }
++
++.dark-card, .dark-card-elevated {
++  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
++  border: 1px solid rgba(255, 255, 255, 0.07);
++  border-radius: 18px;
+   backdrop-filter: blur(20px);
+-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+-}
+-
+-.dark-card-elevated {
+-  background: linear-gradient(180deg, rgba(22, 29, 46, 0.8) 0%, rgba(14, 18, 30, 0.95) 100%);
+-  border: 1px solid rgba(255, 255, 255, 0.09);
+-  backdrop-filter: blur(24px);
+-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+-}
+-
+-.dark-card-interactive {
+-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+-}
+-.dark-card-interactive:hover {
+-  border-color: rgba(255, 255, 255, 0.14);
+-  transform: translateY(-2px);
+-  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.75);
+-}
+-
+-/* Subtle Glowing Accents */
+-.glow-emerald {
+-  box-shadow: 0 0 24px -4px rgba(16, 185, 129, 0.3);
++  box-shadow: none;
+ }
++.dark-card-interactive { transition: border-color .25s ease, background .25s ease; }
++.dark-card-interactive:hover { border-color: rgba(255,255,255,0.16); }
+ 
+-.glow-mint {
+-  box-shadow: 0 0 28px -4px rgba(0, 245, 160, 0.28);
+-}
+-
+-.glow-rose {
+-  box-shadow: 0 0 24px -4px rgba(244, 63, 94, 0.3);
+-}
+-
+-.glow-border-emerald {
+-  border-color: rgba(16, 185, 129, 0.4);
+-  box-shadow: 0 0 16px -2px rgba(16, 185, 129, 0.2);
+-}
+-
+-/* ========================================================
+-   LIQUID GLASS MORPHISM SYSTEM (Glossy, Frosted, Specular)
+-   ======================================================== */
++/* glow helpers are kept as names but neutralised */
++.glow-emerald, .glow-mint, .glow-rose { box-shadow: none; }
++.glow-border-emerald { border-color: rgba(255,255,255,0.25); box-shadow: none; }
+ 
+ .liquid-glass-bar {
+-  background: linear-gradient(
+-    180deg,
+-    rgba(255, 255, 255, 0.08) 0%,
+-    rgba(255, 255, 255, 0.02) 40%,
+-    rgba(8, 11, 18, 0.8) 100%
+-  ), rgba(11, 15, 25, 0.75);
+-  backdrop-filter: blur(36px) saturate(200%);
+-  -webkit-backdrop-filter: blur(36px) saturate(200%);
+-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+-  box-shadow: 
+-    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+-    inset 0 -1px 0 0 rgba(0, 0, 0, 0.4),
+-    0 12px 30px -10px rgba(0, 0, 0, 0.65);
++  background: rgba(5, 5, 6, 0.72);
++  backdrop-filter: blur(24px);
++  -webkit-backdrop-filter: blur(24px);
++  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
++  box-shadow: none;
+ }
+ 
+ .liquid-glass-sidebar {
+-  background: linear-gradient(
+-    90deg,
+-    rgba(10, 13, 21, 0.85) 0%,
+-    rgba(14, 18, 29, 0.78) 98%,
+-    rgba(255, 255, 255, 0.08) 100%
+-  );
+-  backdrop-filter: blur(40px) saturate(210%);
+-  -webkit-backdrop-filter: blur(40px) saturate(210%);
+-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+-  box-shadow: 
+-    inset -1px 0 0 0 rgba(255, 255, 255, 0.12),
+-    inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+-    16px 0 36px -12px rgba(0, 0, 0, 0.7);
++  background: rgba(8, 8, 10, 0.85);
++  backdrop-filter: blur(24px);
++  -webkit-backdrop-filter: blur(24px);
++  border-right: 1px solid rgba(255, 255, 255, 0.06);
++  box-shadow: none;
+ }
+ 
+ .liquid-glass-pill {
+-  background: linear-gradient(
+-    180deg,
+-    rgba(255, 255, 255, 0.09) 0%,
+-    rgba(255, 255, 255, 0.02) 100%
+-  ), rgba(15, 20, 32, 0.55);
+-  backdrop-filter: blur(24px) saturate(190%);
+-  -webkit-backdrop-filter: blur(24px) saturate(190%);
+-  border: 1px solid rgba(255, 255, 255, 0.09);
+-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+-  box-shadow: 
+-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
+-    0 4px 16px -4px rgba(0, 0, 0, 0.5);
+-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
++  background: rgba(255, 255, 255, 0.04);
++  backdrop-filter: blur(16px);
++  -webkit-backdrop-filter: blur(16px);
++  border: 1px solid rgba(255, 255, 255, 0.08);
++  box-shadow: none;
++  transition: background .2s ease, border-color .2s ease;
+ }
+ .liquid-glass-pill:hover {
+-  background: linear-gradient(
+-    180deg,
+-    rgba(255, 255, 255, 0.14) 0%,
+-    rgba(255, 255, 255, 0.04) 100%
+-  ), rgba(18, 25, 40, 0.75);
+-  border-top-color: rgba(255, 255, 255, 0.35);
+-  box-shadow: 
+-    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.35),
+-    0 8px 24px -6px rgba(0, 0, 0, 0.6);
+-  transform: translateY(-1px);
++  background: rgba(255, 255, 255, 0.07);
++  border-color: rgba(255, 255, 255, 0.16);
+ }
+ 
+ .liquid-glass-card {
+-  background: linear-gradient(
+-    165deg,
+-    rgba(255, 255, 255, 0.06) 0%,
+-    rgba(255, 255, 255, 0.015) 35%,
+-    rgba(10, 14, 23, 0.85) 100%
+-  ), rgba(13, 17, 27, 0.72);
+-  backdrop-filter: blur(32px) saturate(190%);
+-  -webkit-backdrop-filter: blur(32px) saturate(190%);
+-  border: 1px solid rgba(255, 255, 255, 0.08);
+-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+-  box-shadow: 
+-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.16),
+-    0 16px 36px -12px rgba(0, 0, 0, 0.7);
+-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
++  background: linear-gradient(180deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.02) 100%);
++  backdrop-filter: blur(24px);
++  -webkit-backdrop-filter: blur(24px);
++  border: 1px solid rgba(255, 255, 255, 0.07);
++  border-radius: 18px;
++  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
++  transition: border-color .25s ease, background .25s ease;
+ }
+ .liquid-glass-card:hover {
+   border-color: rgba(255, 255, 255, 0.15);
+-  border-top-color: rgba(255, 255, 255, 0.28);
+-  box-shadow: 
+-    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.25),
+-    0 20px 42px -12px rgba(0, 0, 0, 0.8);
+-  transform: translateY(-1.5px);
+ }
