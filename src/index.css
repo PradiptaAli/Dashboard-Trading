@@ -65,6 +65,7 @@
 .trade-modal .font-mono {
   font-family: 'IBM Plex Mono', 'Cascadia Code', monospace;
   letter-spacing: 0;
+}
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
