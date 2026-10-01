@@ -125,12 +125,16 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   const [notes, setNotes] = useState<string>('');
   const [holdingMinutes, setHoldingMinutes] = useState<number>(45);
 
+  // Collapse/Expand state
+  const [isStrategyExpanded, setIsStrategyExpanded] = useState(false);
+  const [isPsychologyExpanded, setIsPsychologyExpanded] = useState(false);
+
   // AI Scanner state
   const [isAiScanning, setIsAiScanning] = useState(false);
   const [aiScanError, setAiScanError] = useState<string | null>(null);
   const [aiScanSuccess, setAiScanSuccess] = useState<string | null>(null);
   const [aiPreviewUrl, setAiPreviewUrl] = useState<string | null>(null);
-  const [isAiCardExpanded, setIsAiCardExpanded] = useState(!isEditing);
+  const [isAiCardExpanded, setIsAiCardExpanded] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -614,33 +618,36 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 backdrop-blur-md overflow-y-auto">
-      <div className="relative my-auto w-full max-w-4xl rounded-2xl border border-white/[0.09] bg-[#09090B]/95 text-[#e8ebf0] shadow-2xl backdrop-blur-2xl overflow-hidden">
+    <div className="trade-modal fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 backdrop-blur-md overflow-y-auto">
+      <div className="relative my-auto flex max-h-[calc(100dvh-1rem)] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-white/[0.1] bg-[#0b0d11]/95 text-[#e8ebf0] shadow-2xl backdrop-blur-2xl sm:rounded-2xl">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.03] px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-emerald-400" />
-            <h2 className="text-xs sm:text-sm font-bold font-mono tracking-tight uppercase text-white">
-              {isEditing ? `Edit Execution — ${initialTrade?.id}` : 'Record New Execution'}
-            </h2>
-            <span className="text-[11px] font-mono text-slate-400 ml-2 hidden sm:inline">
-              Balance: <strong className="text-emerald-400 font-bold">${balance.toFixed(2)}</strong> (1R = ${riskAmount1R.toFixed(2)})
-            </span>
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-white/[0.07] bg-white/[0.025] px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="h-2 w-2 shrink-0 rounded-full bg-emerald-400" />
+            <div className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+              <h2 className="truncate text-sm font-semibold font-sans tracking-normal text-white">
+                {isEditing ? `Edit Execution — ${initialTrade?.id}` : 'Record New Execution'}
+              </h2>
+              <span className="text-[11px] font-mono text-slate-400">
+                Balance: <strong className="text-emerald-400 font-semibold">${balance.toFixed(2)}</strong> <span className="text-slate-500">·</span> 1R = ${riskAmount1R.toFixed(2)}
+              </span>
+            </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-xl p-1.5 text-slate-400 hover:bg-white/[0.06] hover:text-white transition-colors"
+            className="shrink-0 rounded-lg p-2 text-slate-400 transition-colors hover:bg-white/[0.07] hover:text-white"
+            aria-label="Close trade form"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[82vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="trade-modal-form min-h-0 flex-1 space-y-3 overflow-y-auto p-4 sm:space-y-4 sm:p-6">
           {/* Plan Violation Live Alert Warning */}
           {liveViolations.length > 0 && (
-            <div className="rounded border border-amber-500/30 bg-amber-950/20 p-3 text-xs text-amber-300 space-y-1">
+            <div className="space-y-1 rounded-lg border border-amber-500/25 bg-amber-950/15 p-3 text-xs text-amber-300">
               <div className="flex items-center gap-1.5 font-bold font-mono uppercase tracking-wider text-amber-400">
                 <AlertTriangle className="h-4 w-4" />
                 <span>Trading Plan Guard Warning</span>
@@ -654,11 +661,11 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           )}
 
           {/* AI TRADE TICKET & SHARED PNL SCANNER */}
-          <div className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-4 text-xs font-mono space-y-3">
+          <div className="space-y-3 rounded-xl border border-white/[0.08] bg-white/[0.025] p-3 text-xs sm:p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex flex-wrap items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#10b981]" />
-                <span className="font-semibold text-xs uppercase tracking-wider text-[#e4e7ec]">
+                  <span className="text-xs font-semibold tracking-wide text-[#e4e7ec]">
                   AI Shared PnL & Order Ticket Scanner
                 </span>
                 {hasConfiguredKey ? (
@@ -777,7 +784,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
             )}
 
             {isAiCardExpanded && (
-              <div className="space-y-3 pt-1">
+              <div className="space-y-3 border-t border-white/[0.06] pt-3">
                 <p className="text-[#8c92a2] text-[11px] font-sans leading-relaxed">
                   Unggah, seret (*drag & drop*), atau tempel langsung gambar screenshot (*paste* <kbd className="px-1 py-0.5 rounded bg-[#161922] border border-[#242938] text-[10px]">Ctrl+V</kbd>) dari kartu shared PnL Binance, Bybit, OKX, atau tiket MT5. AI otomatis membaca Ticker, Arah (Long/Short), Harga Open, Harga Close, dan Realized P&L.
                 </p>
@@ -1201,19 +1208,27 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   Hit TP (+2.00R / +${(riskAmount1R * 2).toFixed(2)})
                 </button>
               </div>
-
-              <div className="text-[10px] text-slate-400 font-sans leading-relaxed pt-1">
-                💡 <strong>Kalkulasi Dua Arah:</strong> Anda bebas mengubah <strong>Harga Exit</strong>, <strong>Nominal P&L ($)</strong> (misal ketik <code className="text-rose-400">-8</code>), atau <strong>R-Multiple</strong> (misal ketik <code className="text-rose-400">-1.6</code>). Ketiganya akan selalu sinkron otomatis tanpa stuck.
-              </div>
             </div>
           </div>
 
           {/* Section 3: Strategy & Context */}
           <div className="space-y-3 border-t border-white/[0.06] pt-4">
-            <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
-              3. Strategy, Setup & Execution Thesis
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
+            <button
+              type="button"
+              onClick={() => setIsStrategyExpanded(!isStrategyExpanded)}
+              className="flex w-full items-center justify-between text-left group"
+            >
+              <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider group-hover:text-white transition-colors">
+                3. Strategy, Setup & Execution Thesis
+              </h3>
+              <span className="text-xs text-slate-500 flex items-center gap-1 group-hover:text-slate-300">
+                {isStrategyExpanded ? 'Collapse' : 'Expand'}
+                {isStrategyExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </span>
+            </button>
+            {isStrategyExpanded && (
+              <div className="space-y-3 pt-1">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
               <div>
                 <label className="block text-[#696f7e] mb-1">Strategy</label>
                 <input
@@ -1249,7 +1264,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={session}
                   onChange={e => setSession(e.target.value as TradingSession)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none"
                 >
                   <option value="London">London</option>
                   <option value="New York">New York</option>
@@ -1262,7 +1277,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={timeframe}
                   onChange={e => setTimeframe(e.target.value as Timeframe)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none"
                 >
                   <option value="M1">M1</option>
                   <option value="M5">M5</option>
@@ -1297,20 +1312,34 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 />
               </div>
             </div>
+              </div>
+            )}
           </div>
 
           {/* Section 4: Psychology & Execution Discipline */}
           <div className="space-y-3 border-t border-white/[0.06] pt-4">
-            <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
-              4. Behavioral Psychology & Execution Quality
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <button
+              type="button"
+              onClick={() => setIsPsychologyExpanded(!isPsychologyExpanded)}
+              className="flex w-full items-center justify-between text-left group"
+            >
+              <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider group-hover:text-white transition-colors">
+                4. Behavioral Psychology & Execution Quality
+              </h3>
+              <span className="text-xs text-slate-500 flex items-center gap-1 group-hover:text-slate-300">
+                {isPsychologyExpanded ? 'Collapse' : 'Expand'}
+                {isPsychologyExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+              </span>
+            </button>
+            {isPsychologyExpanded && (
+              <div className="space-y-3 pt-1">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
               <div>
                 <label className="block text-[#696f7e] mb-1 font-mono">Emotional State</label>
                 <select
                   value={emotion}
                   onChange={e => setEmotion(e.target.value as EmotionState)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
                 >
                   {PRESET_EMOTIONS.map(emo => (
                     <option key={emo} value={emo}>{emo}</option>
@@ -1323,7 +1352,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={mistake}
                   onChange={e => setMistake(e.target.value)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
                 >
                   {PRESET_MISTAKES.map(m => (
                     <option key={m} value={m}>{m}</option>
@@ -1384,6 +1413,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 />
               </div>
             </div>
+              </div>
+            )}
           </div>
 
           {/* Section 5: Screenshot Attachment */}
@@ -1445,14 +1476,14 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           </div>
 
           {/* Modal Footer */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.06] pt-5 font-mono text-xs">
+          <div className="sticky bottom-0 -mx-4 -mb-4 mt-2 flex flex-col items-stretch justify-between gap-3 border-t border-white/[0.08] bg-[#0b0d11]/95 px-4 py-3 font-mono text-xs backdrop-blur-xl sm:-mx-6 sm:-mb-6 sm:flex-row sm:items-center sm:gap-4 sm:px-6 sm:py-4">
             <div className="text-slate-400">
               Outcome: <strong className={pnl >= 0 ? 'text-emerald-400' : 'text-rose-400'}>
                 {pnl >= 0 ? '+' : ''}${pnl.toFixed(2)} ({rMultiple >= 0 ? '+' : ''}{rMultiple}R · {computedResult})
               </strong>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 type="button"
                 onClick={onClose}

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 @layer base {
   :root {
@@ -7,6 +8,7 @@
   }
 
   body {
+    color-scheme: dark;
     font-family: var(--font-sans);
     background-color: #050506;
     color: #E2E8F0;
@@ -110,6 +112,75 @@ input[type="number"] {
   border-radius: 18px;
   box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
   transition: border-color .25s ease, background .25s ease;
+
+.trade-modal-form input:not([type="hidden"]):not([type="range"]),
+.trade-modal-form select {
+  min-height: 2.5rem;
+  border-radius: 0.5rem;
+}
+
+.trade-modal {
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  letter-spacing: 0;
+}
+
+.trade-modal .font-mono {
+  font-family: 'IBM Plex Mono', 'Cascadia Code', monospace;
+  letter-spacing: 0;
+}
+
+.trade-modal [class~="rounded"] {
+  border-radius: 0.625rem;
+}
+
+.trade-modal [class~="rounded-md"] {
+  border-radius: 0.75rem;
+}
+
+.trade-modal [class~="rounded-lg"] {
+  border-radius: 1rem;
+}
+
+.trade-modal [class*="border-white/"] {
+  border-color: rgba(255, 255, 255, 0.055);
+}
+
+.trade-modal-form input:not([type="hidden"]):not([type="range"]):focus,
+.trade-modal-form select:focus,
+.trade-modal-form textarea:focus {
+  outline: none;
+}
+
+/* Fix white flash on select focus */
+.trade-modal-form select:focus-visible {
+  background-color: rgba(11, 13, 17, 0.95); /* match modal bg */
+  border-color: rgba(255,255,255,0.14);
+  color: #E2E8F0;
+}
+
+/* Keep native select popup dark across Chromium/Windows */
+.trade-modal-form select {
+  color-scheme: dark;
+  background-color: #0b0d11;
+  color: #E2E8F0;
+}
+
+.trade-modal-form select option {
+  color-scheme: dark;
+  background-color: #0b0d11;
+  color: #E2E8F0;
+}
+
+.trade-modal-form select option:checked {
+  background-color: #1e40af;
+  background-image: linear-gradient(#1e40af, #1e40af);
+  color: #fff;
+}
+
+
+  border-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.04);
+}
 }
 .liquid-glass-card:hover {
   border-color: rgba(255, 255, 255, 0.15);
