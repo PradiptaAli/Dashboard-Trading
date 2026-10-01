@@ -4,20 +4,19 @@
   :root {
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --accent: #FF5A1F;
+    --accent-hot: #FF3D00;
+    --accent-soft: #FF9A66;
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #050506;
+    background-color: #050505;
     color: #E2E8F0;
     letter-spacing: -0.01em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-image:
-      radial-gradient(ellipse 70% 45% at 50% -10%, rgba(255, 255, 255, 0.045), transparent),
-      radial-gradient(ellipse 50% 35% at 100% 100%, rgba(255, 255, 255, 0.03), transparent),
-      radial-gradient(ellipse 45% 30% at 0% 80%, rgba(255, 255, 255, 0.02), transparent);
-    background-attachment: fixed;
+    background-image: none;
   }
 
   /* Sleek Minimal Dark Scrollbar */
@@ -33,7 +32,7 @@
     border-radius: 9999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255,255,255,0.22);
+    background: rgba(255, 90, 31, 0.45);
   }
 }
 
@@ -53,64 +52,85 @@ input[type="number"] {
 }
 
 /* ========================================================
-   ECHOFI-STYLE SURFACES: near-black, thin borders, soft frosted cards
+   MATTE SURFACES: near-black canvas, solid cards,
+   thin borders, restrained orange accents
    ======================================================== */
 .font-mono { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1, "cv11" 1; }
 .font-extrabold, .font-bold { font-weight: 600; }
 .font-semibold { font-weight: 500; }
 
 .dark-card, .dark-card-elevated {
-  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 18px;
-  backdrop-filter: blur(20px);
+  background: #131313;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
   box-shadow: none;
 }
-.dark-card-interactive { transition: border-color .25s ease, background .25s ease; }
-.dark-card-interactive:hover { border-color: rgba(255,255,255,0.16); }
+.dark-card-interactive { transition: border-color .2s ease, background .2s ease; }
+.dark-card-interactive:hover { border-color: rgba(255, 255, 255, 0.15); }
 
-/* glow helpers are kept as names but neutralised */
 .glow-emerald, .glow-mint, .glow-rose { box-shadow: none; }
-.glow-border-emerald { border-color: rgba(255,255,255,0.25); box-shadow: none; }
+.glow-border-emerald { border-color: rgba(52, 211, 153, 0.3); box-shadow: none; }
 
 .liquid-glass-bar {
-  background: rgba(5, 5, 6, 0.72);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0A0A0A;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow: none;
 }
 
 .liquid-glass-sidebar {
-  background: rgba(8, 8, 10, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  background: #090909;
+  border-right: 1px solid rgba(255, 255, 255, 0.07);
   box-shadow: none;
 }
 
 .liquid-glass-pill {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: #141414;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: none;
   transition: background .2s ease, border-color .2s ease;
 }
 .liquid-glass-pill:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: #181818;
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 .liquid-glass-card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.02) 100%);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 18px;
-  box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05);
-  transition: border-color .25s ease, background .25s ease;
+  background: #131313;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: none;
+  transition: border-color .2s ease, background .2s ease;
 }
 .liquid-glass-card:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.btn-accent {
+  background: #F15A24;
+  color: #fff;
+  border: 1px solid #F15A24;
+  box-shadow: none;
+  transition: background .2s ease, border-color .2s ease;
+}
+.btn-accent:hover {
+  background: #FF6A32;
+  border-color: #FF6A32;
+}
+
+.nav-pill-active {
+  background: #F15A24;
+  color: #fff;
+  border: 1px solid #F15A24;
+  box-shadow: none;
+}
+
+.segment-active {
+  background: rgba(241, 90, 36, 0.1);
+  border: 1px solid rgba(241, 90, 36, 0.38);
+  color: #fff;
+  box-shadow: none;
+}
+
+.logo-glow {
+  box-shadow: none;
 }

@@ -36,9 +36,6 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center justify-between liquid-glass-bar px-4 sm:px-6 lg:px-8 select-none relative">
-      {/* Glossy top edge highlight reflection */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
-
       {/* Left: Mobile Trigger & View Title */}
       <div className="flex items-center gap-3.5">
         <button
@@ -126,14 +123,14 @@ export const Header: React.FC<HeaderProps> = ({
           className="hidden sm:flex items-center gap-1.5 rounded-full liquid-glass-pill px-3 py-2 text-xs font-medium text-zinc-200 transition-all active:scale-[0.98]"
           title="Scan trade screenshot or shared PnL card with Gemini AI Vision"
         >
-          <Sparkles className="h-3.5 w-3.5 text-zinc-300" />
+          <Sparkles className="h-3.5 w-3.5 text-[#FF9A66]" />
           <span>AI Vision Scan</span>
         </button>
 
         {/* Record Trade Button */}
         <button
           onClick={onOpenNewTrade}
-          className="flex items-center gap-1.5 rounded-full bg-white hover:bg-white/85 px-4 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
+          className="flex items-center gap-1.5 rounded-full btn-accent px-4 py-2 text-xs font-semibold transition-all active:scale-[0.98]"
         >
           <Plus className="h-4 w-4 stroke-[2.5]" />
           <span className="hidden sm:inline">New Trade</span>

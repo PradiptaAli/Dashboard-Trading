@@ -204,7 +204,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
           <button
             onClick={onOpenNewTrade}
-            className="flex items-center gap-1.5 h-9 rounded-full bg-white hover:bg-white/85 px-4 text-xs font-medium text-black transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 h-9 rounded-full btn-accent px-4 text-xs font-semibold transition-all active:scale-[0.98]"
           >
             <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Record Trade</span>

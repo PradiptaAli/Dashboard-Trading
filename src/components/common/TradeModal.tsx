@@ -1462,7 +1462,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2 rounded-full bg-white hover:bg-white/85 px-5 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
+                className="flex items-center gap-2 rounded-full btn-accent px-5 py-2 text-xs font-semibold transition-all active:scale-[0.98]"
               >
                 <Check className="h-4 w-4 stroke-[2.5]" />
                 <span>{isEditing ? 'Save Changes' : 'Commit Trade to Journal'}</span>

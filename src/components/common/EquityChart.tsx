@@ -109,7 +109,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
             onClick={() => setMetric('equity')}
             className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'equity'
-                ? 'bg-white/[0.12] text-white font-bold shadow-md border border-white/[0.12]'
+                ? 'segment-active font-bold'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -119,7 +119,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
             onClick={() => setMetric('pnl')}
             className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'pnl'
-                ? 'bg-white/[0.12] text-white font-bold shadow-md border border-white/[0.12]'
+                ? 'segment-active font-bold'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -129,7 +129,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
             onClick={() => setMetric('r')}
             className={`px-3 py-1.5 text-xs rounded-lg transition-all ${
               metric === 'r'
-                ? 'bg-white/[0.12] text-white font-bold shadow-md border border-white/[0.12]'
+                ? 'segment-active font-bold'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -145,7 +145,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
               onClick={() => setTimeframe(tf)}
               className={`px-2.5 py-1 text-[11px] rounded-lg transition-all font-mono font-medium ${
                 timeframe === tf
-                  ? 'bg-white/10 text-white font-medium border border-white/20'
+                  ? 'segment-active font-medium'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -175,9 +175,14 @@ export const EquityChart: React.FC<EquityChartProps> = ({
           >
             <defs>
               <linearGradient id="restrainedEquityFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.14" />
-                <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.03" />
-                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
+                <stop offset="0%" stopColor="#FF5A1F" stopOpacity="0.32" />
+                <stop offset="60%" stopColor="#FF5A1F" stopOpacity="0.06" />
+                <stop offset="100%" stopColor="#FF5A1F" stopOpacity="0" />
+              </linearGradient>
+              <linearGradient id="emberEquityStroke" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#FF9A66" />
+                <stop offset="50%" stopColor="#FF5A1F" />
+                <stop offset="100%" stopColor="#FF3D00" />
               </linearGradient>
             </defs>
 
@@ -220,28 +225,18 @@ export const EquityChart: React.FC<EquityChartProps> = ({
               />
             )}
 
-            {/* Glowing area fill */}
+            {/* Area fill */}
             {areaD && <path d={areaD} fill="url(#restrainedEquityFill)" />}
 
-            {/* High-Tech Glowing Line */}
+            {/* Equity line */}
             {pathD && (
               <>
-                {/* Outer soft glow */}
-                <path
-                  d={pathD}
-                  fill="none"
-                  stroke="#FFFFFF"
-                  strokeWidth="6"
-                  strokeOpacity="0.06"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
                 {/* Crisp core stroke */}
                 <path
                   d={pathD}
                   fill="none"
-                  stroke="#F4F4F5"
-                  strokeWidth="2.25"
+                  stroke="url(#emberEquityStroke)"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -264,7 +259,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                   cx={activePoint.x}
                   cy={activePoint.y}
                   r="5"
-                  className="fill-white stroke-[#050506] stroke-2 shadow-lg"
+                  className="fill-[#FF5A1F] stroke-[#050505] stroke-2 shadow-lg"
                 />
               </g>
             )}

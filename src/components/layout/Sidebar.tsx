@@ -78,15 +78,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
         {/* Brand / Logo */}
         <div className="flex h-16 items-center justify-between px-5 border-b border-white/[0.06] relative">
-          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
           <div className="flex items-center gap-3">
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-white/[0.06] border border-white/15">
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-[#F15A24] border border-[#F15A24]">
               <TrendingUp className="h-4 w-4 text-white" />
               </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-sm font-semibold tracking-tight text-white font-sans">TradeOS</span>
-                <span className="text-[9px] font-medium text-zinc-300 bg-white/[0.06] border border-white/10 px-1.5 py-0.5 rounded-full">
+                <span className="text-[9px] font-medium text-[#FF9A66] bg-[#FF5A1F]/15 border border-[#FF5A1F]/30 px-1.5 py-0.5 rounded-full">
                   PRO
                 </span>
               </div>
@@ -130,7 +129,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="px-3 py-2">
             <button
               onClick={onOpenNewTrade}
-              className="flex w-full items-center justify-center gap-2 rounded-full bg-white hover:bg-white/85 px-3.5 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
+              className="flex w-full items-center justify-center gap-2 rounded-full btn-accent px-3.5 py-2 text-xs font-semibold transition-all active:scale-[0.98]"
             >
               <Plus className="h-4 w-4 stroke-[2.5]" />
               <span>Record New Trade</span>
@@ -155,7 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 }}
                 className={`group flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-medium transition-all ${
                   isActive
-                    ? 'liquid-glass-pill text-white font-bold shadow-[0_4px_16px_rgba(0,0,0,0.5)]'
+                    ? 'nav-pill-active font-bold'
                     : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
                 }`}
               >
@@ -184,7 +183,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             }}
             className={`flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-xs font-medium transition-colors ${
               currentTab === 'settings'
-                ? 'liquid-glass-pill text-white font-bold'
+                ? 'nav-pill-active font-bold'
                 : 'text-slate-400 hover:bg-white/[0.04] hover:text-slate-200'
             }`}
           >

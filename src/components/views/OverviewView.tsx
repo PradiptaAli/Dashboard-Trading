@@ -408,7 +408,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               value={stats.winRate}
               label="Win Rate"
               sublabel={`${stats.winCount}W / ${stats.lossCount}L`}
-              color="#F4F4F5"
+              color="#FF5A1F"
               displayValue={`${stats.winRate.toFixed(1)}%`}
             />
 
@@ -417,7 +417,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               max={100}
               label="Profit Factor"
               sublabel={stats.profitFactor >= 2 ? 'Elite Edge' : 'Stable'}
-              color="#D4D4D8"
+              color="#FF7A29"
               displayValue={stats.profitFactor.toFixed(2)}
             />
 
@@ -426,7 +426,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               max={100}
               label="Expectancy"
               sublabel="R / Trade"
-              color="#A1A1AA"
+              color="#FF9A66"
               displayValue={`${stats.expectancy >= 0 ? '+' : ''}${stats.expectancy}R`}
             />
 
@@ -435,7 +435,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               max={100}
               label="Risk Health"
               sublabel={`-${stats.maxDrawdownPercent.toFixed(1)}% DD`}
-              color={stats.maxDrawdownPercent < 5 ? '#F4F4F5' : '#F59E0B'}
+              color={stats.maxDrawdownPercent < 5 ? '#FF5A1F' : '#F59E0B'}
               displayValue={`${Math.max(0, Math.round(100 - stats.maxDrawdownPercent * 4))}%`}
             />
           </div>
