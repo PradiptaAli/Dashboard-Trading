@@ -26,7 +26,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md select-none">
-      <div className="relative w-full max-w-md rounded-2xl border border-white/[0.09] bg-[#0A0D15]/95 p-6 shadow-2xl text-[#e8ebf0] backdrop-blur-2xl">
+      <div className="relative w-full max-w-md rounded-2xl border border-white/[0.09] bg-[#09090B]/95 p-6 shadow-2xl text-[#e8ebf0] backdrop-blur-2xl">
         <div className="flex items-start justify-between border-b border-white/[0.06] pb-3.5 mb-4">
           <div className="flex items-center gap-2.5">
             <AlertTriangle className={`h-4 w-4 ${isDestructive ? 'text-rose-400' : 'text-amber-400'}`} />
@@ -59,8 +59,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
             onClick={onConfirm}
             className={`rounded-xl px-4 py-2 font-bold transition-all shadow-md active:scale-[0.98] ${
               isDestructive
-                ? 'bg-rose-500 hover:bg-rose-600 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]'
-                : 'bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-[#07090E] shadow-[0_0_15px_rgba(16,185,129,0.3)]'
+                ? 'bg-rose-500 hover:bg-rose-600 text-white'
+                : 'bg-white hover:bg-white/85 text-black'
             }`}
           >
             {confirmLabel}

@@ -27,11 +27,11 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
   return (
     <div className="space-y-6 max-w-[1300px]">
       {/* Top action header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 hover:bg-[#151820] px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>Journal</span>
@@ -68,14 +68,14 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={() => onDuplicate(trade.id)}
-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
           >
             <Copy className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Duplicate</span>
           </button>
           <button
             onClick={() => onEdit(trade)}
-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 hover:bg-[#151820] px-2.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
           >
             <Edit3 className="h-3.5 w-3.5" />
             <span>Edit</span>
@@ -110,8 +110,8 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
         {/* LEFT COLUMN: Chart / Screenshot & Price Levels (7 cols) */}
         <div className="lg:col-span-7 space-y-3">
           {/* Chart Screenshot Container */}
-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
-            <div className="flex items-center justify-between border-b border-[#181a22] px-3.5 py-2 text-xs font-mono text-[#696f7e]">
+          <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
+            <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2 text-xs font-mono text-[#696f7e]">
               <span>Execution Chart Snapshot</span>
               {trade.screenshotBefore && (
                 <button
@@ -143,19 +143,19 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
 
           {/* Compact Price Levels Grid */}
           <div className="grid grid-cols-4 gap-2 font-mono text-xs">
-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
+            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
               <span className="text-[10px] text-[#555a66] uppercase">Entry</span>
               <div className="mt-0.5 font-semibold text-[#e4e7ec] tabular-nums">{trade.entryPrice}</div>
             </div>
-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
+            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
               <span className="text-[10px] text-[#555a66] uppercase">Stop Loss</span>
               <div className="mt-0.5 font-semibold text-[#ef4444] tabular-nums">{trade.stopLoss}</div>
             </div>
-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
+            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
               <span className="text-[10px] text-[#555a66] uppercase">Take Profit</span>
               <div className="mt-0.5 font-semibold text-[#10b981] tabular-nums">{trade.takeProfit}</div>
             </div>
-            <div className="rounded-md border border-[#181a22] bg-[#0c0e13] p-2.5 text-center">
+            <div className="rounded-md border border-white/[0.06] bg-black/30 p-2.5 text-center">
               <span className="text-[10px] text-[#555a66] uppercase">Exit</span>
               <div className="mt-0.5 font-semibold text-[#e4e7ec] tabular-nums">{trade.exitPrice}</div>
             </div>
@@ -163,9 +163,9 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
         </div>
 
         {/* RIGHT COLUMN: Trade Statistics (5 cols) */}
-        <div className="lg:col-span-5 rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5 font-mono text-xs space-y-4">
+        <div className="lg:col-span-5 rounded-lg border border-white/[0.06] bg-black/30 p-4 sm:p-5 font-mono text-xs space-y-4">
           {/* Main Financial Result Callout */}
-          <div className="flex items-center justify-between pb-4 border-b border-[#181a22]">
+          <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
             <div>
               <span className="text-[10px] uppercase tracking-wider text-[#696f7e]">Net Realized P&L</span>
               <div
@@ -190,41 +190,41 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
 
           {/* Key-Value Statistics List */}
           <div className="space-y-2.5">
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Position Sizing</span>
               <span className="font-semibold text-[#e4e7ec] tabular-nums">
                 {trade.positionSize} {trade.sizeUnit || 'USDT'}
               </span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Risk Amount (1R)</span>
               <span className="font-semibold text-[#e4e7ec] tabular-nums">
                 ${trade.riskAmount.toFixed(2)} ({trade.riskPercent}%)
               </span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Holding Duration</span>
               <span className="font-semibold text-[#e4e7ec] tabular-nums">
                 {trade.holdingTimeMinutes || 30} minutes
               </span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Setup Model</span>
               <span className="font-semibold text-[#e4e7ec]">{trade.setup}</span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Strategy</span>
               <span className="font-semibold text-[#e4e7ec]">{trade.strategy}</span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Trading Session</span>
               <span className="font-semibold text-[#e4e7ec]">{trade.session}</span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Emotional State</span>
               <span className="font-semibold text-[#e4e7ec]">{trade.emotion}</span>
             </div>
-            <div className="flex justify-between items-center py-1 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-1 border-b border-white/[0.06]">
               <span className="text-[#696f7e]">Execution Discipline</span>
               <span className="font-semibold text-[#10b981] tabular-nums">{trade.discipline} / 10</span>
             </div>
@@ -241,7 +241,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
       {/* BELOW: Thesis, Exit Reasoning, Reviews, Tags */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Left: Thesis & Exit Reasoning */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 space-y-4">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 space-y-4">
           <div>
             <h4 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0] mb-1.5">
               Trade Thesis (Entry Rationale)
@@ -250,7 +250,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
               {trade.entryReason || 'No specific entry notes provided.'}
             </p>
           </div>
-          <div className="pt-3 border-t border-[#181a22]">
+          <div className="pt-3 border-t border-white/[0.06]">
             <h4 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0] mb-1.5">
               Exit Reasoning
             </h4>
@@ -261,7 +261,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
         </div>
 
         {/* Right: Notes, Review, Tags */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 space-y-4">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 space-y-4">
           <div>
             <h4 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0] mb-1.5">
               Review Notes & Observations
@@ -271,7 +271,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
             </p>
           </div>
           {trade.tags && trade.tags.length > 0 && (
-            <div className="pt-3 border-t border-[#181a22]">
+            <div className="pt-3 border-t border-white/[0.06]">
               <span className="text-[10.5px] font-mono uppercase text-[#696f7e] block mb-1.5">Tags</span>
               <div className="flex flex-wrap gap-2 text-xs text-[#8c92a2]">
                 {trade.tags.map((tag, idx) => (

@@ -125,7 +125,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
   return (
     <div className="space-y-6 max-w-4xl font-mono text-xs">
-      <div className="pb-4 border-b border-[#181a22]">
+      <div className="pb-4 border-b border-white/[0.06]">
         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight">
           Terminal Settings & Data Management
         </h2>
@@ -147,8 +147,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       )}
 
       {/* Account Settings */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-        <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+        <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
           Account Baseline & Starting Capital
         </div>
 
@@ -160,14 +160,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               step="any"
               value={initialBalanceInput}
               onChange={e => setInitialBalanceInput(parseFloat(e.target.value) || 0)}
-              className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
+              className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
             />
           </div>
 
           <div className="flex items-center gap-3">
             <button
               type="submit"
-              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+              className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
             >
               <Check className="h-3.5 w-3.5 text-[#10b981]" />
               <span>Save Baseline</span>
@@ -182,8 +182,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       </div>
 
       {/* Gemini AI Vision Scanner Configuration */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-[#181a22] pb-3">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-[#10b981]" />
             <span className="text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
@@ -228,7 +228,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 placeholder="AIzaSy..."
                 value={geminiKeyInput}
                 onChange={e => setGeminiKeyInput(e.target.value)}
-                className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 pr-8 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none font-mono"
+                className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 pr-8 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none font-mono"
               />
               <button
                 type="button"
@@ -243,7 +243,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <div className="flex items-center gap-3">
             <button
               type="submit"
-              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+              className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3.5 py-1.5 font-medium text-[#f0f2f5] transition-colors"
             >
               <Check className="h-3.5 w-3.5 text-[#10b981]" />
               <span>Simpan API Key</span>
@@ -253,7 +253,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               type="button"
               disabled={isTestingGemini}
               onClick={handleTestGeminiKey}
-              className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#11141b] hover:bg-[#181c26] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-50 transition-colors"
+              className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.03] hover:bg-[#181c26] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-50 transition-colors"
             >
               {isTestingGemini ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin text-[#10b981]" />
@@ -279,8 +279,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       </div>
 
       {/* Database State & Trade History Actions */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-        <div className="flex items-center justify-between border-b border-[#181a22] pb-3">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
           <span className="text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">Journal Database Records</span>
           <span className="text-[11px] text-[#696f7e]">
             Current: <strong className="text-[#e4e7ec] font-semibold">{trades.length} trades recorded</strong>
@@ -302,7 +302,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
           <button
             onClick={() => setShowLoadDemoModal(true)}
-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
           >
             <Sparkles className="h-3.5 w-3.5 text-[#10b981]" />
             <span>Load Demo Trade Set</span>
@@ -311,8 +311,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       </div>
 
       {/* Backup and Export */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-        <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+        <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
           Data Export & Backup
         </div>
 
@@ -320,7 +320,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <button
             onClick={handleExportCSV}
             disabled={trades.length === 0}
-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export CSV</span>
@@ -329,13 +329,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <button
             onClick={handleExportJSON}
             disabled={trades.length === 0}
-            className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] disabled:opacity-40 transition-colors"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export JSON Database</span>
           </button>
 
-          <label className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
+          <label className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3.5 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
             <Upload className="h-3.5 w-3.5" />
             <span>Import JSON</span>
             <input type="file" accept=".json" onChange={handleImportJSON} className="hidden" />

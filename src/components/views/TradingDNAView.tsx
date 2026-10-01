@@ -12,7 +12,7 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
   return (
     <div className="space-y-6 max-w-[1200px]">
       {/* 1. Header */}
-      <div className="pb-4 border-b border-[#181a22]">
+      <div className="pb-4 border-b border-white/[0.06]">
         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
           Trader Profile & Behavioral Traits
         </h2>
@@ -22,7 +22,7 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
       </div>
 
       {/* 2. Core Statistical Attributes Row */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#181a22]">
           <div className="pt-2 sm:pt-0 sm:pr-4">
             <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Optimal Session</span>
@@ -69,8 +69,8 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
       {/* 3. Behavioral Archetype & Execution Discipline */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Execution Traits */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
-          <div className="pb-3 border-b border-[#181a22]">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
+          <div className="pb-3 border-b border-white/[0.06]">
             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
               Execution Discipline Metrics
             </h3>
@@ -91,17 +91,17 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
               </div>
             </div>
 
-            <div className="flex justify-between items-center py-2 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-2 border-b border-white/[0.06]">
               <span className="text-[#8c92a2]">Trading Archetype</span>
               <span className="font-semibold text-[#e4e7ec]">{dna.scalpingVsSwing}</span>
             </div>
 
-            <div className="flex justify-between items-center py-2 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-2 border-b border-white/[0.06]">
               <span className="text-[#8c92a2]">Risk Tolerance Profile</span>
               <span className="font-semibold text-[#e4e7ec]">{dna.riskTakingScore}</span>
             </div>
 
-            <div className="flex justify-between items-center py-2 border-b border-[#15171e]">
+            <div className="flex justify-between items-center py-2 border-b border-white/[0.06]">
               <span className="text-[#8c92a2]">Overtrading Propensity</span>
               <span className="font-semibold text-[#e4e7ec]">{dna.overtradingRisk}</span>
             </div>
@@ -114,8 +114,8 @@ export const TradingDNAView: React.FC<TradingDNAViewProps> = ({ trades }) => {
         </div>
 
         {/* Behavioral Recommendations */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
-          <div className="pb-3 border-b border-[#181a22]">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
+          <div className="pb-3 border-b border-white/[0.06]">
             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
               Empirical Edge Guidelines
             </h3>

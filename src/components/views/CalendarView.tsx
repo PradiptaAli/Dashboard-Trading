@@ -94,12 +94,12 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
   return (
     <div className="space-y-6 max-w-[1300px]">
       {/* Month Header & Summary Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
             {monthNames[currentMonth]} {currentYear}
           </h2>
-          <div className="flex items-center gap-1 border border-[#1e222c] rounded-md p-0.5 bg-[#0c0e13]">
+          <div className="flex items-center gap-1 border border-white/[0.08] rounded-md p-0.5 bg-black/30">
             <button
               onClick={prevMonth}
               className="p-1 text-[#6e7484] hover:text-[#e4e7ec] rounded"
@@ -164,9 +164,9 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
       </div>
 
       {/* Minimalist Monthly Grid */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
         {/* Days of week header */}
-        <div className="grid grid-cols-7 border-b border-[#181a22] bg-[#0f1117] text-center text-[11px] font-mono text-[#696f7e] py-2">
+        <div className="grid grid-cols-7 border-b border-white/[0.06] bg-[#0f1117] text-center text-[11px] font-mono text-[#696f7e] py-2">
           {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
             <div key={day}>{day}</div>
           ))}
@@ -185,7 +185,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
             const dayR = dayTrades.reduce((acc, t) => acc + t.rMultiple, 0);
 
             // Subtle background intensity
-            let cellStyle = 'bg-[#0c0e13] text-[#4f5461]';
+            let cellStyle = 'bg-black/30 text-[#4f5461]';
             if (hasTrades) {
               if (dayPnl > 0) {
                 cellStyle = 'bg-[#10b981]/[0.03] hover:bg-[#10b981]/[0.07] text-[#e4e7ec] cursor-pointer';
@@ -246,8 +246,8 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
       {/* Clean Slide-Over / Modal for Day Executions */}
       {selectedDayTrades && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-lg border border-[#1e222c] bg-[#0c0e13] p-5 shadow-2xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#181a22] mb-4">
+          <div className="w-full max-w-lg rounded-lg border border-white/[0.08] bg-black/30 p-5 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-4">
               <div>
                 <h3 className="font-mono text-sm font-semibold text-[#f4f5f7]">
                   Executions for {selectedDayTrades.date}
@@ -272,7 +272,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades, onSelectTrad
                     setSelectedDayTrades(null);
                     onSelectTrade(t);
                   }}
-                  className="flex items-center justify-between p-2.5 rounded-md border border-[#181a22] bg-[#11131a] hover:bg-[#161922] cursor-pointer transition-colors text-xs font-mono"
+                  className="flex items-center justify-between p-2.5 rounded-md border border-white/[0.06] bg-white/[0.03] hover:bg-[#161922] cursor-pointer transition-colors text-xs font-mono"
                 >
                   <div>
                     <div className="font-semibold text-[#e4e7ec] flex items-center gap-1.5">

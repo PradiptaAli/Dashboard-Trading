@@ -145,7 +145,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
               onClick={() => setTimeframe(tf)}
               className={`px-2.5 py-1 text-[11px] rounded-lg transition-all font-mono font-medium ${
                 timeframe === tf
-                  ? 'bg-emerald-500/25 text-emerald-300 font-bold border border-emerald-500/40 shadow-[0_0_12px_rgba(0,245,160,0.25)]'
+                  ? 'bg-white/10 text-white font-medium border border-white/20'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -175,9 +175,9 @@ export const EquityChart: React.FC<EquityChartProps> = ({
           >
             <defs>
               <linearGradient id="restrainedEquityFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#00F5A0" stopOpacity="0.22" />
-                <stop offset="60%" stopColor="#10B981" stopOpacity="0.05" />
-                <stop offset="100%" stopColor="#10B981" stopOpacity="0.0" />
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.14" />
+                <stop offset="60%" stopColor="#FFFFFF" stopOpacity="0.03" />
+                <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
               </linearGradient>
             </defs>
 
@@ -230,9 +230,9 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                 <path
                   d={pathD}
                   fill="none"
-                  stroke="#00F5A0"
+                  stroke="#FFFFFF"
                   strokeWidth="6"
-                  strokeOpacity="0.18"
+                  strokeOpacity="0.06"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
@@ -240,7 +240,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                 <path
                   d={pathD}
                   fill="none"
-                  stroke="#00F5A0"
+                  stroke="#F4F4F5"
                   strokeWidth="2.25"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -264,7 +264,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
                   cx={activePoint.x}
                   cy={activePoint.y}
                   r="5"
-                  className="fill-[#00F5A0] stroke-[#080B11] stroke-2 shadow-lg"
+                  className="fill-white stroke-[#050506] stroke-2 shadow-lg"
                 />
               </g>
             )}
@@ -296,7 +296,7 @@ export const EquityChart: React.FC<EquityChartProps> = ({
 
         {/* Clean Hover Tooltip */}
         {activePoint && (
-          <div className="pointer-events-none absolute top-4 right-4 rounded-2xl border border-white/[0.12] bg-[#0C111C]/95 p-3.5 text-xs font-mono shadow-2xl backdrop-blur-xl">
+          <div className="pointer-events-none absolute top-4 right-4 rounded-2xl border border-white/[0.12] bg-[#0A0A0C]/95 p-3.5 text-xs font-mono shadow-2xl backdrop-blur-xl">
             <div className="text-slate-400 text-[10px] flex items-center justify-between gap-6 pb-1.5 border-b border-white/[0.06]">
               <span>{activePoint.point.date} {activePoint.point.time}</span>
               <span className="font-semibold text-slate-300">Trade #{activePoint.point.tradeIndex}</span>

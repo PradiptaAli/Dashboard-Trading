@@ -204,7 +204,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
 
           <button
             onClick={onOpenNewTrade}
-            className="flex items-center gap-1.5 h-9 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 px-4 font-bold text-[#07090E] shadow-[0_0_15px_rgba(16,185,129,0.2)] transition-all active:scale-[0.98]"
+            className="flex items-center gap-1.5 h-9 rounded-full bg-white hover:bg-white/85 px-4 text-xs font-medium text-black transition-all active:scale-[0.98]"
           >
             <Plus className="h-4 w-4 stroke-[2.5]" />
             <span>Record Trade</span>
@@ -224,7 +224,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
             <div className="mt-5 flex items-center justify-center gap-3">
               <button
                 onClick={onOpenNewTrade}
-                className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3.5 py-1.5 text-xs font-medium text-[#f0f2f5]"
+                className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3.5 py-1.5 text-xs font-medium text-[#f0f2f5]"
               >
                 <Plus className="h-3.5 w-3.5 text-[#10b981]" />
                 <span>Record First Trade</span>
@@ -232,7 +232,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
               {onLoadDemoTrades && (
                 <button
                   onClick={onLoadDemoTrades}
-                  className="rounded-md border border-[#1e222c] px-3.5 py-1.5 text-xs text-[#8c92a2] hover:text-[#e4e7ec]"
+                  className="rounded-md border border-white/[0.08] px-3.5 py-1.5 text-xs text-[#8c92a2] hover:text-[#e4e7ec]"
                 >
                   Load Demo Data
                 </button>
@@ -401,7 +401,7 @@ export const JournalView: React.FC<JournalViewProps> = ({
                           <span
                             className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                               isWin
-                                ? 'text-emerald-300 bg-emerald-500/15 border border-emerald-500/30'
+                                ? 'text-white bg-white/10 border border-white/20'
                                 : isLoss
                                 ? 'text-rose-300 bg-rose-500/15 border border-rose-500/30'
                                 : 'text-slate-300 bg-white/[0.06] border border-white/[0.08]'

@@ -61,7 +61,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
   return (
     <div className="space-y-6 max-w-[1300px]">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
         <div>
           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
             Systematic Trading Plan & Risk Rules
@@ -82,8 +82,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
       <form onSubmit={handleSave} className="space-y-6 font-mono text-xs">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* 1. Quantitative Risk Rules */}
-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-            <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+            <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
               1. Quantitative Risk Thresholds
             </div>
 
@@ -95,7 +95,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                   step="0.1"
                   value={formData.riskPerTradePercent}
                   onChange={e => setFormData({ ...formData, riskPerTradePercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
                 />
               </div>
 
@@ -106,7 +106,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                   step="0.1"
                   value={formData.maxDailyLossPercent}
                   onChange={e => setFormData({ ...formData, maxDailyLossPercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
                 />
               </div>
 
@@ -117,7 +117,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                   step="0.1"
                   value={formData.maxWeeklyLossPercent}
                   onChange={e => setFormData({ ...formData, maxWeeklyLossPercent: parseFloat(e.target.value) || 0 })}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
                 />
               </div>
 
@@ -127,15 +127,15 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                   type="number"
                   value={formData.maxTradesPerDay}
                   onChange={e => setFormData({ ...formData, maxTradesPerDay: parseInt(e.target.value) || 1 })}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
                 />
               </div>
             </div>
           </div>
 
           {/* 2. Trading Specification Rules */}
-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-            <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+            <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
               2. Technical Execution Specifications
             </div>
 
@@ -149,7 +149,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                     step="0.1"
                     value={formData.minRR}
                     onChange={e => setFormData({ ...formData, minRR: parseFloat(e.target.value) || 1 })}
-                    className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none tabular-nums"
+                    className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none tabular-nums"
                   />
                 </div>
               </div>
@@ -166,8 +166,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                         onClick={() => toggleSession(sess)}
                         className={`px-3 py-1 rounded text-xs transition-colors ${
                           active
-                            ? 'bg-[#181b23] text-[#f4f5f7] font-medium border border-[#2d3243]'
-                            : 'bg-[#11141b] text-[#696f7e] border border-[#1e222c] hover:text-[#a0a6b5]'
+                            ? 'bg-white/[0.04] text-[#f4f5f7] font-medium border border-[#2d3243]'
+                            : 'bg-white/[0.03] text-[#696f7e] border border-white/[0.08] hover:text-[#a0a6b5]'
                         }`}
                       >
                         {sess}
@@ -189,8 +189,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                         onClick={() => toggleTimeframe(tf)}
                         className={`px-2.5 py-1 rounded text-xs transition-colors ${
                           active
-                            ? 'bg-[#181b23] text-[#f4f5f7] font-medium border border-[#2d3243]'
-                            : 'bg-[#11141b] text-[#696f7e] border border-[#1e222c] hover:text-[#a0a6b5]'
+                            ? 'bg-white/[0.04] text-[#f4f5f7] font-medium border border-[#2d3243]'
+                            : 'bg-white/[0.03] text-[#696f7e] border border-white/[0.08] hover:text-[#a0a6b5]'
                         }`}
                       >
                         {tf}
@@ -211,7 +211,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
                       allowedInstruments: e.target.value.split(',').map(s => s.trim().toUpperCase()).filter(Boolean),
                     })
                   }
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] focus:border-white/[0.14] focus:outline-none"
                 />
               </div>
             </div>
@@ -219,14 +219,14 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
         </div>
 
         {/* 3. Stop Conditions */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 space-y-4">
-          <div className="border-b border-[#181a22] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 space-y-4">
+          <div className="border-b border-white/[0.06] pb-3 text-xs uppercase tracking-wider text-[#9ea3b0] font-medium">
             3. Mandatory Circuit Breakers & Invalidation Triggers
           </div>
 
           <div className="space-y-2">
             {formData.stopConditions.map((cond, idx) => (
-              <div key={idx} className="flex items-center justify-between rounded bg-[#11141b] p-2.5 border border-[#181a22]">
+              <div key={idx} className="flex items-center justify-between rounded bg-white/[0.03] p-2.5 border border-white/[0.06]">
                 <div className="flex items-center gap-2 text-[#d0d4dc]">
                   <ShieldAlert className="h-3.5 w-3.5 text-[#f59e0b] shrink-0" />
                   <span>{cond}</span>
@@ -248,12 +248,12 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
               placeholder="Add stop condition (e.g., 2 consecutive losses trigger a 2-hour break)"
               value={newStopCondition}
               onChange={e => setNewStopCondition(e.target.value)}
-              className="flex-1 h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none placeholder-[#555a66]"
+              className="flex-1 h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none placeholder-[#555a66]"
             />
             <button
               type="button"
               onClick={addStopCondition}
-              className="h-8 rounded border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3 text-[#a0a6b5] hover:text-[#e4e7ec] flex items-center gap-1 transition-colors"
+              className="h-8 rounded border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3 text-[#a0a6b5] hover:text-[#e4e7ec] flex items-center gap-1 transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
               <span>Add</span>
@@ -264,7 +264,7 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
         <div className="flex justify-end">
           <button
             type="submit"
-            className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-4 py-2 text-xs font-medium text-[#f0f2f5] transition-colors"
+            className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-4 py-2 text-xs font-medium text-[#f0f2f5] transition-colors"
           >
             <Check className="h-3.5 w-3.5 text-[#10b981]" />
             <span>Save Trading Plan</span>
@@ -273,8 +273,8 @@ export const TradingPlanView: React.FC<TradingPlanViewProps> = ({
       </form>
 
       {/* 4. Historical Rule Infraction Log */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs">
-        <div className="flex items-center justify-between border-b border-[#181a22] pb-3 mb-3">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3 mb-3">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-3.5 w-3.5 text-[#f59e0b]" />
             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">

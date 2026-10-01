@@ -64,11 +64,11 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
   if (activeStrategy) {
     return (
       <div className="space-y-6 max-w-[1300px]">
-        <div className="flex items-center justify-between border-b border-[#181a22] pb-4">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-4">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSelectedStrategyName(null)}
-              className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#0c0e13] px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+              className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-black/30 px-2.5 py-1.5 text-xs text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
             >
               <ArrowLeft className="h-3.5 w-3.5" />
               <span>Back to Playbooks</span>
@@ -80,7 +80,7 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
         </div>
 
         {/* Strategy Summary Bar */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 font-mono text-xs">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 font-mono text-xs">
           <div className="grid grid-cols-2 sm:grid-cols-6 gap-4">
             <div>
               <span className="text-[#646a78] text-[10.5px] uppercase block">Win Rate</span>
@@ -110,10 +110,10 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
         </div>
 
         {/* Matching Trades List */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
           <table className="w-full text-left text-xs font-mono">
             <thead>
-              <tr className="border-b border-[#181a22] bg-[#0f1117] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
+              <tr className="border-b border-white/[0.06] bg-[#0f1117] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
                 <th className="py-2.5 px-3">Date</th>
                 <th className="py-2.5 px-3">Instrument</th>
                 <th className="py-2.5 px-3">Side</th>
@@ -164,7 +164,7 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
 
   return (
     <div className="space-y-6 max-w-[1300px]">
-      <div className="pb-4 border-b border-[#181a22]">
+      <div className="pb-4 border-b border-white/[0.06]">
         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
           Playbook Strategies
         </h2>
@@ -181,10 +181,10 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
           return (
             <div
               key={s.id}
-              className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 flex flex-col justify-between hover:border-[#262a36] transition-colors"
+              className="rounded-lg border border-white/[0.06] bg-black/30 p-4 flex flex-col justify-between hover:border-white/[0.09] transition-colors"
             >
               <div>
-                <div className="flex items-start justify-between border-b border-[#181a22] pb-3 mb-3">
+                <div className="flex items-start justify-between border-b border-white/[0.06] pb-3 mb-3">
                   <div>
                     <h3 className="text-sm font-semibold font-mono text-[#f4f5f7]">{s.name}</h3>
                     <p className="text-xs text-[#696f7e] mt-1 font-sans leading-relaxed">{s.description}</p>
@@ -219,7 +219,7 @@ export const StrategiesView: React.FC<StrategiesViewProps> = ({
               </div>
 
               {s.setups && s.setups.length > 0 && (
-                <div className="pt-3 mt-3 border-t border-[#181a22]">
+                <div className="pt-3 mt-3 border-t border-white/[0.06]">
                   <span className="text-[10px] font-mono uppercase text-[#555a66] block mb-1">Setups:</span>
                   <div className="flex flex-wrap gap-2 text-xs text-[#8c92a2] font-mono">
                     {s.setups.map((su: { name: string; description?: string }, idx: number) => (

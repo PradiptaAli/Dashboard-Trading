@@ -56,8 +56,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades }) => {
   return (
     <div className="space-y-6 max-w-[1300px]">
       {/* 1. Research Terminal Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-[#181a22]">
-        <div className="flex items-center gap-1 rounded bg-[#0c0e13] p-0.5 text-xs font-mono border border-[#1e222c]">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-white/[0.06]">
+        <div className="flex items-center gap-1 rounded bg-black/30 p-0.5 text-xs font-mono border border-white/[0.08]">
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -94,7 +94,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades }) => {
 
       {/* 2. Analytical Research Breakdown */}
       {statsList.length === 0 ? (
-        <div className="py-20 text-center text-[#555a66] text-xs font-mono rounded-lg border border-[#181a22] bg-[#0c0e13]">
+        <div className="py-20 text-center text-[#555a66] text-xs font-mono rounded-lg border border-white/[0.06] bg-black/30">
           No data recorded yet for {activeTab}. Log executions to generate comparative analytics.
         </div>
       ) : (
@@ -106,10 +106,10 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades }) => {
             return (
               <div
                 key={stat.name || idx}
-                className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 font-mono text-xs space-y-3"
+                className="rounded-lg border border-white/[0.06] bg-black/30 p-4 font-mono text-xs space-y-3"
               >
                 {/* Title & Key Statistics Headline */}
-                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-2 border-b border-[#15171e]">
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pb-2 border-b border-white/[0.06]">
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm font-semibold text-[#f4f5f7] tracking-tight">
                       {stat.name || 'Unspecified'}

@@ -615,11 +615,11 @@ export const TradeModal: React.FC<TradeModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4 backdrop-blur-md overflow-y-auto">
-      <div className="relative my-auto w-full max-w-4xl rounded-2xl border border-white/[0.09] bg-[#0A0D15]/95 text-[#e8ebf0] shadow-[0_25px_70px_rgba(0,0,0,0.9)] backdrop-blur-2xl overflow-hidden">
+      <div className="relative my-auto w-full max-w-4xl rounded-2xl border border-white/[0.09] bg-[#09090B]/95 text-[#e8ebf0] shadow-2xl backdrop-blur-2xl overflow-hidden">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-white/[0.06] bg-[#0F1424] px-6 py-4">
+        <div className="flex items-center justify-between border-b border-white/[0.06] bg-white/[0.03] px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
+            <div className="h-2 w-2 rounded-full bg-emerald-400" />
             <h2 className="text-xs sm:text-sm font-bold font-mono tracking-tight uppercase text-white">
               {isEditing ? `Edit Execution — ${initialTrade?.id}` : 'Record New Execution'}
             </h2>
@@ -654,7 +654,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           )}
 
           {/* AI TRADE TICKET & SHARED PNL SCANNER */}
-          <div className="rounded-lg border border-[#1e2330] bg-[#0d1017] p-4 text-xs font-mono space-y-3">
+          <div className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-4 text-xs font-mono space-y-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex flex-wrap items-center gap-2">
                 <Sparkles className="h-4 w-4 text-[#10b981]" />
@@ -681,7 +681,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   className={`px-2 py-0.5 rounded text-[10.5px] border flex items-center gap-1.5 transition-colors ${
                     showKeyConfig
                       ? 'border-[#10b981]/50 bg-[#10b981]/15 text-[#10b981]'
-                      : 'border-[#242a3a] bg-[#141722] text-[#8c92a2] hover:text-[#e4e7ec] hover:bg-[#1a1f2e]'
+                      : 'border-white/[0.09] bg-white/[0.04] text-[#8c92a2] hover:text-[#e4e7ec] hover:bg-white/[0.07]'
                   }`}
                   title="Atur Gemini API Key untuk pemindaian gambar AI multimodal"
                 >
@@ -702,7 +702,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
 
             {/* Collapsible API Key Drawer */}
             {showKeyConfig && (
-              <div className="rounded-md border border-[#23293a] bg-[#12151f] p-3.5 space-y-2.5">
+              <div className="rounded-md border border-white/[0.08] bg-white/[0.03] p-3.5 space-y-2.5">
                 <div className="flex items-center justify-between text-[11px]">
                   <span className="text-[#e4e7ec] font-semibold flex items-center gap-1.5">
                     <Key className="h-3.5 w-3.5 text-amber-400" />
@@ -798,7 +798,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   className={`border-2 border-dashed rounded-md p-4 text-center transition-all ${
                     isDragging
                       ? 'border-[#10b981] bg-[#10b981]/10'
-                      : 'border-[#1e2330] bg-[#11141b]/80 hover:border-[#2d3548]'
+                      : 'border-white/[0.07] bg-white/[0.03]/80 hover:border-[#2d3548]'
                   }`}
                 >
                   <input
@@ -834,7 +834,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                             </div>
                           </div>
                         ) : (
-                          <div className="h-10 w-10 rounded bg-[#161820] border border-[#222736] flex items-center justify-center shrink-0 text-[#8c92a2]">
+                          <div className="h-10 w-10 rounded bg-white/[0.04] border border-[#222736] flex items-center justify-center shrink-0 text-[#8c92a2]">
                             <Camera className="h-5 w-5" />
                           </div>
                         )}
@@ -868,7 +868,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                       type="button"
                       disabled={isAiScanning}
                       onClick={() => handlePresetScan(preset)}
-                      className="px-2.5 py-1 rounded text-[11px] border border-[#1e2330] bg-[#141720] text-[#8c92a2] hover:text-[#f4f5f7] hover:border-[#2d3548] disabled:opacity-50 transition-colors flex items-center gap-1.5"
+                      className="px-2.5 py-1 rounded text-[11px] border border-white/[0.07] bg-[#141720] text-[#8c92a2] hover:text-[#f4f5f7] hover:border-[#2d3548] disabled:opacity-50 transition-colors flex items-center gap-1.5"
                     >
                       <Sparkles className="h-3 w-3 text-[#10b981]" />
                       <span>{preset.title}</span>
@@ -915,8 +915,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   onClick={() => handleMarketTypeChange(type)}
                   className={`py-2 px-3 rounded-md border text-xs font-mono font-medium flex items-center justify-center gap-2 transition-colors ${
                     marketType === type
-                      ? 'border-[#262a36] bg-[#181b23] text-[#f4f5f7]'
-                      : 'border-[#181a22] bg-[#11141b] text-[#696f7e] hover:text-[#a0a6b5] hover:bg-[#141720]'
+                      ? 'border-white/[0.09] bg-white/[0.04] text-[#f4f5f7]'
+                      : 'border-white/[0.06] bg-white/[0.03] text-[#696f7e] hover:text-[#a0a6b5] hover:bg-[#141720]'
                   }`}
                 >
                   {type === 'Crypto' && <span>Crypto (USDT)</span>}
@@ -944,7 +944,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                       setSizeUnit('USDT');
                     }
                   }}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] font-mono text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] font-mono text-xs focus:border-white/[0.14] focus:outline-none"
                   required
                 />
               </div>
@@ -952,7 +952,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
               {/* Direction: Long or Short */}
               <div className="sm:col-span-3">
                 <label className="block text-[#696f7e] mb-1">Side / Direction</label>
-                <div className="grid grid-cols-2 gap-1 rounded bg-[#11141b] p-0.5 border border-[#181a22] h-8 items-center">
+                <div className="grid grid-cols-2 gap-1 rounded bg-white/[0.03] p-0.5 border border-white/[0.06] h-8 items-center">
                   <button
                     type="button"
                     onClick={() => handleDirectionToggle('LONG')}
@@ -985,7 +985,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   type="date"
                   value={date}
                   onChange={e => setDate(e.target.value)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                   required
                 />
               </div>
@@ -996,7 +996,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   type="time"
                   value={time}
                   onChange={e => setTime(e.target.value)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                   required
                 />
               </div>
@@ -1012,8 +1012,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   onClick={() => handleSelectSuggestion(s.sym, s.defaultEntry, s.defaultStep)}
                   className={`px-2 py-0.5 rounded border transition-colors ${
                     instrument === s.sym
-                      ? 'border-[#2d3243] bg-[#181b23] text-[#e4e7ec]'
-                      : 'border-[#181a22] bg-[#11141b] text-[#696f7e] hover:text-[#a0a6b5]'
+                      ? 'border-[#2d3243] bg-white/[0.04] text-[#e4e7ec]'
+                      : 'border-white/[0.06] bg-white/[0.03] text-[#696f7e] hover:text-[#a0a6b5]'
                   }`}
                 >
                   {s.sym}
@@ -1023,15 +1023,15 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           </div>
 
           {/* Section 2: SMART CALCULATOR */}
-          <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-4 sm:p-5 space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#181a22] pb-3">
+          <div className="rounded-lg border border-white/[0.06] bg-black/30 p-4 sm:p-5 space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] pb-3">
               <div className="flex items-center gap-2">
                 <Calculator className="h-4 w-4 text-[#8c92a2]" />
                 <h3 className="text-xs font-mono font-medium uppercase tracking-wider text-[#9ea3b0]">
                   2. Pricing Levels & Reactive Execution Calculator
                 </h3>
               </div>
-              <div className="text-[11px] font-mono flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-[#1e222c] bg-[#11141b] text-[#8c92a2]">
+              <div className="text-[11px] font-mono flex items-center gap-1.5 px-2.5 py-0.5 rounded border border-white/[0.08] bg-white/[0.03] text-[#8c92a2]">
                 <span className="text-[#696f7e]">Benchmark 1R:</span>
                 <span className="font-semibold text-[#10b981] tabular-nums">${riskAmount1R.toFixed(2)} (1.0% equity)</span>
               </div>
@@ -1048,7 +1048,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   step="any"
                   value={entryPrice}
                   onChange={e => handleEntryChange(parseFloat(e.target.value) || 0)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
                   required
                 />
               </div>
@@ -1062,7 +1062,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   step="any"
                   value={stopLoss}
                   onChange={e => handleStopLossChange(parseFloat(e.target.value) || 0)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#ef4444] font-medium font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#ef4444] font-medium font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
                   required
                 />
               </div>
@@ -1076,7 +1076,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   step="any"
                   value={takeProfit}
                   onChange={e => setTakeProfit(parseFloat(e.target.value) || 0)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#10b981] font-medium font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#10b981] font-medium font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
                   required
                 />
               </div>
@@ -1087,8 +1087,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
             <input type="hidden" value={sizeUnit} readOnly />
 
             {/* THREE INTERCONNECTED FIELDS */}
-            <div className="rounded-md border border-[#181a22] bg-[#11141b] p-3.5 space-y-3 font-mono">
-              <div className="flex items-center justify-between border-b border-[#181a22] pb-2 text-xs">
+            <div className="rounded-md border border-white/[0.06] bg-white/[0.03] p-3.5 space-y-3 font-mono">
+              <div className="flex items-center justify-between border-b border-white/[0.06] pb-2 text-xs">
                 <span className="font-medium text-[#9ea3b0]">
                   Realized Outcome (Exit Price ↔ P&L ↔ R-Multiple)
                 </span>
@@ -1099,7 +1099,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {/* 1. Exit Price */}
-                <div className="rounded bg-[#0c0e13] p-3 border border-[#181a22]">
+                <div className="rounded bg-black/30 p-3 border border-white/[0.06]">
                   <label className="block text-[#696f7e] text-xs mb-1">
                     1. Exit Price
                   </label>
@@ -1108,7 +1108,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                     step="any"
                     value={exitPrice}
                     onChange={e => handleExitPriceChange(parseFloat(e.target.value) || 0)}
-                    className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-[#383f52] focus:outline-none"
+                    className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-3 text-[#e4e7ec] font-mono text-xs tabular-nums focus:border-white/[0.14] focus:outline-none"
                     placeholder="Exit Price"
                     required
                   />
@@ -1116,7 +1116,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 </div>
 
                 {/* 2. P&L ($) */}
-                <div className="rounded bg-[#0c0e13] p-3 border border-[#181a22]">
+                <div className="rounded bg-black/30 p-3 border border-white/[0.06]">
                   <div className="flex justify-between items-baseline mb-1">
                     <label className="block text-[#696f7e] text-xs">
                       2. Realized P&L ($)
@@ -1135,7 +1135,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                           ? 'border-[#10b981]/40 bg-[#10b981]/10 text-[#10b981]'
                           : pnl < 0
                           ? 'border-[#ef4444]/40 bg-[#ef4444]/10 text-[#ef4444]'
-                          : 'border-[#1e222c] bg-[#11141b] text-[#e4e7ec]'
+                          : 'border-white/[0.08] bg-white/[0.03] text-[#e4e7ec]'
                       }`}
                       placeholder="-8.00"
                       required
@@ -1145,7 +1145,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 </div>
 
                 {/* 3. R-Multiple */}
-                <div className="rounded bg-[#0c0e13] p-3 border border-[#181a22]">
+                <div className="rounded bg-black/30 p-3 border border-white/[0.06]">
                   <div className="flex justify-between items-baseline mb-1">
                     <label className="block text-[#696f7e] text-xs">
                       3. R-Multiple
@@ -1163,7 +1163,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                           ? 'border-[#10b981]/40 bg-[#10b981]/10 text-[#10b981]'
                           : rMultiple < 0
                           ? 'border-[#ef4444]/40 bg-[#ef4444]/10 text-[#ef4444]'
-                          : 'border-[#1e222c] bg-[#11141b] text-[#e4e7ec]'
+                          : 'border-white/[0.08] bg-white/[0.03] text-[#e4e7ec]'
                       }`}
                       placeholder="-1.60"
                       required
@@ -1177,26 +1177,26 @@ export const TradeModal: React.FC<TradeModalProps> = ({
               </div>
 
               {/* Quick Fill Buttons for Exit Price */}
-              <div className="flex flex-wrap items-center gap-2 pt-2 font-mono text-[11px] border-t border-[#181a22]">
+              <div className="flex flex-wrap items-center gap-2 pt-2 font-mono text-[11px] border-t border-white/[0.06]">
                 <span className="text-[#555a66] font-sans">Presets:</span>
                 <button
                   type="button"
                   onClick={setExitToSL}
-                  className="rounded border border-[#1e222c] bg-[#161820] px-2 py-0.5 text-[#ef4444] hover:bg-[#201519] transition-colors"
+                  className="rounded border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[#ef4444] hover:bg-[#201519] transition-colors"
                 >
                   Hit SL (-1.00R / -${riskAmount1R.toFixed(2)})
                 </button>
                 <button
                   type="button"
                   onClick={setExitToBE}
-                  className="rounded border border-[#1e222c] bg-[#161820] px-2 py-0.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
+                  className="rounded border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[#a0a6b5] hover:text-[#f4f5f7] transition-colors"
                 >
                   Breakeven (0.00R / $0.00)
                 </button>
                 <button
                   type="button"
                   onClick={setExitToTP}
-                  className="rounded border border-[#1e222c] bg-[#161820] px-2 py-0.5 text-[#10b981] hover:bg-[#12221a] transition-colors"
+                  className="rounded border border-white/[0.08] bg-white/[0.04] px-2 py-0.5 text-[#10b981] hover:bg-[#12221a] transition-colors"
                 >
                   Hit TP (+2.00R / +${(riskAmount1R * 2).toFixed(2)})
                 </button>
@@ -1209,7 +1209,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           </div>
 
           {/* Section 3: Strategy & Context */}
-          <div className="space-y-3 border-t border-[#181a22] pt-4">
+          <div className="space-y-3 border-t border-white/[0.06] pt-4">
             <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
               3. Strategy, Setup & Execution Thesis
             </h3>
@@ -1220,7 +1220,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   list="strategies-list"
                   value={strategy}
                   onChange={e => setStrategy(e.target.value)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                 />
                 <datalist id="strategies-list">
                   {PRESET_STRATEGIES.map(s => (
@@ -1235,7 +1235,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   list="setups-list"
                   value={setup}
                   onChange={e => setSetup(e.target.value)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                 />
                 <datalist id="setups-list">
                   {PRESET_SETUPS.map(su => (
@@ -1249,7 +1249,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={session}
                   onChange={e => setSession(e.target.value as TradingSession)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                 >
                   <option value="London">London</option>
                   <option value="New York">New York</option>
@@ -1262,7 +1262,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={timeframe}
                   onChange={e => setTimeframe(e.target.value as Timeframe)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                 >
                   <option value="M1">M1</option>
                   <option value="M5">M5</option>
@@ -1281,7 +1281,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   rows={2}
                   value={entryReason}
                   onChange={e => setEntryReason(e.target.value)}
-                  className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none resize-none font-sans placeholder-[#555a66]"
+                  className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
                   placeholder="Rationale behind trade entry..."
                 />
               </div>
@@ -1292,7 +1292,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   rows={2}
                   value={exitReason}
                   onChange={e => setExitReason(e.target.value)}
-                  className="w-full rounded border border-[#1e222c] bg-[#11141b] p-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none resize-none font-sans placeholder-[#555a66]"
+                  className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
                   placeholder="Rationale behind trade exit..."
                 />
               </div>
@@ -1300,7 +1300,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           </div>
 
           {/* Section 4: Psychology & Execution Discipline */}
-          <div className="space-y-3 border-t border-[#181a22] pt-4">
+          <div className="space-y-3 border-t border-white/[0.06] pt-4">
             <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
               4. Behavioral Psychology & Execution Quality
             </h3>
@@ -1310,7 +1310,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={emotion}
                   onChange={e => setEmotion(e.target.value as EmotionState)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none font-mono"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
                 >
                   {PRESET_EMOTIONS.map(emo => (
                     <option key={emo} value={emo}>{emo}</option>
@@ -1323,7 +1323,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 <select
                   value={mistake}
                   onChange={e => setMistake(e.target.value)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none font-mono"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
                 >
                   {PRESET_MISTAKES.map(m => (
                     <option key={m} value={m}>{m}</option>
@@ -1370,7 +1370,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   value={tagsInput}
                   onChange={e => setTagsInput(e.target.value)}
                   placeholder="e.g. Crypto, A+ Setup, Trailed SL"
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
                 />
               </div>
 
@@ -1380,14 +1380,14 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   type="number"
                   value={holdingMinutes}
                   onChange={e => setHoldingMinutes(parseInt(e.target.value) || 0)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-xs focus:border-[#383f52] focus:outline-none tabular-nums"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none tabular-nums"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 5: Screenshot Attachment */}
-          <div className="space-y-3 border-t border-[#181a22] pt-4">
+          <div className="space-y-3 border-t border-white/[0.06] pt-4">
             <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
               5. Execution Chart Snapshot
             </h3>
@@ -1395,7 +1395,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
               <div className="flex-1 space-y-2 text-xs font-mono">
                 <label className="block text-[#696f7e]">Attach image or choose preset</label>
                 <div className="flex flex-wrap gap-2">
-                  <label className="flex items-center gap-1.5 rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-3 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
+                  <label className="flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-3 py-1.5 text-[#a0a6b5] hover:text-[#f4f5f7] cursor-pointer transition-colors">
                     <Upload className="h-3.5 w-3.5" />
                     <span>Upload Image</span>
                     <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
@@ -1403,14 +1403,14 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setScreenshotUrl('/src/assets/images/chart_breakout_setup_1790744925578.jpg')}
-                    className="rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
+                    className="rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
                   >
                     Preset 1
                   </button>
                   <button
                     type="button"
                     onClick={() => setScreenshotUrl('/src/assets/images/chart_reversal_trade_1790744940943.jpg')}
-                    className="rounded-md border border-[#1e222c] bg-[#161820] hover:bg-[#1f232e] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
+                    className="rounded-md border border-white/[0.08] bg-white/[0.04] hover:bg-white/[0.06] px-2.5 py-1.5 text-[11px] text-[#8c92a2] hover:text-[#f4f5f7] transition-colors"
                   >
                     Preset 2
                   </button>
@@ -1420,12 +1420,12 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                   placeholder="Or enter image URL"
                   value={screenshotUrl}
                   onChange={e => setScreenshotUrl(e.target.value)}
-                  className="w-full h-8 rounded border border-[#1e222c] bg-[#11141b] px-2.5 text-[#e4e7ec] text-[11px] focus:border-[#383f52] focus:outline-none"
+                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-[11px] focus:border-white/[0.14] focus:outline-none"
                 />
               </div>
 
               {screenshotUrl && (
-                <div className="h-24 w-40 rounded-md border border-[#1e222c] overflow-hidden bg-black shrink-0 relative">
+                <div className="h-24 w-40 rounded-md border border-white/[0.08] overflow-hidden bg-black shrink-0 relative">
                   <img
                     src={screenshotUrl}
                     alt="Chart preview"
@@ -1462,7 +1462,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 px-5 py-2 text-xs font-bold text-[#07090E] shadow-[0_0_20px_rgba(16,185,129,0.25)] transition-all active:scale-[0.98]"
+                className="flex items-center gap-2 rounded-full bg-white hover:bg-white/85 px-5 py-2 text-xs font-medium text-black transition-all active:scale-[0.98]"
               >
                 <Check className="h-4 w-4 stroke-[2.5]" />
                 <span>{isEditing ? 'Save Changes' : 'Commit Trade to Journal'}</span>

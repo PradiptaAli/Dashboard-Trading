@@ -50,7 +50,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
   return (
     <div className="space-y-6 max-w-[1300px]">
       {/* 1. Header with Subtle Status Indicator */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#181a22]">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.06]">
         <div>
           <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
             Risk & Capital Preservation
@@ -69,10 +69,10 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
       </div>
 
       {/* 2. Primary Drawdown Callout & Core Gauges */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
           {/* Main Drawdown Metric (Most important) */}
-          <div className="md:col-span-4 border-b md:border-b-0 md:border-r border-[#181a22] pb-5 md:pb-0 md:pr-6">
+          <div className="md:col-span-4 border-b md:border-b-0 md:border-r border-white/[0.06] pb-5 md:pb-0 md:pr-6">
             <span className="text-[11px] uppercase tracking-wider text-[#696f7e] block">
               Current Peak-to-Trough Drawdown
             </span>
@@ -151,8 +151,8 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
       </div>
 
       {/* 3. Position Size Calculator (Clean, functional) */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono">
-        <div className="pb-3 border-b border-[#181a22] mb-4 flex items-center justify-between">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono">
+        <div className="pb-3 border-b border-white/[0.06] mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Calculator className="h-4 w-4 text-[#8c92a2]" />
             <h3 className="text-xs font-medium uppercase tracking-wider text-[#9ea3b0]">
@@ -169,7 +169,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
               type="text"
               value={calcInstrument}
               onChange={e => setCalcInstrument(e.target.value.toUpperCase())}
-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
             />
           </div>
 
@@ -179,7 +179,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
               type="number"
               value={calcBalance}
               onChange={e => setCalcBalance(parseFloat(e.target.value) || 0)}
-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
             />
           </div>
 
@@ -190,7 +190,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
               step="0.1"
               value={calcRiskPct}
               onChange={e => setCalcRiskPct(parseFloat(e.target.value) || 1)}
-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
             />
           </div>
 
@@ -201,7 +201,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
               step="any"
               value={calcEntryPrice}
               onChange={e => setCalcEntryPrice(parseFloat(e.target.value) || 0)}
-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
             />
           </div>
 
@@ -212,13 +212,13 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
               step="any"
               value={calcStopLoss}
               onChange={e => setCalcStopLoss(parseFloat(e.target.value) || 0)}
-              className="w-full h-8 rounded-md border border-[#1e222c] bg-[#11131a] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
+              className="w-full h-8 rounded-md border border-white/[0.08] bg-white/[0.03] px-2.5 text-xs text-[#e4e7ec] focus:outline-none"
             />
           </div>
         </div>
 
         {/* Calculated Result */}
-        <div className="mt-4 pt-3 border-t border-[#181a22] flex flex-wrap items-center justify-between gap-4 text-xs">
+        <div className="mt-4 pt-3 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-4 text-xs">
           <div className="flex items-center gap-6">
             <div>
               <span className="text-[#696f7e] text-[10.5px]">Stop Distance:</span>
@@ -251,7 +251,7 @@ export const RiskCenterView: React.FC<RiskCenterViewProps> = ({
                   riskAmt: calculatedRiskAmount,
                 });
               }}
-              className="flex items-center gap-1.5 rounded-md bg-[#161820] hover:bg-[#1f232e] border border-[#262a36] px-3 py-1.5 font-medium text-[#f0f2f5] transition-colors"
+              className="flex items-center gap-1.5 rounded-md bg-white/[0.04] hover:bg-white/[0.06] border border-white/[0.09] px-3 py-1.5 font-medium text-[#f0f2f5] transition-colors"
             >
               <span>Apply to New Trade</span>
               <ArrowRight className="h-3 w-3" />

@@ -244,8 +244,8 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       {/* 1. TOP HERO: Portfolio & Net Equity Header (Liquid Glass) */}
       <section className="p-6 rounded-2xl liquid-glass-card relative overflow-hidden shadow-2xl">
         {/* Subtle Ambient Backlight Glow */}
-        <div className="absolute -top-24 -left-24 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -left-24 w-72 h-72 bg-white/[0.05] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-white/[0.04] rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
 
         <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
@@ -255,10 +255,10 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <span className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold">
                 Total Portfolio Capital
               </span>
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399] animate-pulse" />
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
             </div>
             <div className="mt-1 flex flex-wrap items-baseline gap-4">
-              <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white font-mono tabular-nums drop-shadow-sm">
+              <h1 className="text-3xl sm:text-4xl font-light tracking-tight text-white font-mono tabular-nums">
                 ${stats.accountBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </h1>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl liquid-glass-pill">
@@ -269,7 +269,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 )}
                 <span
                   className={`font-mono font-bold text-xs tabular-nums ${
-                    stats.totalPnl >= 0 ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]' : 'text-rose-400'
+                    stats.totalPnl >= 0 ? 'text-emerald-400' : 'text-rose-400'
                   }`}
                 >
                   {stats.totalPnl >= 0 ? '+' : ''}${stats.totalPnl.toFixed(2)}
@@ -288,7 +288,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <div
                 className={`text-sm font-bold tabular-nums mt-1 ${
                   stats.todayPnl > 0
-                    ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
+                    ? 'text-emerald-400'
                     : stats.todayPnl < 0
                     ? 'text-rose-400'
                     : 'text-slate-300'
@@ -303,7 +303,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               <div
                 className={`text-sm font-bold tabular-nums mt-1 ${
                   stats.monthlyPnl > 0
-                    ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
+                    ? 'text-emerald-400'
                     : stats.monthlyPnl < 0
                     ? 'text-rose-400'
                     : 'text-slate-300'
@@ -351,7 +351,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                 key={day.dateStr}
                 className={`p-3 rounded-xl transition-all ${
                   day.isToday
-                    ? 'liquid-glass-pill border-emerald-500/40 shadow-[0_0_16px_rgba(0,245,160,0.2)]'
+                    ? 'liquid-glass-pill border-emerald-500/40'
                     : 'liquid-glass-pill hover:border-white/20'
                 }`}
               >
@@ -363,7 +363,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
                   <div
                     className={`font-mono text-xs font-bold tabular-nums ${
                       isProfit
-                        ? 'text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.3)]'
+                        ? 'text-emerald-400'
                         : isLoss
                         ? 'text-rose-400'
                         : 'text-slate-400'
@@ -408,7 +408,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               value={stats.winRate}
               label="Win Rate"
               sublabel={`${stats.winCount}W / ${stats.lossCount}L`}
-              color="#00F5A0"
+              color="#F4F4F5"
               displayValue={`${stats.winRate.toFixed(1)}%`}
             />
 
@@ -417,7 +417,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               max={100}
               label="Profit Factor"
               sublabel={stats.profitFactor >= 2 ? 'Elite Edge' : 'Stable'}
-              color="#10B981"
+              color="#D4D4D8"
               displayValue={stats.profitFactor.toFixed(2)}
             />
 
@@ -426,7 +426,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               max={100}
               label="Expectancy"
               sublabel="R / Trade"
-              color="#34D399"
+              color="#A1A1AA"
               displayValue={`${stats.expectancy >= 0 ? '+' : ''}${stats.expectancy}R`}
             />
 
@@ -435,7 +435,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
               max={100}
               label="Risk Health"
               sublabel={`-${stats.maxDrawdownPercent.toFixed(1)}% DD`}
-              color={stats.maxDrawdownPercent < 5 ? '#00F5A0' : '#F59E0B'}
+              color={stats.maxDrawdownPercent < 5 ? '#F4F4F5' : '#F59E0B'}
               displayValue={`${Math.max(0, Math.round(100 - stats.maxDrawdownPercent * 4))}%`}
             />
           </div>
@@ -478,7 +478,7 @@ export const OverviewView: React.FC<OverviewViewProps> = ({
       <section className="p-5 rounded-2xl liquid-glass-card shadow-xl">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-4 text-xs">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-1 bg-emerald-400 rounded-full" />
+            <div className="h-3 w-1 bg-white/70 rounded-full" />
             <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200">
               Equity & Trajectory Dynamics
             </h2>

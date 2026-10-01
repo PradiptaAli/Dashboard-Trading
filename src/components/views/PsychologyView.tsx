@@ -15,7 +15,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
   return (
     <div className="space-y-6 max-w-[1300px]">
       {/* Header */}
-      <div className="pb-4 border-b border-[#181a22]">
+      <div className="pb-4 border-b border-white/[0.06]">
         <h2 className="text-xl font-semibold text-[#f4f5f7] tracking-tight font-mono">
           Behavioral Psychology & Cognitive Edge
         </h2>
@@ -25,7 +25,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
       </div>
 
       {/* Psychology Highlights Row */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#181a22]">
           <div className="pt-2 sm:pt-0 sm:pr-4">
             <span className="text-[10.5px] uppercase tracking-wider text-[#696f7e]">Average Discipline</span>
@@ -64,8 +64,8 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
       {/* Behavioral Insights: Discipline vs Emotion */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Discipline Correlation */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
-          <div className="pb-3 border-b border-[#181a22]">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
+          <div className="pb-3 border-b border-white/[0.06]">
             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
               Discipline vs Realized Edge
             </h3>
@@ -114,8 +114,8 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
         </div>
 
         {/* Emotion Distribution Breakdown */}
-        <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] p-5 font-mono text-xs space-y-4">
-          <div className="pb-3 border-b border-[#181a22]">
+        <div className="rounded-lg border border-white/[0.06] bg-black/30 p-5 font-mono text-xs space-y-4">
+          <div className="pb-3 border-b border-white/[0.06]">
             <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
               Performance by Emotional State
             </h3>
@@ -124,7 +124,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
 
           <div className="space-y-2">
             {insights.emotionGroups.map(grp => (
-              <div key={grp.name} className="flex items-center justify-between text-xs py-1.5 border-b border-[#15171e]">
+              <div key={grp.name} className="flex items-center justify-between text-xs py-1.5 border-b border-white/[0.06]">
                 <div className="flex items-center gap-2">
                   <span className="text-[#e4e7ec] font-medium">{grp.name}</span>
                   <span className="text-[10px] text-[#555a66]">({grp.totalTrades} trades)</span>
@@ -146,8 +146,8 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
       </div>
 
       {/* Execution Mistakes Table */}
-      <div className="rounded-lg border border-[#181a22] bg-[#0c0e13] overflow-hidden font-mono text-xs">
-        <div className="border-b border-[#181a22] p-4 bg-[#0f1117]">
+      <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden font-mono text-xs">
+        <div className="border-b border-white/[0.06] p-4 bg-[#0f1117]">
           <h3 className="font-medium uppercase tracking-wider text-[#9ea3b0]">
             Cost of Execution Mistakes
           </h3>
@@ -158,7 +158,7 @@ export const PsychologyView: React.FC<PsychologyViewProps> = ({ trades }) => {
 
         <table className="w-full text-left">
           <thead>
-            <tr className="border-b border-[#181a22] bg-[#0b0d11] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
+            <tr className="border-b border-white/[0.06] bg-[#0b0d11] text-[10.5px] uppercase tracking-wider text-[#696f7e]">
               <th className="py-2.5 px-4">Mistake Classification</th>
               <th className="py-2.5 px-3 text-right">Frequency</th>
               <th className="py-2.5 px-3 text-right">R Lost</th>
