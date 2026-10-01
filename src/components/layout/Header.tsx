@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Plus, Sparkles, Search, Activity, ShieldCheck, AlertTriangle, ShieldX } from 'lucide-react';
+import { Menu, Plus, Sparkles, Activity, ShieldCheck, AlertTriangle, ShieldX } from 'lucide-react';
 import { PerformanceStats } from '../../utils/calculations';
 
 interface HeaderProps {
@@ -56,23 +56,6 @@ export const Header: React.FC<HeaderProps> = ({
               Live
             </span>
           </div>
-        </div>
-      </div>
-
-      {/* Center: Search / Filter Bar (Liquid Glass Pill) */}
-      <div className="hidden md:flex items-center flex-1 max-w-md mx-6">
-        <div className="relative w-full">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
-          <input
-            type="text"
-            readOnly
-            onClick={onOpenNewTrade}
-            placeholder="Quick search instruments, setups, strategies... (Press / to search)"
-            className="w-full h-9 rounded-full liquid-glass-pill pl-10 pr-9 text-xs text-slate-200 placeholder-slate-400 focus:outline-none focus:border-white/30 transition-all cursor-pointer font-sans"
-          />
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 bg-white/[0.08] px-1.5 py-0.5 rounded border border-white/[0.1]">
-            /
-          </kbd>
         </div>
       </div>
 

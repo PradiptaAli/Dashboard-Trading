@@ -125,6 +125,10 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   const [notes, setNotes] = useState<string>('');
   const [holdingMinutes, setHoldingMinutes] = useState<number>(45);
 
+  // Collapse/Expand state
+  const [isStrategyExpanded, setIsStrategyExpanded] = useState(false);
+  const [isPsychologyExpanded, setIsPsychologyExpanded] = useState(false);
+
   // AI Scanner state
   const [isAiScanning, setIsAiScanning] = useState(false);
   const [aiScanError, setAiScanError] = useState<string | null>(null);
@@ -637,7 +641,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[82vh] overflow-y-auto">
+        <form onSubmit={handleSubmit} className="trade-modal-form min-h-0 flex-1 space-y-3 overflow-y-auto p-4 sm:space-y-4 sm:p-6">
           {/* Plan Violation Live Alert Warning */}
           {liveViolations.length > 0 && (
             <div className="rounded border border-amber-500/30 bg-amber-950/20 p-3 text-xs text-amber-300 space-y-1">
@@ -1202,188 +1206,191 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                 </button>
               </div>
 
-              <div className="text-[10px] text-slate-400 font-sans leading-relaxed pt-1">
-                💡 <strong>Kalkulasi Dua Arah:</strong> Anda bebas mengubah <strong>Harga Exit</strong>, <strong>Nominal P&L ($)</strong> (misal ketik <code className="text-rose-400">-8</code>), atau <strong>R-Multiple</strong> (misal ketik <code className="text-rose-400">-1.6</code>). Ketiganya akan selalu sinkron otomatis tanpa stuck.
-              </div>
             </div>
           </div>
 
           {/* Section 3: Strategy & Context */}
           <div className="space-y-3 border-t border-white/[0.06] pt-4">
-            <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
-              3. Strategy, Setup & Execution Thesis
-            </h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs font-mono">
-              <div>
-                <label className="block text-[#696f7e] mb-1">Strategy</label>
-                <input
-                  list="strategies-list"
-                  value={strategy}
-                  onChange={e => setStrategy(e.target.value)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
-                />
-                <datalist id="strategies-list">
-                  {PRESET_STRATEGIES.map(s => (
-                    <option key={s} value={s} />
-                  ))}
-                </datalist>
-              </div>
+            <button type="button" onClick={() => setIsStrategyExpanded(!isStrategyExpanded)} className="flex w-full items-center justify-between text-left group">
+              <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider group-hover:text-white transition-colors">3. Strategy, Setup & Execution Thesis</h3>
+              <span className="text-xs text-slate-500 flex items-center gap-1 group-hover:text-slate-300">{isStrategyExpanded ? 'Collapse' : 'Expand'}{isStrategyExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}</span>
+            </button>
+            {isStrategyExpanded && (
+              <div className="space-y-3 pt-1">
+                <div className="flex items-center gap-3 text-left">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[#555a66]">Strategy:</span>
+                    <input
+                      list="strategies-list"
+                      value={strategy}
+                      onChange={e => setStrategy(e.target.value)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                    />
+                    <datalist id="strategies-list">
+                      {PRESET_STRATEGIES.map(s => (
+                        <option key={s} value={s} />
+                      ))}
+                    </datalist>
+                  </div>
 
-              <div>
-                <label className="block text-[#696f7e] mb-1">Setup</label>
-                <input
-                  list="setups-list"
-                  value={setup}
-                  onChange={e => setSetup(e.target.value)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
-                />
-                <datalist id="setups-list">
-                  {PRESET_SETUPS.map(su => (
-                    <option key={su} value={su} />
-                  ))}
-                </datalist>
-              </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[#555a66]">Setup:</span>
+                    <input
+                      list="setups-list"
+                      value={setup}
+                      onChange={e => setSetup(e.target.value)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                    />
+                    <datalist id="setups-list">
+                      {PRESET_SETUPS.map(su => (
+                        <option key={su} value={su} />
+                      ))}
+                    </datalist>
+                  </div>
 
-              <div>
-                <label className="block text-[#696f7e] mb-1">Trading Session</label>
-                <select
-                  value={session}
-                  onChange={e => setSession(e.target.value as TradingSession)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
-                >
-                  <option value="London">London</option>
-                  <option value="New York">New York</option>
-                  <option value="Asian">Asian</option>
-                </select>
-              </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[#555a66]">Trading Session:</span>
+                    <select
+                      value={session}
+                      onChange={e => setSession(e.target.value as TradingSession)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none"
+                    >
+                      <option value="London">London</option>
+                      <option value="New York">New York</option>
+                      <option value="Asian">Asian</option>
+                    </select>
+                  </div>
 
-              <div>
-                <label className="block text-[#696f7e] mb-1">Timeframe</label>
-                <select
-                  value={timeframe}
-                  onChange={e => setTimeframe(e.target.value as Timeframe)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
-                >
-                  <option value="M1">M1</option>
-                  <option value="M5">M5</option>
-                  <option value="M15">M15</option>
-                  <option value="H1">H1</option>
-                  <option value="H4">H4</option>
-                  <option value="D1">D1</option>
-                </select>
-              </div>
-            </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[#555a66]">Timeframe:</span>
+                    <select
+                      value={timeframe}
+                      onChange={e => setTimeframe(e.target.value as Timeframe)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none"
+                    >
+                      <option value="M1">M1</option>
+                      <option value="M5">M5</option>
+                      <option value="M15">M15</option>
+                      <option value="H1">H1</option>
+                      <option value="H4">H4</option>
+                      <option value="D1">D1</option>
+                    </select>
+                  </div>
+                </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mt-3">
-              <div>
-                <label className="block text-[#696f7e] mb-1 font-mono">Entry Thesis</label>
-                <textarea
-                  rows={2}
-                  value={entryReason}
-                  onChange={e => setEntryReason(e.target.value)}
-                  className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
-                  placeholder="Rationale behind trade entry..."
-                />
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mt-3">
+                  <div>
+                    <label className="block text-[#696f7e] mb-1 font-mono">Entry Thesis</label>
+                    <textarea
+                      rows={2}
+                      value={entryReason}
+                      onChange={e => setEntryReason(e.target.value)}
+                      className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
+                      placeholder="Rationale behind trade entry..."
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-[#696f7e] mb-1 font-mono">Exit Rationale</label>
-                <textarea
-                  rows={2}
-                  value={exitReason}
-                  onChange={e => setExitReason(e.target.value)}
-                  className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
-                  placeholder="Rationale behind trade exit..."
-                />
+                  <div>
+                    <label className="block text-[#696f7e] mb-1 font-mono">Exit Rationale</label>
+                    <textarea
+                      rows={2}
+                      value={exitReason}
+                      onChange={e => setExitReason(e.target.value)}
+                      className="w-full rounded border border-white/[0.08] bg-white/[0.03] p-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none resize-none font-sans placeholder-[#555a66]"
+                      placeholder="Rationale behind trade exit..."
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Section 4: Psychology & Execution Discipline */}
           <div className="space-y-3 border-t border-white/[0.06] pt-4">
-            <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider">
-              4. Behavioral Psychology & Execution Quality
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div>
-                <label className="block text-[#696f7e] mb-1 font-mono">Emotional State</label>
-                <select
-                  value={emotion}
-                  onChange={e => setEmotion(e.target.value as EmotionState)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
-                >
-                  {PRESET_EMOTIONS.map(emo => (
-                    <option key={emo} value={emo}>{emo}</option>
-                  ))}
-                </select>
-              </div>
+            <button type="button" onClick={() => setIsPsychologyExpanded(!isPsychologyExpanded)} className="flex w-full items-center justify-between text-left group">
+              <h3 className="text-xs font-mono font-medium uppercase text-[#9ea3b0] tracking-wider group-hover:text-white transition-colors">4. Behavioral Psychology & Execution Quality</h3>
+              <span className="text-xs text-slate-500 flex items-center gap-1 group-hover:text-slate-300">{isPsychologyExpanded ? 'Collapse' : 'Expand'}{isPsychologyExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}</span>
+            </button>
+            {isPsychologyExpanded && (
+              <div className="space-y-3 pt-1">
+                <div className="flex items-center gap-3 text-left">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[#555a66]">Emotional State:</span>
+                    <select
+                      value={emotion}
+                      onChange={e => setEmotion(e.target.value as EmotionState)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
+                    >
+                      {PRESET_EMOTIONS.map(emo => (
+                        <option key={emo} value={emo}>{emo}</option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div>
-                <label className="block text-[#696f7e] mb-1 font-mono">Mistake Flag</label>
-                <select
-                  value={mistake}
-                  onChange={e => setMistake(e.target.value)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
-                >
-                  {PRESET_MISTAKES.map(m => (
-                    <option key={m} value={m}>{m}</option>
-                  ))}
-                </select>
-              </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[#555a66]">Mistake Flag:</span>
+                    <select
+                      value={mistake}
+                      onChange={e => setMistake(e.target.value)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-[#0b0d11] px-2.5 text-[#E2E8F0] text-xs focus:border-white/[0.14] focus:outline-none font-mono"
+                    >
+                      {PRESET_MISTAKES.map(m => (
+                        <option key={m} value={m}>{m}</option>
+                      ))}
+                    </select>
+                  </div>
 
-              <div>
-                <div className="flex justify-between text-[#696f7e] mb-1 font-mono">
-                  <span>Confidence:</span>
-                  <span className="text-[#e4e7ec] font-semibold">{confidence}/10</span>
+                  <div className="flex justify-between text-[#696f7e] mb-1 font-mono">
+                    <span>Confidence:</span>
+                    <span className="text-[#e4e7ec] font-semibold">{confidence}/10</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={confidence}
+                    onChange={e => setConfidence(parseInt(e.target.value))}
+                    className="w-full accent-[#10b981]"
+                  />
+
+                  <div className="flex justify-between text-[#696f7e] mb-1 font-mono">
+                    <span>Discipline:</span>
+                    <span className="text-[#10b981] font-semibold">{discipline}/10</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={discipline}
+                    onChange={e => setDiscipline(parseInt(e.target.value))}
+                    className="w-full accent-[#10b981]"
+                  />
                 </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={confidence}
-                  onChange={e => setConfidence(parseInt(e.target.value))}
-                  className="w-full accent-[#10b981]"
-                />
-              </div>
 
-              <div>
-                <div className="flex justify-between text-[#696f7e] mb-1 font-mono">
-                  <span>Discipline:</span>
-                  <span className="text-[#10b981] font-semibold">{discipline}/10</span>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mt-3 font-mono">
+                  <div>
+                    <label className="block text-[#696f7e] mb-1">Tags (comma separated)</label>
+                    <input
+                      type="text"
+                      value={tagsInput}
+                      onChange={e => setTagsInput(e.target.value)}
+                      placeholder="e.g. Crypto, A+ Setup, Trailed SL"
+                      className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[#696f7e] mb-1">Holding Duration (minutes)</label>
+                    <input
+                      type="number"
+                      value={holdingMinutes}
+                      onChange={e => setHoldingMinutes(parseInt(e.target.value) || 0)}
+                      className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none tabular-nums"
+                    />
+                  </div>
                 </div>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={discipline}
-                  onChange={e => setDiscipline(parseInt(e.target.value))}
-                  className="w-full accent-[#10b981]"
-                />
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs mt-3 font-mono">
-              <div>
-                <label className="block text-[#696f7e] mb-1">Tags (comma separated)</label>
-                <input
-                  type="text"
-                  value={tagsInput}
-                  onChange={e => setTagsInput(e.target.value)}
-                  placeholder="e.g. Crypto, A+ Setup, Trailed SL"
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[#696f7e] mb-1">Holding Duration (minutes)</label>
-                <input
-                  type="number"
-                  value={holdingMinutes}
-                  onChange={e => setHoldingMinutes(parseInt(e.target.value) || 0)}
-                  className="w-full h-8 rounded border border-white/[0.08] bg-white/[0.03] px-2.5 text-[#e4e7ec] text-xs focus:border-white/[0.14] focus:outline-none tabular-nums"
-                />
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Section 5: Screenshot Attachment */}

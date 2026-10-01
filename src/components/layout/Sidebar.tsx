@@ -14,7 +14,6 @@ import {
   Plus,
   TrendingUp,
 } from 'lucide-react';
-import traderAvatar from '../../assets/images/avatar_trader_pro_1790744952839.jpg';
 
 export type NavItemKey =
   | 'overview'
@@ -99,29 +98,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <X className="h-4 w-4" />
           </button>
-        </div>
-
-        {/* Trader Profile Card (Liquid Glass Pill) */}
-        <div className="px-3 pt-3.5 pb-1">
-          <div className="flex items-center gap-3 p-2.5 rounded-2xl liquid-glass-pill transition-all">
-            <div className="relative">
-              <img
-                src={traderAvatar}
-                alt="Trader Profile"
-                className="h-9 w-9 rounded-xl object-cover ring-1 ring-white/20 shadow-md"
-              />
-              <div className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-emerald-400 ring-2 ring-[#0A0D15]" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-white truncate">Alex Thorne</span>
-              </div>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-mono text-emerald-400 font-semibold">Active Session</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Action: Quick Log Button with Liquid Gradient */}

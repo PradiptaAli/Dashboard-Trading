@@ -1,15 +1,17 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 @layer base {
   :root {
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'IBM Plex Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --accent: #FF5A1F;
     --accent-hot: #FF3D00;
     --accent-soft: #FF9A66;
   }
 
   body {
+    color-scheme: dark;
     font-family: var(--font-sans);
     background-color: #050505;
     color: #E2E8F0;
@@ -34,7 +36,35 @@
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 90, 31, 0.45);
   }
+
+  /* Dark theme for native select elements */
+  .trade-modal-form select:focus-visible {
+    background-color: rgba(11, 13, 17, 0.95);
+    border-color: rgba(255,255,255,0.14);
+    color: #E2E8F0;
+  }
+
+  .trade-modal-form select {
+    color-scheme: dark;
+    background-color: #0b0d11;
+    color: #E2E8F0;
+  }
+
+  .trade-modal-form select option {
+    color-scheme: dark;
+    background-color: #0b0d11;
+    color: #E2E8F0;
+  }
 }
+
+.trade-modal {
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  letter-spacing: 0;
+}
+
+.trade-modal .font-mono {
+  font-family: 'IBM Plex Mono', 'Cascadia Code', monospace;
+  letter-spacing: 0;
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
