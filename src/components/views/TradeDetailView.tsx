@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Edit3, Trash2, Copy, AlertTriangle, Maximize2, Tag } from 'lucide-react';
 import { Trade } from '../../types/trade';
 import { ConfirmModal } from '../common/ConfirmModal';
+import { getScreenshotFromDb } from '../../services/imageStorage';
 
 interface TradeDetailViewProps {
   trade: Trade;
@@ -20,6 +21,21 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
 }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [displayScreenshot, setDisplayScreenshot] = useState<string | null>(
+    trade.screenshotBefore || trade.screenshotAfter || null
+  );
+
+  useEffect(() => {
+    if (trade.screenshotBefore || trade.screenshotAfter) {
+      setDisplayScreenshot(trade.screenshotBefore || trade.screenshotAfter || null);
+    } else {
+      getScreenshotFromDb(trade.id).then(storedImg => {
+        if (storedImg) {
+          setDisplayScreenshot(storedImg);
+        }
+      });
+    }
+  }, [trade.id, trade.screenshotBefore, trade.screenshotAfter]);
 
   const isWin = trade.pnl > 0;
   const isLoss = trade.pnl < 0;
@@ -113,7 +129,7 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
           <div className="rounded-lg border border-white/[0.06] bg-black/30 overflow-hidden">
             <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2 text-xs font-mono text-[#696f7e]">
               <span>Execution Chart Snapshot</span>
-              {trade.screenshotBefore && (
+              {displayScreenshot && (
                 <button
                   onClick={() => setIsZoomed(!isZoomed)}
                   className="flex items-center gap-1 text-[11px] text-[#787f91] hover:text-[#d0d4dc]"
@@ -125,9 +141,9 @@ export const TradeDetailView: React.FC<TradeDetailViewProps> = ({
             </div>
 
             <div className={`relative bg-[#07080b] flex items-center justify-center ${isZoomed ? 'h-[500px]' : 'h-72'}`}>
-              {trade.screenshotBefore ? (
+              {displayScreenshot ? (
                 <img
-                  src={trade.screenshotBefore}
+                  src={displayScreenshot}
                   alt={`Execution chart for ${trade.instrument}`}
                   className="h-full w-full object-contain"
                   referrerPolicy="no-referrer"

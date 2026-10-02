@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, AlertTriangle, Check, Upload, Calculator, ArrowRight, ShieldCheck, Sparkles, Coins, DollarSign, Loader2, Camera, Image as ImageIcon, ChevronDown, ChevronUp, Key, Eye, EyeOff, ExternalLink, RefreshCw } from 'lucide-react';
 import { Trade, Direction, TradeResult, TradingSession, Timeframe, EmotionState, TradingPlan, MarketType, SizeUnit } from '../../types/trade';
 import { checkPlanViolations } from '../../utils/calculations';
+import { compressImage } from '../../services/imageStorage';
 import {
   scanTradeScreenshotWithAI,
   fileToBase64,
@@ -233,8 +234,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   const handleFileUploadScan = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const base64 = await fileToBase64(file);
-      executeAiScan(base64, base64);
+      const compressed = await compressImage(file, 1280, 1280, 0.78);
+      executeAiScan(compressed, compressed);
     }
   };
 
@@ -284,8 +285,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
           const file = items[i].getAsFile();
           if (file) {
             e.preventDefault();
-            const base64 = await fileToBase64(file);
-            executeAiScan(base64, base64);
+            const compressed = await compressImage(file, 1280, 1280, 0.78);
+            executeAiScan(compressed, compressed);
             break;
           }
         }
@@ -540,17 +541,12 @@ export const TradeModal: React.FC<TradeModalProps> = ({
   if (pnl >= 0.05 || rMultiple >= 0.05) computedResult = 'WIN';
   else if (pnl <= -0.05 || rMultiple <= -0.05) computedResult = 'LOSS';
 
-  // File upload to Data URL for custom screenshots
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // File upload to Data URL for custom screenshots with auto-compression
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = event => {
-      if (event.target?.result) {
-        setScreenshotUrl(event.target.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
+    const compressed = await compressImage(file, 1280, 1280, 0.78);
+    setScreenshotUrl(compressed);
   };
 
   // Live rule violation warning preview
@@ -605,7 +601,7 @@ export const TradeModal: React.FC<TradeModalProps> = ({
       mistake,
       tags,
       screenshotBefore: screenshotUrl || undefined,
-      screenshotAfter: screenshotUrl || undefined,
+      screenshotAfter: undefined,
       notes,
       holdingTimeMinutes: holdingMinutes,
       planViolations: liveViolations.length > 0 ? liveViolations : undefined,
@@ -795,8 +791,8 @@ export const TradeModal: React.FC<TradeModalProps> = ({
                     setIsDragging(false);
                     const file = e.dataTransfer.files?.[0];
                     if (file && file.type.startsWith('image/')) {
-                      const base64 = await fileToBase64(file);
-                      executeAiScan(base64, base64);
+                      const compressed = await compressImage(file, 1280, 1280, 0.78);
+                      executeAiScan(compressed, compressed);
                     }
                   }}
                   className={`border-2 border-dashed rounded-md p-4 text-center transition-all ${

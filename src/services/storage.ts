@@ -1,5 +1,6 @@
 import { Trade, StrategyDefinition, TradingPlan, DailyReview, WeeklyReview } from '../types/trade';
 import { SEED_TRADES, INITIAL_STRATEGIES, DEFAULT_TRADING_PLAN, SEED_DAILY_REVIEWS, SEED_WEEKLY_REVIEWS } from '../data/mockData';
+import { saveScreenshotToDb, deleteScreenshotFromDb } from './imageStorage';
 
 const STORAGE_KEYS = {
   TRADES: 'tradeos_trades_v3',
@@ -15,18 +16,87 @@ export const StorageService = {
     try {
       const data = localStorage.getItem(STORAGE_KEYS.TRADES);
       if (data !== null) {
-        return JSON.parse(data);
+        const parsed: Trade[] = JSON.parse(data);
+
+        // Auto-heal: If localStorage is bloated with existing uncompressed screenshots,
+        // sync them to IndexedDB and prune duplicates
+        if (data.length > 2000000) {
+          setTimeout(() => {
+            try {
+              parsed.forEach(t => {
+                const img = t.screenshotBefore || t.screenshotAfter;
+                if (img && (img.startsWith('data:image') || img.length > 500)) {
+                  saveScreenshotToDb(t.id, img).catch(() => {});
+                }
+              });
+              // Save a pruned version to free up localStorage quota immediately
+              const slimmed = parsed.map(t => ({
+                ...t,
+                screenshotAfter: undefined, // remove redundant duplicate
+              }));
+              localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify(slimmed));
+            } catch (_) {}
+          }, 100);
+        }
+
+        return parsed;
       }
     } catch (e) {
       console.error('Failed to parse trades from localStorage', e);
     }
     // Default to clean empty slate (0 trades) as requested by user
-    localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify([]));
+    try {
+      localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify([]));
+    } catch (_) {}
     return [];
   },
 
   saveTrades(trades: Trade[]): void {
-    localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify(trades));
+    // 1. Asynchronously save all screenshot data URLs into IndexedDB (virtually unlimited capacity)
+    trades.forEach(t => {
+      const img = t.screenshotBefore || t.screenshotAfter;
+      if (img && (img.startsWith('data:image') || img.length > 500)) {
+        saveScreenshotToDb(t.id, img).catch(() => {});
+      }
+    });
+
+    // 2. Persist to localStorage with auto-quota recovery
+    try {
+      localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify(trades));
+    } catch (quotaError) {
+      console.warn('LocalStorage quota limit reached. Automatically optimizing screenshot storage...', quotaError);
+
+      try {
+        // Keep full screenshots for top 4 most recent trades; for older trades keep metadata and let IndexedDB supply screenshots
+        const trimmed = trades.map((t, index) => {
+          if (index >= 3 && t.screenshotBefore && t.screenshotBefore.startsWith('data:image')) {
+            return {
+              ...t,
+              screenshotBefore: undefined,
+              screenshotAfter: undefined,
+            };
+          }
+          return {
+            ...t,
+            screenshotAfter: undefined, // remove redundant duplicate
+          };
+        });
+        localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify(trimmed));
+      } catch (err2) {
+        // Extreme fallback: keep all trade stats, text, and numbers intact in localStorage, images safely in IndexedDB
+        console.warn('Aggressive localStorage quota cleanup applied; images preserved in IndexedDB.', err2);
+        const stripped = trades.map(t => ({
+          ...t,
+          screenshotBefore: t.screenshotBefore?.startsWith('data:image') ? undefined : t.screenshotBefore,
+          screenshotAfter: undefined,
+        }));
+        try {
+          localStorage.setItem(STORAGE_KEYS.TRADES, JSON.stringify(stripped));
+        } catch (criticalErr) {
+          console.error('Critical localStorage error:', criticalErr);
+        }
+      }
+    }
   },
 
   addTrade(trade: Trade): Trade[] {
@@ -44,6 +114,7 @@ export const StorageService = {
   },
 
   deleteTrade(tradeId: string): Trade[] {
+    deleteScreenshotFromDb(tradeId).catch(() => {});
     const trades = this.getTrades();
     const updated = trades.filter(t => t.id !== tradeId);
     this.saveTrades(updated);
